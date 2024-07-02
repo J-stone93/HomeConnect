@@ -1,9 +1,12 @@
 import { Card, Button, Carousel } from "react-bootstrap";
-import { Provider, useSelector } from "react-redux";
+import { Provider, useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { store } from "../app/store";
 import FeeChart from '../components/FeeChart';
 import { selectNoticeInfo } from "../features/board/boardSlice";
+import { useEffect } from "react";
+import axios from "axios";
+import { getmyInfo } from "../features/main/mainSlice";
 
 const StyledCard = styled.div`
   display: flex;
@@ -15,6 +18,11 @@ const StyledCard = styled.div`
 
 function Main() {
   const NoticeInfo = useSelector(selectNoticeInfo);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getmyInfo(JSON.parse(localStorage.getItem('user'))));
+  }, []);
 
   return (
     <>
