@@ -2,11 +2,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearBoardList, getBoardList, selectBoardList } from "./boardSlice";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { Button, Table } from "react-bootstrap";
 
 function BoardList() {
+	const [posts, setPosts] = useState([]);
+
 	const boardList = useSelector(selectBoardList);
 	const navigate = useNavigate();
 	const dispatch = useDispatch()
@@ -19,9 +21,13 @@ function BoardList() {
 useEffect(() => {
 	const boardlist = async () => {
 	try {
-		const response = await axios.get('http://localhost:8080/menu4/boardlist');
+		const response = await axios.get('http://localhost:8080/menu4/boardlist',{
+			headers : {
+				Authorization : localStorage.getItem('token'),
+			}
+		});
 		if (response.status === 200) { 
-			return dispatch(getBoardList(response.data));
+			return setPosts(response.data);
 		} else { 
 			throw new Error(`api error: ${response.status} ${response.statusText}`);
 		}
@@ -48,7 +54,7 @@ useEffect(() => {
 					</tr>
 				</thead>
 
-				{boardList.map((post) => (
+				{posts.map((post) => (
 					<tbody onClick={() => {
 						navigate(`/menu4/read/${post.no}`)
 						}}>

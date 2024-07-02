@@ -19,7 +19,7 @@ const CommentList = styled.ul`
 `;
 
 const TextInput = styled.input`
-    width: 100%;
+    width: 80%;
     height: 40px;
     padding: 10px;
     font-size: 16px;
@@ -84,7 +84,7 @@ const PostContent = styled.div`
 
 function BoardListDetail() {
     const [comment, setComment] = useState('');
-    const [comments, setComments] = useState([]);
+    const [commentList, setCommentList] = useState([]);
 
     const { boardId } = useParams();
 
@@ -95,9 +95,12 @@ function BoardListDetail() {
     useEffect(() => {
         const boardlist = async () => {
         try {
-            const response = await axios.get(`http://localhost:8080/menu4/read?no=${boardId}`);
+            const response = await axios.get(`http://localhost:8080/menu4/read?no=${boardId}`,{
+                headers : {
+                    Authorization : localStorage.getItem('token'),
+                }
+            });
             if(!response.data) return;
-            console.log(response.data);
             if (response.status === 200) { 
                 return dispatch(getBoardList(response.data));
             } else { 
@@ -108,14 +111,18 @@ function BoardListDetail() {
             }
         };
         boardlist();
-    }, []);
+    },[]);
 
     useEffect(() => {
         const commentList = async() => {
             try{
-                const response = await axios.get(`http://localhost:8080/menu4/read?no=${boardId}`);
+                const response = await axios.get(`http://localhost:8080/comment/list?boardNo=${boardId}`, {
+                    headers : {
+                        Authorization :  localStorage.getItem('token'),
+                    }
+                });
                 if (response.status === 200) { 
-                    return dispatch(getBoardList(response.data));
+                    return setCommentList(response.data);
                 } else { 
                     throw new Error(`api error: ${response.status} ${response.statusText}`);
                 }
@@ -124,20 +131,79 @@ function BoardListDetail() {
             }
         };
         commentList();
-    }, []);
-
-    const handleAddComment = () => {
-        if (comment.trim() !== '') {
-            setComments([...comments, comment]);
-            setComment('');
-        }
-    };
+    },[]);
 
     const handleRemoveComment = () => {
 
     };
     const handleModifyContent = () => {
 
+    };
+
+
+    const plusComment = () => {
+        const exportContents = async() => {
+            try{
+                const token = localStorage.getItem('token');
+                const response = await axios.post(`http://localhost:8080/comment/register`,
+                {
+                    "boardNo" : boardId,
+                    "content" : comment,
+                },
+                {
+                    headers : {
+                        Authorization :  token
+                    }
+                });
+                if (response.status === 200) { 
+
+                    const boardlist = async () => {
+                        try {
+                            const response = await axios.get(`http://localhost:8080/menu4/read?no=${boardId}`,{
+                                headers : {
+                                    Authorization : localStorage.getItem('token'),
+                                }
+                            });
+                            if(!response.data) return;
+                            if (response.status === 200) { 
+                                return dispatch(getBoardList(response.data));
+                            } else { 
+                                throw new Error(`api error: ${response.status} ${response.statusText}`);
+                            }
+                            } catch (error) {
+                                console.error(error);
+                            }
+                        };
+                        boardlist();
+
+                    const commentList = async() => {
+                        try{
+                            const response = await axios.get(`http://localhost:8080/comment/list?boardNo=${boardId}`, {
+                                headers : {
+                                    Authorization :  localStorage.getItem('token'),
+                                }
+                            });
+                            if (response.status === 200) { 
+                                return setCommentList(response.data);
+                            } else { 
+                                throw new Error(`api error: ${response.status} ${response.statusText}`);
+                            }
+                            } catch (error) {
+                            console.error(error);
+                        }
+                    };
+                    commentList();
+
+                    return console.log("성공");
+                } else { 
+                    throw new Error(`api error: ${response.status} ${response.statusText}`);
+                }
+                } catch (error) {
+                console.error(error);
+            }
+        };
+        exportContents();
+        setComment(''); 
     };
 
     return (
@@ -151,19 +217,27 @@ function BoardListDetail() {
 
             <h3>댓글</h3>
             <CommentList>
-
+                {commentList.map((comments,index)=>{
+                    return (
+                        <>
+                            <div key={index}>{comments.writer} : {comments.content}</div>
+                        </>
+                    );
+                })}
             </CommentList>
-
-            <TextInput
-            type="text"
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-            placeholder="댓글을 입력하세요."
-            />
+            
+            <div>
+                <TextInput
+                type="text"
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+                placeholder="댓글을 입력하세요."
+                />
+                <Button onClick={plusComment}>댓글 추가</Button>
+            </div>
 
             <ButtonContainer>
                 <Button onClick={() => navigate('/menu4/boardlist')}>목록으로</Button>
-                <Button onClick={handleAddComment}>댓글 추가</Button>
                 <Button onClick={handleModifyContent}>수정하기</Button>
                 <Link to="/menu4/boardlist">
                     <CloseButton onClick={handleRemoveComment}>삭제하기</CloseButton>

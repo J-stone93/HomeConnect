@@ -23,7 +23,7 @@ function Register() {
   const handleSubmitINFO = () => {
     const myInfo = async () => {
         try {
-          const response = await axios.get(`${process.env.REACT_APP_API_URL}/login?userId=${IDvalue}&pw=${PWvalue}`);
+          const response = await axios.get(`http://localhost:8080/login?userId=${IDvalue}&pw=${PWvalue}`);
           console.log(response.data);
           if(!response.data) return alert("아이디나 비밀번호를 확인해주세요");
           if (response.status === 200) {
