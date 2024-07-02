@@ -118,7 +118,7 @@ function CommunityRegister() {
 
   const addCommunityContent = async () => {
     try {
-
+      const token = localStorage.getItem('token');
       console.log(fileEl.current.files[0]);
       const files = fileEl.current.files;
 
@@ -129,6 +129,9 @@ function CommunityRegister() {
       formData.append("content", contentValue);
       formData.append("writer", user.name);
       formData.append("uploadFile", files.length && files[0]);
+      formData.append("headers", {
+        Authorization : token
+      })
 
       const response = await axios.post(`http://localhost:8080/menu4/communityregister`, formData, {
         headers: { 'content-type': 'multipart/form-data' },

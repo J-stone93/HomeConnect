@@ -46,8 +46,8 @@ function CommunityItem() {
   console.log(communityList);
   return (
     <Wrapper>
-      {communityList && communityList.map((communityItem) => (
-        <table>
+      <table>
+        {communityList && communityList.map((communityItem) => (
           <tbody onClick={() => navigate(`/menu4/communityread/${communityItem.no}`)}>
             <tr key={communityItem.no}>
               <td><img src={`../../image/${communityItem.imgPath}`} alt="" /></td>
@@ -56,8 +56,8 @@ function CommunityItem() {
               <td>작성자:{communityItem.writer}</td>
             </tr>
           </tbody>
-        </table>
-      ))}
+        ))}
+      </table>
     </Wrapper>
   );
 };

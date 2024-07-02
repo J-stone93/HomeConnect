@@ -14,12 +14,17 @@ const Wrapper = styled.div`
   /* justify-content: center; */
 `;
 
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: end;
+`;
+
 function CommunitySignUp() {
   const navigate = useNavigate()
   const { communityId } = useParams();
   const [communityList, setcommunityList] = useState();
 
-  // db에서 community데이터 갖고 와서 렌더링하기
+  // community에서 해당 아이디값에 내용 가져와 화면에 렌더링
   useEffect(() => {
     const communitylist = async () => {
       try {
@@ -37,6 +42,8 @@ function CommunitySignUp() {
     communitylist();
   }, []);
 
+  // community에서 해당 아이디값에 내용 가져와서 삭제하기
+
 
   return (
     <Wrapper>
@@ -46,13 +53,22 @@ function CommunitySignUp() {
           <p>{communityList.content}</p>
           <p>모임 위치</p>
           <p>작성자:{communityList.writer}</p>
-        </div>
-      }
-      <div>
-        <Nav.Link onClick={() => navigate('/menu4/community')}>
+        <Nav.Link style={{width: '90px'}} onClick={() => navigate('/menu4/community')}>
           <Button variant="dark">가입하기</Button>
         </Nav.Link>
-      </div>
+        </div>
+      }
+      <ButtonContainer>
+        <Nav.Link style={{width: '90px'}} onClick={() => navigate('/menu4/community')}>
+          <Button variant="dark">목록가기</Button>
+        </Nav.Link>
+        <Nav.Link style={{width: '90px', marginLeft: '10px'}} onClick={() => navigate('/menu4/community')}>
+          <Button variant="dark">수정하기</Button>
+        </Nav.Link>
+        <Nav.Link style={{width: '90px', marginLeft: '10px'}} onClick={() => navigate('/menu4/community')}>
+          <Button variant="danger">삭제하기</Button>
+        </Nav.Link>
+      </ButtonContainer>
     </Wrapper>
   );
 };
