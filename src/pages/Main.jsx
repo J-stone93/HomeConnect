@@ -1,4 +1,4 @@
-import { Card, Button } from "react-bootstrap";
+import { Card, Button, Carousel } from "react-bootstrap";
 import { Provider, useSelector } from "react-redux";
 import styled from "styled-components";
 import { store } from "../app/store";
@@ -42,6 +42,7 @@ function Main() {
           </Card>);
         })}
       </StyledCard>
+
 
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '50px' }}>
           <h1>관리비</h1>
