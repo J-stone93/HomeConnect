@@ -141,7 +141,8 @@ function FeeChartDetail() {
     }
   }
 
-  const onCancelPayment = (merchant_uid) => {
+  // 결제 취소
+  const onCancelPayment = async (merchant_uid) => {
     const { IMP } = window;
     IMP.init('imp86124615');
 
