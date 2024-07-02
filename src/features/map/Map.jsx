@@ -92,7 +92,7 @@ const CategoryItem = styled.li`
 `;
 
 function Map(){
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState(""); // 검색창 useS
   const [currCategory, setCurrCategory] = useState('');
   const [map, setMap] = useState(null);
   const [markers, setMarkers] = useState([]);
@@ -294,18 +294,29 @@ function Map(){
     InputPlaces();
   };
 
+  const EnterSearch = (e) => {
+    if (e.key === 'Enter') {
+      InputPlaces();
+    }
+    
+  };
+
   return (
     <Container>
 
       <SearchContainer>
+        
         <Input
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
+          onKeyUp={EnterSearch}
           placeholder="검색어를 입력하세요"
         />
+
         <Button onClick={() => InputhandleSearch()}>
           <SearchIcon>🔍</SearchIcon>
         </Button>
+        
       </SearchContainer>
 
         <CategoryList id="category">
