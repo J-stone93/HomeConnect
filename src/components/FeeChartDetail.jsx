@@ -12,9 +12,8 @@ import {
   ArcElement,
 } from 'chart.js';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
-import FeeChart from './FeeChart';
 import { cancelPayment } from '../features/fee/feeSlice';
+import { getmyInfo, selectmyInfo } from "../features/main/mainSlice";
 
 // Chart.js에 필요한 구성 요소 등록
 ChartJS.register(
@@ -121,7 +120,7 @@ function FeeChartDetail() {
       pg: 'html5_inicis',
       pay_method: 'card',
       merchant_uid: `mid_${new Date().getTime()}`,
-      name: '관리비',
+      name: selectedMonth + '월 관리비',
       amount: amount,
       custom_data: { name: '부가정보', desc: '세부 부가정보' },
       buyer_name: '이름',
