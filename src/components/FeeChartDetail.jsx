@@ -52,15 +52,15 @@ const HeaderDiv = styled.div`
   position: relative;
   
   select {
-    position: absolute;
+    /* position: absolute;
     right: 10px;
-    top: 0;
+    top: 0; */
   }
 `;
 
 const PaymentButton = styled.button`
   position: absolute;
-  top: 2rem;
+  top: 3rem;
   right: 0;
   background-color: #007bff;
   color: white;
@@ -79,6 +79,17 @@ const CancelButton = styled.button`
   cursor: pointer;
   margin-left: 10px;
 `;
+
+const StyledSelect = styled.select`
+  border: none;
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  position: absolute;
+  right: 0;
+  top: 0;
+`
 
 function FeeChartDetail() {
   const fees = useSelector((state) => state.fees.fees);
@@ -241,12 +252,16 @@ function FeeChartDetail() {
       <HeaderDiv>
         <h2>2024년 관리비 상세내역</h2>
             <PaymentButton type='text' onClick={onClickPayment}>결제하기</PaymentButton>
-          <select value={selectedMonth} onChange={(e) => setSelectedMonth(e.target.value)}>
-            <option value="">월 선택</option>
+          <StyledSelect 
+            value={selectedMonth} 
+            onChange={(e) => setSelectedMonth(e.target.value)}
+            className='select'
+            >
+            <option value="">결제월</option>
             {Array.from({ length: 12 }, (_, i) => (
               <option key={i + 1} value={i + 1}>{`${i + 1}월`}</option>
             ))}
-          </select>
+          </StyledSelect >
       </HeaderDiv>
       <Bar data={data} options={options} />
     </StyledDiv2>
