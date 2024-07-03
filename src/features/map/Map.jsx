@@ -186,6 +186,7 @@ function Map() {
         {place.road_address_name && (
           <div className="address">
             <span title={place.road_address_name}>{place.road_address_name}</span>
+            <br></br>
             <span className="jibun" title={place.address_name}>
               (지번 : {place.address_name})
             </span>
