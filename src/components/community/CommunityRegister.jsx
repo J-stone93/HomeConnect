@@ -118,9 +118,9 @@ function CommunityRegister() {
 
   const addCommunityContent = async () => {
     try {
-      const token = localStorage.getItem('token');
       console.log(fileEl.current.files[0]);
       const files = fileEl.current.files;
+      const token = localStorage.getItem('token');
 
       // 1
       const formData = new FormData();
@@ -129,12 +129,11 @@ function CommunityRegister() {
       formData.append("content", contentValue);
       formData.append("writer", user.name);
       formData.append("uploadFile", files.length && files[0]);
-      formData.append("headers", {
-        Authorization : token
-      })
+      formData.append("Authorization", localStorage.getItem('token'));
 
+      
       const response = await axios.post(`http://localhost:8080/menu4/communityregister`, formData, {
-        headers: { 'content-type': 'multipart/form-data' },
+        headers: { 'content-type': 'multipart/form-data', 'Authorization' : `${token}`},
       });
 
       // 2
@@ -200,6 +199,7 @@ function CommunityRegister() {
           accept="image/jpg, image/jpeg, image/png"
           onChange={handleChangFile}
         />
+        {/* <Nav.Link> */}
         <Nav.Link onClick={() => navigate('/menu4/community')}>
           <RegisterButton onClick={addCommunityContent}>
             등록
