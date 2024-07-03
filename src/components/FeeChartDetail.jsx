@@ -132,13 +132,20 @@ function FeeChartDetail() {
       buyer_email: 'por0632@naver.com',
       buyer_addr: '주소',
       buyer_postalcode: '12345'
-    }, function (rsp) {
+    }, async function (rsp) { // 콜백
       if (rsp.success) {
-        axios({
-          url: '{}'
-        })
+        await axios({
+          url: "https://api.iamport.kr/payments/prepare",
+          method: "post",
+          headers: { "Content-Type": "application/json" }, 
+          data: {
+            merchant_uid: `mid_${new Date().getTime()}`,
+            amount: amount, // 결제 예정금액
+          }
+        });
         console.log(rsp);
       } else {
+        alert(rsp.error_msg);
         console.log(rsp);
       }
     });
