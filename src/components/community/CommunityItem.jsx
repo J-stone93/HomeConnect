@@ -13,8 +13,6 @@ const Wrapper = styled.div`
     height: 100px;
     vertical-align:middle;
   }
-  div {
-  }
 `;
 
 
@@ -29,7 +27,11 @@ function CommunityItem() {
   useEffect(() => {
     const communitylist = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/menu4/community`);
+        const response = await axios.get(`http://localhost:8080/menu4/community`, {
+          headers : {
+            Authorization : localStorage.getItem('token'),
+          }
+        });
         setcommunityList(response.data);
         if (response.status === 200) {
           // return dispatch(getBoardList(response.data));
@@ -41,15 +43,15 @@ function CommunityItem() {
       }
     };
     communitylist();
-  }, []);
+  }, [communityList]);
 
   console.log(communityList);
   return (
     <Wrapper>
       <table>
         {communityList && communityList.map((communityItem) => (
-          <tbody onClick={() => navigate(`/menu4/communityread/${communityItem.no}`)}>
-            <tr key={communityItem.no}>
+          <tbody key={communityItem.no} onClick={() => navigate(`/menu4/communityread/${communityItem.no}`)}>
+            <tr>
               <td><img src={`../../image/${communityItem.imgPath}`} alt="" /></td>
               {/* <img src="/image/여우.jpg" alt="여행" /> */}
               <td>{communityItem.title}</td>
