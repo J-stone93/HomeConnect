@@ -106,8 +106,6 @@ function BoardListDetail() {
   const boardItem = useSelector(selectBoardList);    
   const commentState = useSelector(selectCommentState);
 
-  console.log(commentState);
-
   useEffect(() => {
     const boardlist = async () => {
     try {

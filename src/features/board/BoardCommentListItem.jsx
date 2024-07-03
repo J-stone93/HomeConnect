@@ -13,8 +13,8 @@ const DivContainer = styled.div`
   justify-content: space-between;
 `;
 function BoardCommentListItem(props) {
-  const {content,index,isEdit,commentNo,writer,setCommentList} = props;
-
+  const {content,index,commentNo,writer,setCommentList} = props;
+  let {isEdit} = props;
   const dispatch = useDispatch();
 
   const [value, setValue] = useState(content);
@@ -26,10 +26,16 @@ function BoardCommentListItem(props) {
         : { ...comment, isEdit: false }
       );
     });
+
   };
 
   const handleModifyContentClose = () => {
-    setShowEdit(false);
+    setCommentList(commentList => {
+      return commentList.map(comment => comment.commentNo === commentNo 
+        ? { ...comment, isEdit: false }
+        : { ...comment, isEdit: false }
+      );
+    });
   };
 
   const handleEditChange = (e) => {
@@ -65,15 +71,15 @@ function BoardCommentListItem(props) {
   return (
     <DivContainer key={commentNo}>
       {
-        isEdit ? 
-        <InputGroup className="mb-3">
+        isEdit 
+        ? <InputGroup className="mb-3">
           <Form.Control value={value}  onChange={handleEditChange}/>
           <Button variant="outline-warning" onClick={handleModifyContentClose}>수정 확인</Button>
-        </InputGroup> :
-        <div key={index}>{writer} : {content}</div>
+        </InputGroup> 
+        : <div key={index}>{writer} : {content}</div>
       }
         <div>
-          <BsPencilSquare onClick={handleModifyContentOpen}/>
+          <BsPencilSquare onshow={false} onClick={handleModifyContentOpen}/>
           <CiSquareRemove onClick={handleRemoveComment}/>
         </div>
     </DivContainer>
