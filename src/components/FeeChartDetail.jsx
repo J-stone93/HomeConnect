@@ -13,7 +13,7 @@ import {
 } from 'chart.js';
 import styled from 'styled-components';
 import { cancelPayment } from '../features/fee/feeSlice';
-import { getmyInfo, selectmyInfo } from "../features/main/mainSlice";
+import axios from 'axios';
 
 // Chart.js에 필요한 구성 요소 등록
 ChartJS.register(
@@ -50,12 +50,6 @@ const HeaderDiv = styled.div`
   align-items: center;
   margin-bottom: 20px;
   position: relative;
-  
-  select {
-    /* position: absolute;
-    right: 10px;
-    top: 0; */
-  }
 `;
 
 const PaymentButton = styled.button`
@@ -120,37 +114,82 @@ function FeeChartDetail() {
       return;
     }
 
-    const { IMP } = window;
-    IMP.init('imp86124615');
-
     const monthIndex = parseInt(selectedMonth) - 1;
     const monthFees = fees[monthIndex];
     const amount = monthFees.electric + monthFees.water + monthFees.maintenance;
 
-    const data = {
+    const { IMP } = window;
+    IMP.init('imp86124615');
+
+    IMP.request_pay({
       pg: 'html5_inicis',
       pay_method: 'card',
       merchant_uid: `mid_${new Date().getTime()}`,
       name: selectedMonth + '월 관리비',
       amount: amount,
-      custom_data: { name: '부가정보', desc: '세부 부가정보' },
       buyer_name: '이름',
       buyer_tel: '전화번호',
       buyer_email: 'por0632@naver.com',
       buyer_addr: '주소',
-      buyer_postalcode: '우편번호'
-    };
-    IMP.request_pay(data, callback);
+      buyer_postalcode: '12345'
+    }, function (rsp) {
+      if (rsp.success) {
+        axios({
+          url: '{}'
+        })
+        console.log(rsp);
+      } else {
+        console.log(rsp);
+      }
+    });
   }
 
-  const callback = (response) => {
-    const {success, error_msg} = response;
-    if (success) {
-      alert('결제 성공');
-    } else {
-      alert(`결제 실패 : ${error_msg}`);
-    }
-  }
+  // const callback = (response) => {
+  //   const {success, error_msg} = response;
+  //   if (success) {
+  //     const merchant_uid = response.imp_uid; // 주문번호
+  //     const imp_uid = response.imp_uid; // 고유번호
+
+  //     // 백엔드 검증
+  //     pointCheck(imp_uid, merchant_uid);
+
+  //     // db 저장
+  //     pointSubmit(response.imp_uid);
+  //     alert('결제 성공');
+  //   } else {
+  //     alert(`결제 실패 : ${error_msg}`);
+  //   }
+  // }
+
+  // //백엔드 검증 함수
+  // const pointCheck = async (imp_uid, merchant_uid) => {
+  //   try {
+  //     console.log('백엔드 검증 실행');
+  //     const response = await axios.post('http://localhost:8080/verify/' + imp_uid);
+
+  //     console.log('결제 검증 완료', response.data);
+  //     //db에 저장
+  //     pointSubmit(merchant_uid);
+  //   } catch (error) {
+  //     console.error('결제 검증 실패', error);
+  //   }
+  // };
+
+  // //결제 정보 전달
+  // const pointSubmit = async (merchant_uid) => {
+  //   try {
+  //     console.log('넘어가는 결제 번호:' + merchant_uid);
+  //     const response = await axios.post('http://localhost:8080/user/myPage/point/pay', {
+  //       pointCertify: merchant_uid.toString(),
+  //       userEmail: 'por0632@naver.com',
+  //     });
+
+  //     // 받은 데이터
+  //     console.log(response.data);
+  //   } catch (error) {
+  //     console.error('결제 테이블 저장 실패', error);
+  //   }
+  // };
 
   // 결제 취소
   const onCancelPayment = async (merchant_uid) => {
