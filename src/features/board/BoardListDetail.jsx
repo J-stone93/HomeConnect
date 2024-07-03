@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { clearBoardList, getBoardList, removeBoardList, selectBoardList } from './boardSlice';
+import { clearBoardList, getBoardList, removeBoardList, selectBoardList, selectCommentState } from './boardSlice';
 import { BsPencilSquare } from "react-icons/bs";
 import { CiSquareRemove } from "react-icons/ci";
 import styled from 'styled-components';
 import axios from 'axios';
-import { Modal } from 'react-bootstrap';
+import { Form, Modal } from 'react-bootstrap';
+import InputGroup from 'react-bootstrap/InputGroup';
+import Button from 'react-bootstrap/Button';
+import BoardCommentListItem from './BoardCommentListItem';
 
 const CommentContainer = styled.div`
   margin-top: 16px;
@@ -22,7 +25,7 @@ const CommentList = styled.ul`
 `;
 
 const TextInput = styled.input`
-  width: 40%;
+  width: 43%;
   height: 40px;
   padding: 10px;
   font-size: 16px;
@@ -37,7 +40,7 @@ const ButtonContainer = styled.div`
   margin-top: 10px;
 `;
 
-const Button = styled.button`
+const Buttons = styled.button`
   width: 100px;
   height: 35px;
   font-size: 16px;
@@ -86,7 +89,7 @@ const PostContent = styled.div`
 `;
 
 const DivContainer = styled.div`
-  width: 40%;
+  width: 50%;
   display: flex;
   font-size: 20px;
   justify-content: space-between;
@@ -95,13 +98,15 @@ const DivContainer = styled.div`
 function BoardListDetail() {
   const [comment, setComment] = useState('');
   const [commentList, setCommentList] = useState([]);
-  const [showModal, setShowModal] = useState(false);
 
   const { boardId } = useParams();
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const boardItem = useSelector(selectBoardList);    
+  const commentState = useSelector(selectCommentState);
+
+  console.log(commentState);
 
   useEffect(() => {
     const boardlist = async () => {
@@ -133,7 +138,9 @@ function BoardListDetail() {
           }
         });
         if (response.status === 200) { 
-          return setCommentList(response.data);
+          const data = response.data.map((data)=>({...data,isEdit : false}));
+          console.log(data);
+          return setCommentList(data);
         } else { 
           throw new Error(`api error: ${response.status} ${response.statusText}`);
         }
@@ -144,17 +151,19 @@ function BoardListDetail() {
     commentList();
   },[]);
 
-  const handleRemoveComment = () => {
-    setShowModal(true); // Modal 열기
-  };
+  // const handleRemoveComment = () => {
+  // };
 
-  const handleModifyContent = () => {
-
-  };
+  // const handleModifyContentOpen = () => {
+  //   setShowEdit(false);
+  // };
+  // const handleModifyContentClose = () => {
+  //   setShowEdit(true);
+  // };
 
   const handleModalClose = () => {
-    setShowModal(false);
   };
+
 
   const modifyComment = async() => {
     try{
@@ -168,9 +177,9 @@ function BoardListDetail() {
         }
       });
       if (response.status === 200) { 
-        return dispatch(getBoardList(response.data));
+        return alert("댓글이 수정되었습니다.");
       } else { 
-        throw new Error(`api error: ${response.status} ${response.statusText}`);
+        throw new Error(`a  pi error: ${response.status} ${response.statusText}`);
       }
     } catch(err) {
       console.error(err);
@@ -243,7 +252,7 @@ function BoardListDetail() {
   <>
     <CommentContainer>
       {boardItem &&
-      <PostContent>
+      <PostContent >
         <h2>{boardItem.title}</h2>
         <p>{boardItem.content}</p>
         <p>작성자:{boardItem.writer}</p>
@@ -251,15 +260,18 @@ function BoardListDetail() {
 
       <h3>댓글</h3>
       <CommentList>
-        {commentList.map((comments,index)=>{
+        {commentList.map((comment,index)=>{
           return (
-            <DivContainer>
-              <div key={index}>{comments.writer} : {comments.content}</div>
-              <div>
-                <BsPencilSquare onClick={handleModifyContent}/>
-                <CiSquareRemove onClick={handleRemoveComment}/>
-              </div>
-            </DivContainer>
+            <>
+              <BoardCommentListItem 
+              writer = {comment.writer} 
+              commentNo = {comment.commentNo} 
+              content = {comment.content} 
+              index = {index} 
+              isEdit={comment.isEdit}
+              setCommentList={setCommentList}
+              />
+            </>
           );
         })}
       </CommentList>
@@ -271,34 +283,34 @@ function BoardListDetail() {
         onChange={(e) => setComment(e.target.value)}
         placeholder="댓글을 입력하세요."
         />
-        <Button onClick={plusComment}>댓글 추가</Button>
+        <Buttons onClick={plusComment}>댓글 추가</Buttons>
       </div>
 
       <ButtonContainer>
-        <Button onClick={() => navigate('/menu4/boardlist')}>목록으로</Button>
-        <Button onClick={handleModifyContent}>수정하기</Button>
+        <Buttons onClick={() => navigate('/menu4/boardlist')}>목록으로</Buttons>
+        {/* <Buttons onClick={handleModifyContent}>수정하기</Buttons>
         <Link to="/menu4/boardlist">
             <CloseButton onClick={handleRemoveComment}>삭제하기</CloseButton>
-        </Link> 
+        </Link>  */}
       </ButtonContainer>
     </CommentContainer>
 
-    <Modal show={showModal} onHide={handleModalClose}>
+    {/* <Modal show={showModal} onHide={handleModalClose}>
     <Modal.Header closeButton>
-      <Modal.Title>등록 확인</Modal.Title>
+      <Modal.Title>수정</Modal.Title>
     </Modal.Header>
     <Modal.Body>
       <p>등록하시겠습니까?</p>
     </Modal.Body>
     <Modal.Footer>
-      <Button variant="primary" onClick={modifyComment}>
+      <Buttons variant="primary" onClick={modifyComment}>
       확인
-    </Button>
-    <Button variant="secondary" onClick={handleModalClose}>
+    </Buttons>
+    <Buttons variant="secondary" onClick={handleModalClose}>
       취소
-    </Button>
+    </Buttons>
     </Modal.Footer>
-    </Modal >
+    </Modal > */}
   </>
   );  
 };
