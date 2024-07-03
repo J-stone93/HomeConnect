@@ -47,13 +47,13 @@ function Layout() {
           <StyledNavbar onClick={()=>{navigate('/menu3')}} className="cursor-pointer">MENU3</StyledNavbar>
           <StyledNavbar onClick={()=>{navigate('/menu4')}} className="cursor-pointer">게시판</StyledNavbar>
           <Navbar.Toggle />
-          <Navbar.Collapse className="justify-content-end">
+          {/* <Navbar.Collapse className="justify-content-end">
             <Mypage>
               <img src="/image/profile.png" alt="profile" />
               <Nav.Link onClick={()=>{navigate('/mypage')}} className="cursor-pointer">{myInfo.name}님 환영합니다.</Nav.Link>
               <button type='text' onClick={() => navigate('/feeinput')}>관리비 입력</button>
             </Mypage>
-          </Navbar.Collapse>
+          </Navbar.Collapse> */}
         </Container>
       </Navbar>
     </header>

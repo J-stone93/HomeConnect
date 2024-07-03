@@ -6,22 +6,6 @@ const Container = styled.div`
   position: relative;
 `;
 
-const MarkerContainer = styled.div`
-  background-color: #007bff;
-  color: white;
-  font-size: 12px;
-  padding: 5px 10px;
-  border-radius: 5px;
-`;
-
-const InfoWindowContainer = styled.div`
-  background-color: white;
-  border: 1px solid #ccc;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  padding: 10px;
-  border-radius: 5px;
-`;
-
 const SearchContainer = styled.div`
   display: flex;
   align-items: center;
@@ -95,6 +79,9 @@ function Map() {
   const [map, setMap] = useState(null);
   const [markers, setMarkers] = useState([]);
   const infoWindow = useRef();
+  const prevCategoryRef = useRef("");
+  const prevSearchKeywordRef = useRef("");
+
 
   useEffect(() => {
     const initMap = () => {
@@ -211,10 +198,26 @@ function Map() {
 
     const ps = new window.kakao.maps.services.Places(map);
     ps.categorySearch(category, placesSearchCB, { useMapBounds: true });
+  
+    // 새로운 카테고리를 선택한 경우, 이전 카테고리의 InfoWindow를 닫습니다.
+    if (prevCategoryRef.current !== category && infoWindow.current) {
+      infoWindow.current.close();
+    }
+
+    // 이전 카테고리 업데이트
+    prevCategoryRef.current = category;
   };
 
   const handleSearch = () => {
     if (!inputValue || !map) return;
+
+    // 검색어 업데이트
+    prevSearchKeywordRef.current = inputValue;
+
+    // 검색창에서 검색 시, 이전에 선택한 카테고리의 InfoWindow를 닫습니다.
+    if (infoWindow.current) {
+      infoWindow.current.close();
+    }
 
     const ps = new window.kakao.maps.services.Places(map);
     ps.keywordSearch(inputValue, placesSearchCB);
