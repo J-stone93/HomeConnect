@@ -44,11 +44,14 @@ const GlobalStyle = createGlobalStyle`
 
   * {
     box-sizing: inherit;
+    font-family: "Pretendard-Regular";
   }
 
   .cursor-pointer{
     cursor: pointer;
   }
+
+
 `;
 
 function App() {
