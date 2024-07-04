@@ -27,6 +27,7 @@ const Title = styled.input`
   font-size: 16px;
   padding: 10px;
   border: 1px solid #ccc;
+  border-radius: 12px;
   `;
 
 const Content = styled.textarea`
@@ -38,6 +39,7 @@ const Content = styled.textarea`
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 12px;
+  resize: none;
 `;
 
 const ButtonWrapper = styled.div`
@@ -193,7 +195,7 @@ function CommunityRegister() {
           <RegisterButton onClick={addCommunityContent}>
             등록
           </RegisterButton>
-          <RegisterButton>뒤로가기</RegisterButton>
+          <RegisterButton onClick={() => navigate('/menu4/community')}>뒤로가기</RegisterButton>
         </Nav.Link>
       </ButtonWrapper>
     </Wrapper>
