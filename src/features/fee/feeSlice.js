@@ -27,13 +27,13 @@ const feeSlice = createSlice({
       const { month, type, amount } = action.payload;
       state.fees[month - 1][type] = amount; // 월의 인덱스와 타입에 따라 금액 설정
     },
-    addPayment: (state, action) => {
-      state.payments.push(action.payload); // 결제 내역 추가
-    },
-    cancelPayment: (state, action) => {
-      const { merchant_uid } = action.payload;
-      state.payments = state.payments.filter(payment => payment.merchant_uid !== merchant_uid);
-    },
+    // addPayment: (state, action) => {
+    //   state.payments.push(action.payload); // 결제 내역 추가
+    // },
+    // cancelPayment: (state, action) => {
+    //   const { merchant_uid } = action.payload;
+    //   state.payments = state.payments.filter(payment => payment.merchant_uid !== merchant_uid);
+    // },
   },
 });
 

@@ -91,6 +91,7 @@ function FeeChartDetail() {
   const [selectedMonth, setSelectedMonth] = useState('');
   const dispatch = useDispatch();
   const payments = useSelector((state) => state.fees.payments);
+  const [data2, setData2] = useState([]);
 
   // 결제 시스템
   const Payment = (effect, deps) => {
@@ -107,6 +108,16 @@ function FeeChartDetail() {
       }
     }, []);
   };
+
+  useEffect(() => {
+    axios.get('http://localhost:8080/pay/read')
+      .then(response => {
+        setData2(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+  }, []);
 
   const onClickPayment = () => {
     if (!selectedMonth) {
@@ -134,7 +145,7 @@ function FeeChartDetail() {
       buyer_postalcode: '12345'
     }, async function (rsp) { // 콜백
       if (rsp.success) {
-        await axios.post('http://localhost:8080/fee/pay')({
+        await axios.post('http://localhost:8080/pay/register', {
           merchant_uid: rsp.merchant_uid,
           imp_uid: rsp.imp_uid,
           amount: amount, // 결제 예정금액
@@ -326,15 +337,18 @@ function FeeChartDetail() {
 
     <StyledDiv2>
         <h3>결제 내역</h3>
-        {payments.length === 0 ? (
+        {data.length === 0 ? (
           <p>결제 내역이 없습니다.</p>
         ) : (
           <ul>
-            {payments.map((payment, index) => (
+            {/* {payments.map((payment, index) => (
               <li key={index}>
                 {payment.selectedMonth}월 관리비 결제 - 결제 ID: {payment.merchant_uid}
                 <CancelButton onClick={() => onCancelPayment(payment.merchant_uid)}>결제 취소</CancelButton>
               </li>
+            ))} */}
+            {data2.map(item => (
+              <li key={item.id}>{item.name}</li>
             ))}
           </ul>
         )}
