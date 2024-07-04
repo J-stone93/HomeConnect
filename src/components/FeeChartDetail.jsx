@@ -134,14 +134,10 @@ function FeeChartDetail() {
       buyer_postalcode: '12345'
     }, async function (rsp) { // 콜백
       if (rsp.success) {
-        await axios({
-          url: "https://api.iamport.kr/payments/prepare",
-          method: "post",
-          headers: { "Content-Type": "application/json" }, 
-          data: {
-            merchant_uid: `mid_${new Date().getTime()}`,
-            amount: amount, // 결제 예정금액
-          }
+        await axios.post('http://localhost:8080/fee/pay')({
+          merchant_uid: rsp.merchant_uid,
+          imp_uid: rsp.imp_uid,
+          amount: amount, // 결제 예정금액
         });
         console.log(rsp);
       } else {

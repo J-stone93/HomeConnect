@@ -2,7 +2,6 @@ import axios from "axios";
 
 export const addData = async (feeData) => {
   try {
-    console.log(feeData);
     const response = await axios.post('http://localhost:8080/fee/register', feeData );
     console.log(feeData);
     if (response.status === 201) {
