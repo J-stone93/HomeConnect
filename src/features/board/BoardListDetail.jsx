@@ -267,6 +267,7 @@ function BoardListDetail() {
               index = {index} 
               isEdit={comment.isEdit}
               setCommentList={setCommentList}
+              boardId={boardId}
               />
             </>
           );
