@@ -27,7 +27,6 @@ const Title = styled.input`
   font-size: 16px;
   padding: 10px;
   border: 1px solid #ccc;
-  border-radius: 12px;
   `;
 
 const Content = styled.textarea`
@@ -131,10 +130,14 @@ function CommunityRegister() {
       formData.append("uploadFile", files.length && files[0]);
       formData.append("Authorization", localStorage.getItem('token'));
 
-      
-      const response = await axios.post(`http://localhost:8080/menu4/communityregister`, formData, {
-        headers: { 'content-type': 'multipart/form-data', 'Authorization' : `${token}`},
-      });
+      if (titleValue === null || contentValue === null || img === null) {
+        alert('모든 항목을 입력해주세요.');
+      } else {
+        const response = await axios.post(`http://localhost:8080/menu4/communityregister`, formData, {
+          headers: { 'content-type': 'multipart/form-data', 'Authorization' : `${token}`},
+        });
+        navigate('/menu4/community');
+      }
 
       // 2
       // const response = await axios.post(`http://localhost:8080/menu4/communityregister`, {
@@ -146,20 +149,6 @@ function CommunityRegister() {
       // }, {
       //   headers: { 'content-type': 'multipart/form-data' },
       // });
-
-      console.log(response);
-
-      // if (response.status === 200) {
-      //   setTitleValue('')
-      //   setContentValue('')
-      //   setImg(null)
-      //   return navigate('/menu4/community');
-      // } else {
-      //   alert("오류 발생");
-      //   throw new Error(`api error: ${response.status} ${response.statusText}`);
-      // }
-
-
     } catch (error) {
       console.error(error);
     }
@@ -200,7 +189,7 @@ function CommunityRegister() {
           onChange={handleChangFile}
         />
         {/* <Nav.Link> */}
-        <Nav.Link onClick={() => navigate('/menu4/community')}>
+        <Nav.Link>
           <RegisterButton onClick={addCommunityContent}>
             등록
           </RegisterButton>

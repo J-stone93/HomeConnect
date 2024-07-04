@@ -43,9 +43,9 @@ function CommunityItem() {
       }
     };
     communitylist();
-  }, [communityList]);
+  }, []);
 
-  console.log(communityList);
+  // console.log(communityList);
   return (
     <Wrapper>
       <table>
