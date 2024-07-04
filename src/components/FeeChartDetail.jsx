@@ -110,7 +110,7 @@ function FeeChartDetail() {
   };
 
   useEffect(() => {
-    axios.get('http://localhost:8080/pay/read')
+      axios.get('http://localhost:8080/pay/list')
       .then(response => {
         setData2(response.data);
       })
@@ -157,53 +157,6 @@ function FeeChartDetail() {
       }
     });
   }
-
-  // const callback = (response) => {
-  //   const {success, error_msg} = response;
-  //   if (success) {
-  //     const merchant_uid = response.imp_uid; // 주문번호
-  //     const imp_uid = response.imp_uid; // 고유번호
-
-  //     // 백엔드 검증
-  //     pointCheck(imp_uid, merchant_uid);
-
-  //     // db 저장
-  //     pointSubmit(response.imp_uid);
-  //     alert('결제 성공');
-  //   } else {
-  //     alert(`결제 실패 : ${error_msg}`);
-  //   }
-  // }
-
-  // //백엔드 검증 함수
-  // const pointCheck = async (imp_uid, merchant_uid) => {
-  //   try {
-  //     console.log('백엔드 검증 실행');
-  //     const response = await axios.post('http://localhost:8080/verify/' + imp_uid);
-
-  //     console.log('결제 검증 완료', response.data);
-  //     //db에 저장
-  //     pointSubmit(merchant_uid);
-  //   } catch (error) {
-  //     console.error('결제 검증 실패', error);
-  //   }
-  // };
-
-  // //결제 정보 전달
-  // const pointSubmit = async (merchant_uid) => {
-  //   try {
-  //     console.log('넘어가는 결제 번호:' + merchant_uid);
-  //     const response = await axios.post('http://localhost:8080/user/myPage/point/pay', {
-  //       pointCertify: merchant_uid.toString(),
-  //       userEmail: 'por0632@naver.com',
-  //     });
-
-  //     // 받은 데이터
-  //     console.log(response.data);
-  //   } catch (error) {
-  //     console.error('결제 테이블 저장 실패', error);
-  //   }
-  // };
 
   // 결제 취소
   const onCancelPayment = async (merchant_uid) => {
@@ -337,7 +290,7 @@ function FeeChartDetail() {
 
     <StyledDiv2>
         <h3>결제 내역</h3>
-        {data.length === 0 ? (
+        {data2.length === 0 ? (
           <p>결제 내역이 없습니다.</p>
         ) : (
           <ul>
@@ -348,7 +301,7 @@ function FeeChartDetail() {
               </li>
             ))} */}
             {data2.map(item => (
-              <li key={item.id}>{item.name}</li>
+              <li key={item.merchant_uid}>{item.amount}</li>
             ))}
           </ul>
         )}
