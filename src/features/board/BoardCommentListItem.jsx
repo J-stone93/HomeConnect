@@ -8,7 +8,7 @@ import axios from "axios";
 const DivContainer = styled.div`
   width: 50%;
   display: flex;
-  font-size: 20px;
+  font-size: 16px;
   justify-content: space-between;
 `;
 
@@ -117,8 +117,8 @@ function BoardCommentListItem(props) {
       <div>
         {!isEdit &&
           <>
-            <BsPencilSquare className="cursor-pointer" onClick={handleModifyContentOpen} />
-            <CiSquareRemove className="cursor-pointer" onClick={handleRemoveComment} />
+            <BsPencilSquare className="cursor-pointer " onClick={handleModifyContentOpen} />
+            <CiSquareRemove className="cursor-pointer " onClick={handleRemoveComment} />
           </>
         }
       </div>
