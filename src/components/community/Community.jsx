@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Button, Nav, Table } from "react-bootstrap";
+import { Button, Dropdown, DropdownButton, Nav, Table } from "react-bootstrap";
 import CommunityItem from "./CommunityItem";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -80,15 +80,18 @@ function Community() {
           <Nav.Item>
             <Nav.Link eventKey="link-4" onClick={() => setCurrentTab('hiking')}>등산</Nav.Link>
           </Nav.Item>
-          <Nav.Item>
-            <Nav.Link eventKey="link-4" onClick={() => setCurrentTab('hiking')}>등산</Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link eventKey="link-4" onClick={() => setCurrentTab('hiking')}>등산</Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link eventKey="link-4" onClick={() => setCurrentTab('hiking')}>등산</Nav.Link>
-          </Nav.Item>
+
+          <DropdownButton id="dropdown-basic-button" title="모임 개설하기">
+            <Dropdown.Item
+              href=""
+              onClick={() => navigate(`/menu4/communityregister`)}
+            >
+              맛집투어
+            </Dropdown.Item>
+            <Dropdown.Item href="">독서</Dropdown.Item>
+            <Dropdown.Item href="">운동</Dropdown.Item>
+            <Dropdown.Item href="">등산</Dropdown.Item>
+          </DropdownButton>
           <Nav.Item>
             {/* <Button variant="dark" onClick={() => navigate('/menu4/communitycategory')}>모임 개설하기</Button> */}
             <Button variant="dark" onClick={() => navigate(`/menu4/communityregister`)}>모임 개설하기</Button>
@@ -98,9 +101,9 @@ function Community() {
       <CommunityContainer>
         {{
           'delicious': <ItemContainer><CommunityItem /></ItemContainer>,
-          'book': <ItemContainer>독서</ItemContainer>,
-          'health': <ItemContainer>운동</ItemContainer>,
-          'hiking': <ItemContainer>등산</ItemContainer>
+          'book': <ItemContainer><CommunityItem /></ItemContainer>,
+          'health': <ItemContainer><CommunityItem /></ItemContainer>,
+          'hiking': <ItemContainer><CommunityItem /></ItemContainer>
         }[currentTab]}
         {/* <ItemContainer>
           <CommunityItem/>
