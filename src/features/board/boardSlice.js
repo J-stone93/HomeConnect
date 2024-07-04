@@ -21,7 +21,6 @@ const initialState = {
       content: '전기점검 날짜입니다.3'
     },
   ],
-  commentState : {},
 }
 
 const boardSlice = createSlice({
@@ -56,9 +55,6 @@ const boardSlice = createSlice({
     clearBoardList : (state) => {
       state.boardList = [];
     },
-    closeEditComment : (state) => {
-      state.commentState = false;
-    }
   }
 });
 
@@ -68,12 +64,10 @@ export const {
   NoticeContent,
   removeBoardList,
   clearBoardList,
-  closeEditComment,
 } = boardSlice.actions;
 
 export const selectBoardList = state => state.board.boardList;
 export const selectHealthInfo = state => state.board.healthList;
 export const selectNoticeInfo = state => state.board.noticeList;
-export const selectCommentState = state => state.board.commentState;
 
 export default boardSlice.reducer;

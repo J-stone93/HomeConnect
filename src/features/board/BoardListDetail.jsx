@@ -104,7 +104,6 @@ function BoardListDetail() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const boardItem = useSelector(selectBoardList);    
-  const commentState = useSelector(selectCommentState);
 
   useEffect(() => {
     const boardlist = async () => {
