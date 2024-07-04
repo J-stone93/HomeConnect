@@ -43,7 +43,7 @@ function CommunityItem() {
       }
     };
     communitylist();
-  }, [communityList]);
+  }, []);
 
   // console.log(communityList);
   return (
