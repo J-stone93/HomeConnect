@@ -15,36 +15,7 @@ const DivContainer = styled.div`
 function BoardCommentListItem(props) {
   const { content, index, isEdit, commentNo, writer, setCommentList, boardId } = props;
 
-  const [editContent, setEditContent] = useState(content);
-  const [showButton, setShowButton] = useState(true);
-
-  // useEffect(() => {
-  //   const modifyComment = async() => {
-  //     try{
-  //       const response = await axios.put(`http://localhost:8080/comment/modify`, {
-  //         "commentNo" : commentNo,
-  //         "content" : editContent
-  //       },
-  //       {
-  //         headers : {
-  //           Authorization : localStorage.getItem('token')
-  //         }
-  //       });
-  //       if (response.status === 200) { 
-  //         return alert("댓글이 수정되었습니다.");
-  //       } else { 
-  //         throw new Error(`api error: ${response.status} ${response.statusText}`);
-  //       }
-  //     } catch(err) {
-  //       console.error(err);
-  //     }
-  //   };
-  //   modifyComment();
-
-  //   return () => {
-      
-  //   };
-  // }, []);
+  const [value, setValue] = useState(content);
 
   const fetchCommentList = useCallback(async () => {
     try {
@@ -69,7 +40,6 @@ function BoardCommentListItem(props) {
   }, [fetchCommentList]);
 
   const handleModifyContentOpen = () => {
-    setShowButton(false);
     setCommentList(commentList => {
       return commentList.map(comment => comment.commentNo === commentNo
         ? { ...comment, isEdit: true }
@@ -79,8 +49,6 @@ function BoardCommentListItem(props) {
   };
 
   const handleModifyContentClose = () => {
-    
-    setShowButton(true);
     setCommentList(commentList => {
       const updatedCommentList = commentList.map(comment => comment.commentNo === commentNo
         ? { ...comment, isEdit: false, content: value }
@@ -111,27 +79,6 @@ function BoardCommentListItem(props) {
 
       return updatedCommentList;
     });
-    const modifyComment = async() => {
-      try{
-        const response = await axios.put(`http://localhost:8080/comment/modify`, {
-          "commentNo" : commentNo,
-          "content" : editContent
-        },
-        {
-          headers : {
-            Authorization : localStorage.getItem('token')
-          }
-        });
-        if (response.status === 200) { 
-          return alert("댓글이 수정되었습니다.");
-        } else { 
-          throw new Error(`api error: ${response.status} ${response.statusText}`);
-        }
-      } catch(err) {
-        console.error(err);
-      }
-    };
-    modifyComment();
   };
 
   const handleEditChange = (e) => {
@@ -140,12 +87,12 @@ function BoardCommentListItem(props) {
 
   const handleRemoveComment = async () => {
     try {
-      const response = await axios.delete(`http://localhost:8080/comment/remove`, {
-        data: { commentNo: commentNo },
-        headers: {
+      const response = await axios.delete(`http://localhost:8080/comment/remove?commentNo=${commentNo}`, 
+        { 
+          headers: {
           Authorization: localStorage.getItem('token')
-        }
-      });
+          }
+        });
       if (response.status === 200) {
         alert("댓글이 삭제되었습니다.");
         fetchCommentList(); // 삭제 후 댓글 목록 갱신
@@ -170,8 +117,8 @@ function BoardCommentListItem(props) {
       <div>
         {!isEdit &&
           <>
-            <BsPencilSquare onClick={handleModifyContentOpen} />
-            <CiSquareRemove onClick={handleRemoveComment} />
+            <BsPencilSquare className="cursor-pointer" onClick={handleModifyContentOpen} />
+            <CiSquareRemove className="cursor-pointer" onClick={handleRemoveComment} />
           </>
         }
       </div>
