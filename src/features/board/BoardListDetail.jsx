@@ -15,7 +15,7 @@ const CommentContainer = styled.div`
   margin: 0 auto;
   width: 60%;
 
-  img{
+  .imgs{
     width : 80px;
     height: 80px;
   }
@@ -25,17 +25,11 @@ const CommentContainer = styled.div`
 const CommentList = styled.ul`
   list-style: none;
   padding: 0;
-  justify-content: space-evenly;
 `;
 
 const PostTitleWriterContainer = styled.div`
   display: flex;
   margin-bottom: 5px;
-
-  .margin{
-    margin-bottom: 10px;
-  }
-
   `;
 
 const PostTitleWriter = styled.div`
@@ -46,19 +40,14 @@ const PostTitleWriter = styled.div`
   `;
 
 const TextInput = styled.input`
-  width: 43%;
+  width: 80%;
   height: 40px;
   padding: 10px;
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 4px;
   margin-bottom: 10px;
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: flex-start; 
-  margin-top: 10px;
+  margin-right: 10px;
 `;
 
 const Buttons = styled.button`
@@ -70,7 +59,6 @@ const Buttons = styled.button`
   border: 2px solid black;
   cursor: pointer;
   border-radius: 4px;
-  margin-left: 10px;
 
   &:hover {
     background-color: #0056b3;
@@ -134,6 +122,10 @@ function BoardListDetail() {
     };
     commentList();
   },[]);
+
+  const handlekeyDown = (e) => {
+    if (e.key === 'Enter') plusComment();
+  };
 
   const plusComment = () => {
     const exportContents = async() => {
@@ -214,7 +206,7 @@ function BoardListDetail() {
       {boardItem &&
       <PostContent >
         <PostTitleWriterContainer>
-          <img src="/image/profile.png" alt="profile" />
+          <img className='imgs' src="/image/profile.png" alt="profile" />
           <PostTitleWriter>
             <h1>{boardItem.writer}</h1>
             <p>{formatDate(boardItem.modDate)}</p>
@@ -237,6 +229,7 @@ function BoardListDetail() {
               isEdit={comment.isEdit}
               setCommentList={setCommentList}
               boardId={boardId}
+              modDate = {comment.modDate}
               />
             </>
           );
@@ -249,13 +242,12 @@ function BoardListDetail() {
         value={comment}
         onChange={(e) => setComment(e.target.value)}
         placeholder="댓글을 입력하세요."
+        onKeyDown={handlekeyDown}
         />
         <Buttons onClick={plusComment}>댓글 추가</Buttons>
       </div>
 
-      <ButtonContainer>
-        <Buttons onClick={() => navigate('/menu4/boardlist')}>목록으로</Buttons>
-      </ButtonContainer>
+      <Buttons onClick={() => navigate('/menu4/boardlist')}>목록으로</Buttons>
     </CommentContainer>
   </>
   );  
