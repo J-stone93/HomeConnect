@@ -31,6 +31,12 @@ function Signup4() {
     if (address.length == 0) return; 
     const exportsignup = async () => {
       try {
+        console.log({
+          ...signup.birthdateAndSex,
+          name: signup.name,
+          ...signup.idpw,
+          ...signup.address
+        });
         const response = await axios.post('http://localhost:8080/login/signup4', {
           ...signup.birthdateAndSex,
           name: signup.name,
