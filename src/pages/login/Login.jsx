@@ -11,6 +11,7 @@ background-image: url("/image/apartment.jpg");
 background-position: center;
 background-repeat: no-repeat;
 background-size: cover;
+font-family: "Pretendard-Regular";
 
 
 label {
@@ -46,19 +47,19 @@ input{
 
 `;
 
-const Container = styled.form`
-  display: flex;
-  width: 500px;
-  height: 700px;
-  background-color: white;
-  margin: auto;
-  opacity: 0.9;
-  border-radius: 3cap;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  position: relative;
-`;
+// const Container = styled.form`
+//   display: flex;
+//   width: 500px;
+//   height: 700px;
+//   background-color: white;
+//   margin: auto;
+//   opacity: 0.9;
+//   border-radius: 3cap;
+//   align-items: center;
+//   justify-content: center;
+//   flex-direction: column;
+//   position: relative;
+// `;
 
 
 
@@ -68,11 +69,11 @@ function Login() {
     <>
       <Reset/>
       <Wrapper>
-        {/* <Container>
+        {/* <Container> */}
 
           <Outlet/>
 
-        </Container> */}
+        {/* </Container> */}
       </Wrapper>
     </>
   );
