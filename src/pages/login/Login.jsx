@@ -3,6 +3,10 @@ import styled from "styled-components";
 import { Outlet } from "react-router-dom";
 
 const Wrapper = styled.div`
+background-image: url("/image/apartment.jpg");
+background-repeat: no-repeat;
+background-size: cover;
+background-position: center;
 background-color: #f5ecba;
 position: fixed;
 width: 100%;
