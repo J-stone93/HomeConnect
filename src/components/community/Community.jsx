@@ -62,6 +62,7 @@ const StyledNav = styled(Nav)`
 function Community() {
   const navigate = useNavigate();
   const [currentTab, setCurrentTab] = useState('delicious');
+  const [categoryName, setCategoryName] = useState('운동');
 
 
   return (
@@ -69,16 +70,16 @@ function Community() {
       <Constyle>
         <StyledNav justify variant="tabs" defaultActiveKey="link-1" className="color-nav">
           <Nav.Item>
-            <Nav.Link eventKey="link-1" onClick={() => setCurrentTab('delicious')}>맛집투어</Nav.Link>
+            <Nav.Link eventKey="link-1" onClick={() => setCategoryName('맛집')}>맛집투어</Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link eventKey="link-2" onClick={() => setCurrentTab('book')}>독서</Nav.Link>
+            <Nav.Link eventKey="link-2" onClick={() => setCategoryName('독서')}>독서</Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link eventKey="link-3" onClick={() => setCurrentTab('health')}>운동</Nav.Link>
+            <Nav.Link eventKey="link-3" onClick={() => setCategoryName('운동')}>운동</Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link eventKey="link-4" onClick={() => setCurrentTab('hiking')}>등산</Nav.Link>
+            <Nav.Link eventKey="link-4" onClick={() => setCategoryName('등산')}>등산</Nav.Link>
           </Nav.Item>
 
           <DropdownButton id="dropdown-basic-button" title="모임 개설하기">
@@ -99,23 +100,19 @@ function Community() {
         </StyledNav>
       </Constyle>
       <CommunityContainer>
-        {{
+        {/* 카테고리 별 목록 불러오기 테스트 */}
+        {/* {{
           'delicious': <ItemContainer><CommunityItem /></ItemContainer>,
           'book': <ItemContainer><CommunityItem /></ItemContainer>,
           'health': <ItemContainer><CommunityItem /></ItemContainer>,
           'hiking': <ItemContainer><CommunityItem /></ItemContainer>
-        }[currentTab]}
-        {/* <ItemContainer>
-          <CommunityItem/>
-        </ItemContainer> */}
-        {/* <ItemContainer>
-          <Button variant="dark">여행</Button>
-          <CommunityItem/>
-        </ItemContainer>
+        }[categoryName]} */}
         <ItemContainer>
-          <Button variant="dark">라이딩</Button>
-          <CommunityItem/>
-        </ItemContainer> */}
+          <CommunityItem
+            categoryName={categoryName}
+          />
+        </ItemContainer>
+
       </CommunityContainer>
     </Wrapper>
   );

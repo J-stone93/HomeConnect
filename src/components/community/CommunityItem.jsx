@@ -25,9 +25,12 @@ const Wrapper = styled.div`
 
 
 
-function CommunityItem() {
+function CommunityItem(props) {
+  const { categoryName } = props;
+  const { categoryId = '맛집' } = useParams();
+  console.log(categoryName);
+
   const navigate = useNavigate()
-  const dispatch = useDispatch()
   const [communityList, setcommunityList] = useState();
 
   // 날짜 포맷하기
@@ -36,11 +39,33 @@ function CommunityItem() {
 		return new Date(dateString).toLocaleDateString(undefined, options);
 	};
 
-  // db에서 community데이터 갖고 와서 렌더링하기
+  // db에서 community전체 목록 갖고 와서 렌더링하기
+  // useEffect(() => {
+  //   const communitylist = async () => {
+  //     try {
+  //       const response = await axios.get(`http://localhost:8080/menu4/community`, {
+  //         headers : {
+  //           Authorization : localStorage.getItem('token'),
+  //         }
+  //       });
+  //       setcommunityList(response.data);
+  //       if (response.status === 200) {
+  //         // return dispatch(getBoardList(response.data));
+  //       } else {
+  //         throw new Error(`api error: ${response.status} ${response.statusText}`);
+  //       }
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
+  //   communitylist();
+  // }, []);
+
+  // DB에서 community 카테고리 별 목록 가져오기
   useEffect(() => {
     const communitylist = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/menu4/community`, {
+        const response = await axios.get(`http://localhost:8080/menu4/communitycategory?category=${categoryName}`, {
           headers : {
             Authorization : localStorage.getItem('token'),
           }
@@ -56,7 +81,7 @@ function CommunityItem() {
       }
     };
     communitylist();
-  }, []);
+  }, [categoryName]);
 
   // console.log(communityList);
   return (
