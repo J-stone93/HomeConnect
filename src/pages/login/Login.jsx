@@ -66,11 +66,11 @@ function Login() {
     <>
       <Reset/>
       <Wrapper>
-        {/* <Container>
+        <Container>
 
           <Outlet/>
 
-        </Container> */}
+        </Container>
       </Wrapper>
     </>
   );
