@@ -34,7 +34,6 @@ import CommunitySignUp from './components/community/CommunitySignUp.jsx';
 import Boardmain from './features/board/Boardmain.jsx';
 import BoardListDetail from './features/board/BoardListDetail.jsx';
 import BoardList from './features/board/BoardList.jsx';
-import CommunityItem from './components/community/CommunityItem.jsx';
 
 
 const GlobalStyle = createGlobalStyle`
@@ -89,7 +88,6 @@ function App() {
               <Route path='communitycategory' element={<CommunityCategory />}/>
               <Route path='communityregister' element={<CommunityRegister />}/>
               <Route path='communityread/:communityId' element={<CommunitySignUp />}/>
-              <Route path='community/:categoryId' element={<CommunityItem />}/>
               <Route path='map' element={<Map />}/>
             </Route>
             {/* <Route path='/management' element={<Management />}/> */}

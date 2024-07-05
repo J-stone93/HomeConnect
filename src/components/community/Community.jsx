@@ -3,6 +3,9 @@ import { Button, Dropdown, DropdownButton, Nav, Table } from "react-bootstrap";
 import CommunityItem from "./CommunityItem";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { selectCategory } from "../../features/community/communitySlice";
+
 
 const Wrapper = styled.div`
   /* padding-top: 30px 30px 30px 30px;
@@ -62,8 +65,17 @@ const StyledNav = styled(Nav)`
 function Community() {
   const navigate = useNavigate();
   const [currentTab, setCurrentTab] = useState('delicious');
-  const [categoryName, setCategoryName] = useState('운동');
+  const [categoryName, setCategoryName] = useState('맛집');
+  const [categorySelect, setCategorySelect] = useState('');
+  console.log(categorySelect);
+  const dispatch = useDispatch();
 
+  // const handleDelicious = () => {
+  //   setCategorySelect('맛집');
+  //   <CommunityRegister categorySelect={categorySelect}/>
+  //   console.log(categorySelect);
+  //   navigate(`/menu4/communityregister`);
+  // };
 
   return (
     <Wrapper>
@@ -85,11 +97,24 @@ function Community() {
           <DropdownButton id="dropdown-basic-button" title="모임 개설하기">
             <Dropdown.Item
               href=""
-              onClick={() => navigate(`/menu4/communityregister`)}
+              // onClick={() => navigate(`/menu4/communityregister`)}
+              onClick={() => {
+                setCategorySelect('맛집');
+                dispatch(selectCategory(categorySelect));
+                navigate(`/menu4/communityregister`);
+              }}
             >
               맛집투어
             </Dropdown.Item>
-            <Dropdown.Item href="">독서</Dropdown.Item>
+            <Dropdown.Item
+              href=""
+              onClick={() => {
+                setCategorySelect('독서');
+                dispatch(selectCategory(categorySelect));
+                navigate(`/menu4/communityregister`);
+              }}
+            >독서
+            </Dropdown.Item>
             <Dropdown.Item href="">운동</Dropdown.Item>
             <Dropdown.Item href="">등산</Dropdown.Item>
           </DropdownButton>
