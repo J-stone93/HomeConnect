@@ -54,6 +54,7 @@ function Main() {
           </blockquote>
         </Card.Body>
       </Card>
+      
       <StyledCard >
         {NoticeInfo.slice(-3).map((notice)=>{ return (
           <Card style={{ width: '18rem' }}>
@@ -68,7 +69,7 @@ function Main() {
           </Card>);
         })}
       </StyledCard>
-        </Section>
+    </Section>
 
       <Section>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '50px' }}>

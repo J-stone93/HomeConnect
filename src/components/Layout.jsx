@@ -36,6 +36,10 @@ const FixedHeader = styled.header`
   z-index: 10; /* 다른 요소보다 앞에 오도록 설정 */
 `;
 
+const Content = styled.div`
+  padding-top: 82px; /* 헤더의 높이만큼 패딩 추가 */
+`;
+
 function Layout() {
   const navigate = useNavigate();
   // const dispatch = useDispatch();
@@ -66,7 +70,9 @@ function Layout() {
     </FixedHeader>
 
       {/* 자식컴포넌트들이 나올 자리들 */}
+      <Content>
         <Outlet />
+      </Content>
 
       <footer>
         <p className="py-5 mb-0 bg-dark text-white text-center">
