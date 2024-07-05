@@ -7,6 +7,7 @@ import { selectNoticeInfo } from "../features/board/boardSlice";
 import { useEffect } from "react";
 import axios from "axios";
 import { getmyInfo } from "../features/main/mainSlice";
+import { useNavigate } from "react-router-dom";
 
 const StyledCard = styled.div`
   display: flex;
@@ -19,6 +20,7 @@ const StyledCard = styled.div`
 function Main() {
   const NoticeInfo = useSelector(selectNoticeInfo);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(getmyInfo(JSON.parse(localStorage.getItem('user'))));
@@ -53,8 +55,13 @@ function Main() {
 
 
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '50px' }}>
-          <h1>관리비</h1>
-          <div style={{ width: '80%', margin: '0 auto', padding: '1rem' }}>
+          <h1 
+            onClick={() => navigate('/feedetail')}
+            style={{ cursor: 'pointer'}}
+          > 관리비</h1>
+          <div style={{ width: '80%', margin: '0 auto', padding: '1rem', cursor: 'pointer' }}
+          onClick={() => navigate('/feedetail')}
+          >
             <FeeChart />
           </div>
         </div>
