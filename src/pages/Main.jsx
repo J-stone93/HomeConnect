@@ -37,7 +37,7 @@ function Main() {
       </Card>
 
       <StyledCard >
-        {NoticeInfo.map((notice)=>{ return (
+        {NoticeInfo.slice(-3).map((notice)=>{ return (
           <Card style={{ width: '18rem' }}>
             {/* <Card.Img variant="top" src="holder.js/100px180" /> */}
             <Card.Body>
