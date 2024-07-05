@@ -3,6 +3,9 @@ import { Button, Dropdown, DropdownButton, Nav, Table } from "react-bootstrap";
 import CommunityItem from "./CommunityItem";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { selectCategory } from "../../features/community/communitySlice";
+
 
 const Wrapper = styled.div`
   /* padding-top: 30px 30px 30px 30px;
@@ -62,33 +65,56 @@ const StyledNav = styled(Nav)`
 function Community() {
   const navigate = useNavigate();
   const [currentTab, setCurrentTab] = useState('delicious');
+  const [categoryName, setCategoryName] = useState('맛집');
+  const [categorySelect, setCategorySelect] = useState('');
+  console.log(categorySelect);
+  const dispatch = useDispatch();
 
+  // const handleDelicious = () => {
+  //   setCategorySelect('맛집');
+  //   <CommunityRegister categorySelect={categorySelect}/>
+  //   console.log(categorySelect);
+  //   navigate(`/menu4/communityregister`);
+  // };
 
   return (
     <Wrapper>
       <Constyle>
         <StyledNav justify variant="tabs" defaultActiveKey="link-1" className="color-nav">
           <Nav.Item>
-            <Nav.Link eventKey="link-1" onClick={() => setCurrentTab('delicious')}>맛집투어</Nav.Link>
+            <Nav.Link eventKey="link-1" onClick={() => setCategoryName('맛집')}>맛집투어</Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link eventKey="link-2" onClick={() => setCurrentTab('book')}>독서</Nav.Link>
+            <Nav.Link eventKey="link-2" onClick={() => setCategoryName('독서')}>독서</Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link eventKey="link-3" onClick={() => setCurrentTab('health')}>운동</Nav.Link>
+            <Nav.Link eventKey="link-3" onClick={() => setCategoryName('운동')}>운동</Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link eventKey="link-4" onClick={() => setCurrentTab('hiking')}>등산</Nav.Link>
+            <Nav.Link eventKey="link-4" onClick={() => setCategoryName('등산')}>등산</Nav.Link>
           </Nav.Item>
 
           <DropdownButton id="dropdown-basic-button" title="모임 개설하기">
             <Dropdown.Item
               href=""
-              onClick={() => navigate(`/menu4/communityregister`)}
+              // onClick={() => navigate(`/menu4/communityregister`)}
+              onClick={() => {
+                setCategorySelect('맛집');
+                dispatch(selectCategory(categorySelect));
+                navigate(`/menu4/communityregister`);
+              }}
             >
               맛집투어
             </Dropdown.Item>
-            <Dropdown.Item href="">독서</Dropdown.Item>
+            <Dropdown.Item
+              href=""
+              onClick={() => {
+                setCategorySelect('독서');
+                dispatch(selectCategory(categorySelect));
+                navigate(`/menu4/communityregister`);
+              }}
+            >독서
+            </Dropdown.Item>
             <Dropdown.Item href="">운동</Dropdown.Item>
             <Dropdown.Item href="">등산</Dropdown.Item>
           </DropdownButton>
@@ -99,23 +125,19 @@ function Community() {
         </StyledNav>
       </Constyle>
       <CommunityContainer>
-        {{
+        {/* 카테고리 별 목록 불러오기 테스트 */}
+        {/* {{
           'delicious': <ItemContainer><CommunityItem /></ItemContainer>,
           'book': <ItemContainer><CommunityItem /></ItemContainer>,
           'health': <ItemContainer><CommunityItem /></ItemContainer>,
           'hiking': <ItemContainer><CommunityItem /></ItemContainer>
-        }[currentTab]}
-        {/* <ItemContainer>
-          <CommunityItem/>
-        </ItemContainer> */}
-        {/* <ItemContainer>
-          <Button variant="dark">여행</Button>
-          <CommunityItem/>
-        </ItemContainer>
+        }[categoryName]} */}
         <ItemContainer>
-          <Button variant="dark">라이딩</Button>
-          <CommunityItem/>
-        </ItemContainer> */}
+          <CommunityItem
+            categoryName={categoryName}
+          />
+        </ItemContainer>
+
       </CommunityContainer>
     </Wrapper>
   );
