@@ -18,6 +18,23 @@ const StyledCard = styled.div`
   text-align: center;
 `;
 
+const Wrapper = styled.div`
+  width: 80%;
+  height: 86%;
+  border: 1px solid black;
+  margin: 0 auto;
+  margin-top: 20px;
+`
+
+const FeeWrapper = styled.div`
+  width: 50%;
+  height: 50%;
+  background-color: aqua;
+  border-radius: 5px;
+
+
+`
+
 const ImageContainer = styled.div`
   position: relative;
   height: 100%;
@@ -104,17 +121,16 @@ function Main() {
     <>
     <SectionsContainer {...options}>
       <Section>
-      <ImageContainer>
-      <Overlay>
-        <TextOverlay>
-          <h2>HOMECONNECT</h2>
-          <p>아파트 관리 웹앱입니다.</p>
-        </TextOverlay>
-      </Overlay>
-      </ImageContainer>
+        <ImageContainer>
+          <Overlay>
+            <TextOverlay>
+              <h2>HOMECONNECT</h2>
+              <p>아파트 관리 웹앱입니다.</p>
+            </TextOverlay>
+          </Overlay>
+        </ImageContainer>
       </Section>
 
-      <Section>
       {/* <Card>
         <Card.Body>
           <blockquote className="blockquote mb-0 auto text-center">
@@ -123,11 +139,11 @@ function Main() {
             </p>
           </blockquote>
         </Card.Body>
-      </Card> */}
+      </Card>
       <StyledCard >
         {NoticeInfo.slice(-3).map((notice)=>{ return (
           <Card style={{ width: '18rem' }}>
-            {/* <Card.Img variant="top" src="holder.js/100px180" /> */}
+            {/* <Card.Img variant="top" src="holder.js/100px180" /> 
             <Card.Body>
               <Card.Title>{notice.title}</Card.Title>
               <Card.Text>
@@ -139,7 +155,7 @@ function Main() {
         })}
       </StyledCard>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '50px' }}>
-          {/* <h1 
+          <h1 
             onClick={() => navigate('/feedetail')}
             style={{ cursor: 'pointer'}}
           > 관리비</h1>
@@ -147,8 +163,14 @@ function Main() {
           onClick={() => navigate('/feedetail')}
           >
             <FeeChart />
-          </div> */}
-        </div>
+          </div>
+        </div> */}
+      <Section>
+        <Wrapper>
+          <FeeWrapper>
+
+          </FeeWrapper>
+        </Wrapper>
       </Section>
         </SectionsContainer>
     </>
