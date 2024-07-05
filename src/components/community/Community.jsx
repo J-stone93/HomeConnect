@@ -67,7 +67,7 @@ function Community() {
   const [currentTab, setCurrentTab] = useState('delicious');
   const [categoryName, setCategoryName] = useState('맛집');
   const [categorySelect, setCategorySelect] = useState('');
-  console.log(categorySelect);
+  // console.log(categorySelect);
   const dispatch = useDispatch();
 
   // const handleDelicious = () => {
@@ -99,8 +99,7 @@ function Community() {
               href=""
               // onClick={() => navigate(`/menu4/communityregister`)}
               onClick={() => {
-                setCategorySelect('맛집');
-                dispatch(selectCategory(categorySelect));
+                dispatch(selectCategory('맛집'));
                 navigate(`/menu4/communityregister`);
               }}
             >
@@ -109,8 +108,7 @@ function Community() {
             <Dropdown.Item
               href=""
               onClick={() => {
-                setCategorySelect('독서');
-                dispatch(selectCategory(categorySelect));
+                dispatch(selectCategory('독서'));
                 navigate(`/menu4/communityregister`);
               }}
             >독서

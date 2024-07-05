@@ -3,11 +3,16 @@ import styled from "styled-components";
 import { Outlet } from "react-router-dom";
 
 const Wrapper = styled.div`
-background-color: aqua;
+/* background-color: aqua; */
 position: fixed;
 width: 100%;
 height: 100%;
 display: flex;
+background-image: url("/image/apartment.jpg");
+/* background-image: url("/image/"); */
+/* background-repeat: no-repeat; */
+background-size: cover;
+
 
 label {
   width: 100px;
@@ -64,11 +69,11 @@ function Login() {
     <>
       <Reset/>
       <Wrapper>
-        <Container>
+        {/* <Container>
 
           <Outlet/>
 
-        </Container>
+        </Container> */}
       </Wrapper>
     </>
   );

@@ -133,7 +133,7 @@ function CommunityRegister() {
       formData.append("content", contentValue);
       formData.append("writer", user.name);
       formData.append("uploadFile", files.length && files[0]);
-      formData.append("category", '맛집');
+      formData.append("category", category);
       formData.append("Authorization", localStorage.getItem('token'));
 
       if (titleValue === null || contentValue === null || img === null) {

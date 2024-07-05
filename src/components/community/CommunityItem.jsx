@@ -28,7 +28,7 @@ const Wrapper = styled.div`
 function CommunityItem(props) {
   const { categoryName } = props;
   const { categoryId = '맛집' } = useParams();
-  console.log(categoryName);
+  // console.log(categoryName);
 
   const navigate = useNavigate()
   const [communityList, setcommunityList] = useState();
