@@ -85,6 +85,26 @@ const StyledSelect = styled.select`
   top: 0;
 `
 
+const ModalContent = styled.div`
+  width: 300px;
+  height: 300px;
+  margin: 0 auto;
+  padding: 20px;
+  select {
+    margin: 0 auto;
+  }
+`;
+
+const CloseButton = styled.button`
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+`;
+
 function FeeChartDetail() {
   const fees = useSelector((state) => state.fees.fees);
   const [visibleDatasets, setVisibleDatasets] = useState(['electric', 'water', 'maintenance']);
@@ -92,7 +112,16 @@ function FeeChartDetail() {
   const dispatch = useDispatch();
   const payments = useSelector((state) => state.fees.payments);
   const [data2, setData2] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+  
+  const handleMonthSelect = (month) => {
+    setSelectedMonth(month);
+    closeModal();
+  };
+  
   // 결제 시스템
   const Payment = (effect, deps) => {
     useEffect(() => {
@@ -150,9 +179,8 @@ function FeeChartDetail() {
           merchant_uid: rsp.merchant_uid,
           imp_uid: rsp.imp_uid,
           amount: amount, // 결제 예정금액
-          name: selectedMonth,
-
-
+          // 1차 추가 항목
+          name: selectedMonth, // 결제월 추가 
         });
         console.log(rsp);
       } else {
@@ -308,7 +336,7 @@ function FeeChartDetail() {
     <StyledDiv2>
       <HeaderDiv>
         <h2>2024년 관리비 상세내역</h2>
-            <PaymentButton type='text' onClick={onClickPayment}>결제하기</PaymentButton>
+            <PaymentButton type='text' onClick={openModal}>결제하기</PaymentButton>
           <StyledSelect 
             value={selectedMonth} 
             onChange={(e) => setSelectedMonth(e.target.value)}
@@ -354,8 +382,32 @@ function FeeChartDetail() {
           </ul>
         )}
       </StyledDiv2>
+
+      {/* <Modal
+        isOpen={isModalOpen}
+        onRequestClose={closeModal}
+        contentLabel="결제할 월 선택"
+      >
+      <ModalContent>
+        <h2>결제할 월을 선택해주세요</h2>
+          <StyledSelect 
+            value={selectedMonth} 
+            onChange={(e) => setSelectedMonth(e.target.value)}
+            className='select'
+            >
+            <option value="">결제월</option>
+            {Array.from({ length: 12 }, (_, i) => (
+              <option key={i + 1} value={i + 1}>{`${i + 1}월`}</option>
+            ))}
+          </StyledSelect >
+        <CloseButton onClick={closeModal}>닫기</CloseButton>
+      </ModalContent>
+
+      <PaymentButton type='text' onClick={onClickPayment}>결제하기</PaymentButton>
+    </Modal> */}
     </>
   );
 };
+
 
 export default FeeChartDetail;

@@ -7,6 +7,8 @@ import { selectNoticeInfo } from "../features/board/boardSlice";
 import { useEffect } from "react";
 import axios from "axios";
 import { getmyInfo } from "../features/main/mainSlice";
+import { SectionsContainer, Section } from "react-fullpage";
+import { useNavigate } from "react-router-dom";
 
 const StyledCard = styled.div`
   display: flex;
@@ -19,13 +21,30 @@ const StyledCard = styled.div`
 function Main() {
   const NoticeInfo = useSelector(selectNoticeInfo);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(getmyInfo(JSON.parse(localStorage.getItem('user'))));
   }, []);
 
+  let options = {
+    activeClass:          'active', // the class that is appended to the sections links
+    anchors:              [ 'sectionOne', 'sectionTwo' ], // the anchors for each sections
+    arrowNavigation:      true, // use arrow keys
+    className:            'SectionContainer', // the class name for the section container
+    delay:                1000, // the scroll animation speed
+    navigation:           true, // use dots navigatio
+    scrollBar:            false, // use the browser default scrollbar
+    sectionClassName:     'Section', // the section class name
+    sectionPaddingTop:    '0', // the section top padding
+    sectionPaddingBottom: '0', // the section bottom padding
+    verticalAlign:        false // align the content of each section vertical
+  };
+
   return (
     <>
+    <SectionsContainer {...options}>
+    <Section>
       <Card>
         <Card.Body>
           <blockquote className="blockquote mb-0 auto text-center">
@@ -35,7 +54,6 @@ function Main() {
           </blockquote>
         </Card.Body>
       </Card>
-
       <StyledCard >
         {NoticeInfo.slice(-3).map((notice)=>{ return (
           <Card style={{ width: '18rem' }}>
@@ -50,14 +68,22 @@ function Main() {
           </Card>);
         })}
       </StyledCard>
+        </Section>
 
-
+      <Section>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '50px' }}>
-          <h1>관리비</h1>
-          <div style={{ width: '80%', margin: '0 auto', padding: '1rem' }}>
+          <h1 
+            onClick={() => navigate('/feedetail')}
+            style={{ cursor: 'pointer'}}
+          > 관리비</h1>
+          <div style={{ width: '80%', margin: '0 auto', padding: '1rem', cursor: 'pointer' }}
+          onClick={() => navigate('/feedetail')}
+          >
             <FeeChart />
           </div>
         </div>
+      </Section>
+        </SectionsContainer>
     </>
   );
 };

@@ -29,6 +29,13 @@ const Mypage = styled(Navbar.Text)`
   }
 `;
 
+const FixedHeader = styled.header`
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 10; /* 다른 요소보다 앞에 오도록 설정 */
+`;
+
 function Layout() {
   const navigate = useNavigate();
   // const dispatch = useDispatch();
@@ -36,8 +43,8 @@ function Layout() {
 
   return (
     <>
-    <header>
-      <Navbar className="bg-body-tertiary">
+    <FixedHeader style={{position:'absolute'}}>
+      <Navbar className="bg-body-tertiary pt-82px">
         <Container>
         <Navbar.Collapse>
           <IoIosHome onClick={() => navigate('/')} className="cursor-pointer"/>
@@ -56,7 +63,7 @@ function Layout() {
           </Navbar.Collapse>
         </Container>
       </Navbar>
-    </header>
+    </FixedHeader>
 
       {/* 자식컴포넌트들이 나올 자리들 */}
         <Outlet />
