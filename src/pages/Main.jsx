@@ -18,6 +18,65 @@ const StyledCard = styled.div`
   text-align: center;
 `;
 
+const ImageContainer = styled.div`
+  position: relative;
+  height: 100%;
+  width: 100%;
+  background-image: url("/image/apartment.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  
+  `;
+
+// const Image = styled.img`
+//   width: 100%;
+//   height: auto;
+//   display: block;
+// `;
+
+const Overlay = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 40%;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-align: center;
+  padding: 20px;
+`;
+
+const TextOverlay = styled.div`
+  z-index: 1; /* 텍스트가 이미지 위에 표시되도록 설정 */
+  transform: translateY(-100px);
+  h2 {
+    font-size: 2.5rem;
+
+    @media (min-width: 576px) {
+      font-size: 2%.5;
+    }
+
+    @media (min-width: 768px) {
+      font-size: rem;
+    }
+
+    @media (min-width: 992px) {
+      font-size: 4rem;
+    }
+
+    @media (min-width: 1200px) {
+      font-size: 4.5rem;
+    }
+  }
+  p {
+    font-size: 2rem;
+  }
+`;
+
 function Main() {
   const NoticeInfo = useSelector(selectNoticeInfo);
   const dispatch = useDispatch();
@@ -44,8 +103,19 @@ function Main() {
   return (
     <>
     <SectionsContainer {...options}>
-    <Section>
-      <Card>
+      <Section>
+      <ImageContainer>
+      <Overlay>
+        <TextOverlay>
+          <h2>HOMECONNECT</h2>
+          <p>아파트 관리 웹앱입니다.</p>
+        </TextOverlay>
+      </Overlay>
+      </ImageContainer>
+      </Section>
+
+      <Section>
+      {/* <Card>
         <Card.Body>
           <blockquote className="blockquote mb-0 auto text-center">
             <p>
@@ -53,8 +123,7 @@ function Main() {
             </p>
           </blockquote>
         </Card.Body>
-      </Card>
-      
+      </Card> */}
       <StyledCard >
         {NoticeInfo.slice(-3).map((notice)=>{ return (
           <Card style={{ width: '18rem' }}>
@@ -69,11 +138,8 @@ function Main() {
           </Card>);
         })}
       </StyledCard>
-    </Section>
-
-      <Section>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '50px' }}>
-          <h1 
+          {/* <h1 
             onClick={() => navigate('/feedetail')}
             style={{ cursor: 'pointer'}}
           > 관리비</h1>
@@ -81,7 +147,7 @@ function Main() {
           onClick={() => navigate('/feedetail')}
           >
             <FeeChart />
-          </div>
+          </div> */}
         </div>
       </Section>
         </SectionsContainer>
