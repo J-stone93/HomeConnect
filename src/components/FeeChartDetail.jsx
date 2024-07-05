@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Bar } from 'react-chartjs-2';
-import Modal from "react-modal";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -338,7 +337,7 @@ function FeeChartDetail() {
       <HeaderDiv>
         <h2>2024년 관리비 상세내역</h2>
             <PaymentButton type='text' onClick={openModal}>결제하기</PaymentButton>
-          {/* <StyledSelect 
+          <StyledSelect 
             value={selectedMonth} 
             onChange={(e) => setSelectedMonth(e.target.value)}
             className='select'
@@ -347,7 +346,7 @@ function FeeChartDetail() {
             {Array.from({ length: 12 }, (_, i) => (
               <option key={i + 1} value={i + 1}>{`${i + 1}월`}</option>
             ))}
-          </StyledSelect > */}
+          </StyledSelect >
       </HeaderDiv>
       <Bar data={data} options={options} />
     </StyledDiv2>
@@ -384,7 +383,7 @@ function FeeChartDetail() {
         )}
       </StyledDiv2>
 
-      <Modal
+      {/* <Modal
         isOpen={isModalOpen}
         onRequestClose={closeModal}
         contentLabel="결제할 월 선택"
@@ -405,7 +404,7 @@ function FeeChartDetail() {
       </ModalContent>
 
       <PaymentButton type='text' onClick={onClickPayment}>결제하기</PaymentButton>
-    </Modal>
+    </Modal> */}
     </>
   );
 };
