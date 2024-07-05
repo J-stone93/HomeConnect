@@ -11,7 +11,15 @@ const Wrapper = styled.div`
   img {
     width: 100px;
     height: 100px;
-    vertical-align:middle;
+  }
+  tbody {
+  }
+  tr {
+    padding-top: 20px;
+    width: 600px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
   }
 `;
 
@@ -22,6 +30,11 @@ function CommunityItem() {
   const dispatch = useDispatch()
   const [communityList, setcommunityList] = useState();
 
+  // 날짜 포맷하기
+  const formatDate = (dateString) => {
+		const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+		return new Date(dateString).toLocaleDateString(undefined, options);
+	};
 
   // db에서 community데이터 갖고 와서 렌더링하기
   useEffect(() => {
@@ -43,9 +56,9 @@ function CommunityItem() {
       }
     };
     communitylist();
-  }, [communityList]);
+  }, []);
 
-  console.log(communityList);
+  // console.log(communityList);
   return (
     <Wrapper>
       <table>
@@ -56,6 +69,7 @@ function CommunityItem() {
               {/* <img src="/image/여우.jpg" alt="여행" /> */}
               <td>{communityItem.title}</td>
               <td>작성자:{communityItem.writer}</td>
+              <td>개설일:{formatDate(communityItem.regDate).slice(0, 12)}</td>
             </tr>
           </tbody>
         ))}

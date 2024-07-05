@@ -2,16 +2,15 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Modal, Nav } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
-import { styled } from "styled-components";
+import styled from "styled-components";
+import CommunityModal from "./CommunityModal";
 
 const Wrapper = styled.div`
   margin: 50px;
-  width: 90%;
+  width: 80%;
   padding: 50px;
   background-color: #f8f9fa;
   border-radius: 20px;
-  /* display: flex; */
-  /* justify-content: center; */
 `;
 
 const ButtonContainer = styled.div`
@@ -49,23 +48,59 @@ const RemoveButton = styled.button`
   }
 `;
 
+
+const CommunityContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+`;
+
+const CommunityTitle = styled.input`
+  width: 100%;
+  height: 50px;
+  margin: 0 auto 10px;
+  font-size: 16px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+`;
+
+const CommunityContent = styled.textarea`
+  width: 100%;
+  min-height: 400px;
+  margin: 0 auto 10px;
+  overflow: auto;
+  padding: 10px;
+  font-size: 16px;
+  resize: none;
+  border-radius: 12px;
+`;
+
 function CommunitySignUp() {
-  const [communityList, setcommunityList] = useState();
+  const [communityList, setcommunityList] = useState({});
   const [showModal, setShowModal] = useState(false);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { communityId } = useParams();
 
-  const handleModify = () => {
-    setShowModal(true);
-  }
+  const handleModalOpen = () => {
+    <CommunityModal />
+  };
 
-  const handleModalClose = () => {
-    setShowModal(false);
-  }
+  // const handleModify = () => {
+  //   setShowModal(true);
+  // };
+
+  // const handleModalClose = () => {
+  //   setShowModal(false); 
+  // };
 
   // community에서 해당 아이디값에 내용 가져와 화면에 렌더링
   useEffect(() => {
+    if (communityList === null) return;
     const communitylist = async () => {
       try {
         const response = await axios.get(`http://localhost:8080/menu4/communityread?no=${communityId}`, {
@@ -89,81 +124,73 @@ function CommunitySignUp() {
   // community에서 해당 아이디값에 내용 가져와서 삭제하기
   const removeCommunityItem = async () => {
     try {
-      const response = await axios.delete(`http://localhost:8080/menu4/communityremove?no=${communityId}`, {
-        headers: {
-          Authorization: localStorage.getItem('token')
+      const result = window.confirm('정말로 삭제하시겠습니까?');
+      if (result) {
+        const response = await axios.delete(`http://localhost:8080/menu4/communityremove?no=${communityId}`, {
+          headers: {
+            Authorization: localStorage.getItem('token')
+          }
+        });
+        if (response.status !== 200) {
+          throw new Error(`api error: ${response.status} ${response.statusText}`);
+        } else {
+          alert('삭제가 완료되었습니다.');
+          navigate('/menu4/community')
         }
-      });
-      if (response.status !== 200) {
-        throw new Error(`api error: ${response.status} ${response.statusText}`);
       } else {
-        navigate('/menu4/community')
+        alert('삭제가 취소되었습니다.');
       }
     } catch (error) {
       console.error(error);
     }
   }
-  // ccommunity에서 해당 아이디값에 내용 가져와서 수정하기
-  const modifyCommunityItem = async () => {
-    try {
-      const response = await axios.put(`http://localhost:8080/menu4/communitymodify`)
-    } catch (error) {
 
-    }
-  }
 
   return (
     <>
       <Wrapper>
         {communityList &&
-          <div>
-            <input
+          <CommunityContainer>
+            <CommunityTitle
               type="text"
               value={communityList.title}
+              readOnly
             />
-            <input
+            <CommunityContent
               type="text"
               value={communityList.content}
+              readOnly
             />
             <p>모임 위치</p>
             <p>작성자:{communityList.writer}</p>
+            <p>회원수:</p>
             <Nav.Link onClick={() => navigate('/menu4/community')}>
               <Button>가입하기</Button>
             </Nav.Link>
-          </div>
+          </CommunityContainer>
         }
         <ButtonContainer>
           <Nav.Link onClick={() => navigate('/menu4/community')}>
             <Button>목록가기</Button>
           </Nav.Link>
           <Nav.Link>
-            <Button onClick={handleModify}>수정하기</Button>
+            {/* <Button onClick={() => <CommunityModal communityList={communityList} />}>수정하기</Button> */}
+            {/* <Button onClick={handleModalOpen}>수정하기</Button> */}
+            {/* <Button>수정하기</Button> */}
+            <Button onClick={() => setShowModal(true)}>수정하기</Button>
           </Nav.Link>
           <Nav.Link>
             <RemoveButton onClick={removeCommunityItem}>삭제하기</RemoveButton>
           </Nav.Link>
         </ButtonContainer>
       </Wrapper>
-
-      {/* <Modal show={showModal}> */}
-      <Modal show={showModal} onHide={handleModalClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>등록 확인</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <p>수정하시겠습니까?</p>
-        </Modal.Body>
-        <Modal.Footer>
-          {/* <Button variant="primary" onClick={addBoardComment}> */}
-          <Button variant="primary">
-          확인
-        </Button>
-        {/* <Button variant="secondary" onClick={handleModalClose}> */}
-        <Button variant="secondary">
-          취소
-        </Button>
-      </Modal.Footer>
-    </Modal >
+      <CommunityModal
+        showModal={showModal}
+        communityList={communityList}
+        communityId={communityId}
+        setcommunityList={setcommunityList}
+        handleModalClose={() => setShowModal(false)}
+      />
     </>
   );
 };

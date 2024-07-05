@@ -113,6 +113,7 @@ function FeeChartDetail() {
       axios.get('http://localhost:8080/pay/list')
       .then(response => {
         setData2(response.data);
+        console.log(response.data);
       })
       .catch(error => {
         console.error('Error fetching data:', error);
@@ -149,6 +150,9 @@ function FeeChartDetail() {
           merchant_uid: rsp.merchant_uid,
           imp_uid: rsp.imp_uid,
           amount: amount, // 결제 예정금액
+          name: selectedMonth,
+
+
         });
         console.log(rsp);
       } else {
@@ -294,14 +298,14 @@ function FeeChartDetail() {
           <p>결제 내역이 없습니다.</p>
         ) : (
           <ul>
-            {/* {payments.map((payment, index) => (
+            {data2.map((payment, index) => (
               <li key={index}>
-                {payment.selectedMonth}월 관리비 결제 - 결제 ID: {payment.merchant_uid}
+                {payment.selectedMonth}월 관리비 {payment.mount}원 결제 - 결제 ID: {payment.merchant_uid}
                 <CancelButton onClick={() => onCancelPayment(payment.merchant_uid)}>결제 취소</CancelButton>
               </li>
             ))} */}
             {data2.map(item => (
-              <li key={item.merchant_uid}>{item.amount}</li>
+              <li key={item.id}>{item.name}</li>
             ))}
           </ul>
         )}

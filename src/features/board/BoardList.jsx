@@ -1,5 +1,4 @@
-import { useDispatch, useSelector } from "react-redux";
-import { clearBoardList, getBoardList, selectBoardList } from "./boardSlice";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
@@ -8,21 +7,21 @@ import { Button, Table } from "react-bootstrap";
 import { BsPencilSquare } from "react-icons/bs";
 import { CiSquareRemove } from "react-icons/ci";
 
+const TableWrapper = styled(Table)`
+	text-align: left;
+	margin-top: 20px;
+	width: 100%;
+	font-size: 20px;
+
+	thead th,
+	tbody td {
+		vertical-align: middle;
+	}
+`;
 
 function BoardList() {
 	const [posts, setPosts] = useState([]);
-
-	const boardList = useSelector(selectBoardList);
 	const navigate = useNavigate();
-	const dispatch = useDispatch()
-
-	const TableWrapper = styled(Table)`
-		text-align: left;
-		margin-top: 20px;
-		width: 100%;
-		font-size: 20px;
-		font-family: "Danjo-bold-Regular";
-	`;
 
 	const formatDate = (dateString) => {
 		const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
@@ -30,31 +29,28 @@ function BoardList() {
 	};
 
 	useEffect(() => {
-		const boardlist = async () => {
-		try {
-			const response = await axios.get('http://localhost:8080/menu4/boardlist',{
-				headers : {
-					Authorization : localStorage.getItem('token'),
+		const fetchBoardList = async () => {
+			try {
+				const response = await axios.get('http://localhost:8080/menu4/boardlist', {
+					headers: {
+						Authorization: localStorage.getItem('token'),
+					},
+				});
+				if (response.status === 200) {
+					setPosts(response.data);
+				} else {
+					throw new Error(`API error: ${response.status} ${response.statusText}`);
 				}
-			});
-			if (response.status === 200) { 
-				return setPosts(response.data);
-			} else { 
-				throw new Error(`api error: ${response.status} ${response.statusText}`);
-			}
 			} catch (error) {
 				console.error(error);
 			}
 		};
-		boardlist();
+		fetchBoardList();
 	}, []);
-
-	// 날짜 포맷하기
-	
 
 	return (
 		<>
-			<Button variant="primary" key={1} onClick={() => { navigate('/menu4/board') }}>게시글 작성</Button>
+			<Button variant="primary" onClick={() => navigate('/menu4/board')}>게시글 작성</Button>
 			<TableWrapper>
 				<thead>
 					<tr>
@@ -65,23 +61,20 @@ function BoardList() {
 						<th></th>
 					</tr>
 				</thead>
-
-				{posts.map((post) => (
-					<tbody onClick={() => {
-						navigate(`/menu4/read/${post.no}`)
-						}}>
-						<tr key={post.writer}>
+				<tbody>
+					{posts.map((post) => (
+						<tr key={post.no} onClick={() => navigate(`/menu4/read/${post.no}`)}>
 							<td>{post.no}</td>
 							<td>{post.title}</td>
-							<td>{formatDate(post.regDate).slice(0,12)}</td>
+							<td>{formatDate(post.regDate).slice(0, 12)}</td>
 							<td>{post.writer}</td>
 							<td>
 								<BsPencilSquare className="cursor-pointer w-25 h-25" />
-								<CiSquareRemove className="cursor-pointer w-25 h-25	" />	
+								<CiSquareRemove className="cursor-pointer w-25 h-25" />
 							</td>
 						</tr>
-					</tbody>
-				))}
+					))}
+				</tbody>
 			</TableWrapper>
 		</>
 	);
