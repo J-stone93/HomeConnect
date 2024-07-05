@@ -14,9 +14,8 @@ const Container = styled.form`
   display: flex;
   width: 600px;
   height: 600px;
-  background-color: #edfbff;
+  background-color: #edfbfff7;
   margin: auto;
-  opacity: 0.9;
   border-radius: 3cap;
   align-items: center;
   justify-content: center;
@@ -27,9 +26,17 @@ const Container = styled.form`
     background-color: transparent;
     border: none;
   }
-
+  .form-control:focus{
+    /* color: none;
+    background-color:none;
+    border-color: none;
+    outline: 0;
+    box-shadow: none;
+    border-radius: none; */
+    border-bottom: .25rem solid rgba(13, 110, 253, .25);
+}
   .bottomline{
-    border-bottom: 1px solid #8b888f;
+    /* border-bottom: 1px solid #8b888f; */
     padding: 10px;
   }
 
@@ -57,8 +64,6 @@ const Container = styled.form`
     margin-top: 33px;
   }
   .buttonStyle{
-    /* position: relative;
-    bottom: 30px; */
     margin: auto 0;
     margin-left: 8px;
   }
