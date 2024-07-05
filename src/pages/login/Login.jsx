@@ -69,11 +69,9 @@ function Login() {
     <>
       <Reset/>
       <Wrapper>
-        <Container>
 
           <Outlet/>
 
-        </Container>
       </Wrapper>
     </>
   );
