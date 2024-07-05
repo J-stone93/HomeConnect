@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
-import ReactDOMServer from 'react-dom/server';
+// import ReactDOMServer from 'react-dom/server';
 
 const Container = styled.div`
   margin: 30px;
@@ -75,7 +75,7 @@ const CategoryItem = styled.li`
 `;
 
 const PlaceInfoContainer = styled.div`
-  width: 260px;
+  width: 250px;
   padding: 10px;
   background-color: #fff;
   border: 1px solid #ccc;
@@ -88,7 +88,6 @@ const PlaceInfoContainer = styled.div`
     text-decoration: none;
     display: block;
     margin-bottom: 5px;
-    font-size: 14px;
   }
 
   .address {
@@ -174,56 +173,87 @@ function Map() {
     if (infoWindow.current) {
       infoWindow.current.close();
     }
-
+  
     const newInfoWindow = new window.kakao.maps.InfoWindow({
       position: marker.getPosition(),
     });
-
-    const content = (
-      <PlaceInfoContainer>
-        <a className="title" href={place.place_url} target="_blank">
-          {place.place_name}
-        </a>
-        
-        {place.road_address_name && (
-          <div className="address">
-            <span title={place.road_address_name}>{place.road_address_name}</span>
-            <br></br>
-            <span className="jibun" title={place.address_name}>
-              (지번 : {place.address_name})
-            </span>
-          </div>
-        )}
-
-        {!place.road_address_name && (
-          <div className="address">
-            <span title={place.address_name}>{place.address_name}</span>
-          </div>
-        )}
-
-        <div className="tel">{place.phone}</div>
-        {place.opening_hours && (
-          <div className="opening-hours">{place.opening_hours}</div>
-        )}
-
-        {place.reviews && place.reviews.length > 0 && (
-          <div className="reviews">
-            {place.reviews.map((review, index) => (
-              <div key={index} className="review">
-                <span className="reviewer">{review.author}</span>
-                <span className="review-text">{review.text}</span>
-              </div>
-            ))}
-          </div>
-        )}
-      </PlaceInfoContainer>
-    );
-
-    newInfoWindow.setContent(ReactDOMServer.renderToString(content));
+  
+    const content = document.createElement('div');
+    const closeButton = document.createElement('button');
+    closeButton.className = 'close-button';
+    closeButton.innerHTML = 'X';
+    closeButton.onclick = () => newInfoWindow.close();
+  
+    content.appendChild(closeButton);
+  
+    const title = document.createElement('a');
+    title.className = 'title';
+    title.href = place.place_url;
+    title.target = '_blank';
+    title.innerText = place.place_name;
+    content.appendChild(title);
+  
+    if (place.road_address_name) {
+      const addressDiv = document.createElement('div');
+      addressDiv.className = 'address';
+      const roadAddressSpan = document.createElement('span');
+      roadAddressSpan.title = place.road_address_name;
+      roadAddressSpan.innerText = place.road_address_name;
+      addressDiv.appendChild(roadAddressSpan);
+      const jibunSpan = document.createElement('span');
+      jibunSpan.className = 'jibun';
+      jibunSpan.title = place.address_name;
+      jibunSpan.innerText = `(지번 : ${place.address_name})`;
+      addressDiv.appendChild(jibunSpan);
+      content.appendChild(addressDiv);
+    } else {
+      const addressDiv = document.createElement('div');
+      addressDiv.className = 'address';
+      const addressSpan = document.createElement('span');
+      addressSpan.title = place.address_name;
+      addressSpan.innerText = place.address_name;
+      addressDiv.appendChild(addressSpan);
+      content.appendChild(addressDiv);
+    }
+  
+    if (place.phone) {
+      const telDiv = document.createElement('div');
+      telDiv.className = 'tel';
+      telDiv.innerText = place.phone;
+      content.appendChild(telDiv);
+    }
+  
+    if (place.opening_hours) {
+      const openingHoursDiv = document.createElement('div');
+      openingHoursDiv.className = 'opening-hours';
+      openingHoursDiv.innerText = place.opening_hours;
+      content.appendChild(openingHoursDiv);
+    }
+  
+    if (place.reviews && place.reviews.length > 0) {
+      const reviewsDiv = document.createElement('div');
+      reviewsDiv.className = 'reviews';
+      place.reviews.forEach((review, index) => {
+        const reviewDiv = document.createElement('div');
+        reviewDiv.className = 'review';
+        const reviewerSpan = document.createElement('span');
+        reviewerSpan.className = 'reviewer';
+        reviewerSpan.innerText = review.author;
+        reviewDiv.appendChild(reviewerSpan);
+        const reviewTextSpan = document.createElement('span');
+        reviewTextSpan.className = 'review-text';
+        reviewTextSpan.innerText = review.text;
+        reviewDiv.appendChild(reviewTextSpan);
+        reviewsDiv.appendChild(reviewDiv);
+      });
+      content.appendChild(reviewsDiv);
+    }
+  
+    newInfoWindow.setContent(content);
     newInfoWindow.open(map, marker);
     infoWindow.current = newInfoWindow;
   };
-
+  
   const displayPlaces = (places) => {
     removeMarkers();
 
