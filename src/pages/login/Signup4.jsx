@@ -25,6 +25,8 @@ function Signup4() {
     setValue3(e.target.value);
   };
   
+  const [value4, setValue4] = useState('');
+
   useEffect(() => {
     if (address.length == 0) return; 
     const exportsignup = async () => {
@@ -55,7 +57,7 @@ function Signup4() {
   }, [address]);
 
   const overInfo = () => {
-    dispatch(getAddressInfo({ address: `${value}`, dong: `${value2}`, hosu: `${value3}` }));
+    dispatch(getAddressInfo({ address: `${value}`, dong: `${value2}`, hosu: `${value3}` ,role : `${value4}`}));
   };
   
   
@@ -77,6 +79,11 @@ function Signup4() {
         <label htmlFor="loginId">호수 :</label>
         <Form.Control type="text" placeholder="호수" value={value3} onChange={handleHosuChange}/>
       </div>
+      <select value={value4} onChange={(e) => setValue4(e.target.value)}>
+          <option value="">선택</option>
+          {<option>ROLE_USER</option>}
+          {<option>ROLE_ADMIN</option>} 
+      </select>
       <div>
         <Button type="button" onClick={overInfo}>완료</Button>
       </div>

@@ -37,6 +37,7 @@ function BoardList() {
 					},
 				});
 				if (response.status === 200) {
+					console.log(response.data);
 					setPosts(response.data);
 				} else {
 					throw new Error(`API error: ${response.status} ${response.statusText}`);
@@ -69,6 +70,12 @@ function BoardList() {
 							<td>{formatDate(post.regDate).slice(0, 12)}</td>
 							<td>{post.writer}</td>
 							<td>
+								{/* {
+									localStorage.getItem
+								if (localStorage.getItem('user').writer) {
+
+								}
+								} */}
 								<BsPencilSquare className="cursor-pointer w-25 h-25" />
 								<CiSquareRemove className="cursor-pointer w-25 h-25" />
 							</td>
