@@ -12,56 +12,7 @@ background-position: center;
 background-repeat: no-repeat;
 background-size: cover;
 font-family: "Pretendard-Regular";
-
-
-label {
-  width: 100px;
-  text-align : right ;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-h1 {
-  display: flex;
-  font-size: 50px;
-  position: absolute;
-  top: 130px;
-}
-
-Button {
-  margin-top: 50px;
-  margin-left: 4px;
-  
-}
-
-div{
-  display: flex;
-  margin-top: 20px;
-}
-
-input{
-  margin-left: 10px;
-}
-
-
 `;
-
-// const Container = styled.form`
-//   display: flex;
-//   width: 500px;
-//   height: 700px;
-//   background-color: white;
-//   margin: auto;
-//   opacity: 0.9;
-//   border-radius: 3cap;
-//   align-items: center;
-//   justify-content: center;
-//   flex-direction: column;
-//   position: relative;
-// `;
-
-
 
 function Login() {
 
@@ -69,9 +20,7 @@ function Login() {
     <>
       <Reset/>
       <Wrapper>
-
-          <Outlet/>
-
+        <Outlet/>
       </Wrapper>
     </>
   );

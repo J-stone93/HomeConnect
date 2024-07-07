@@ -8,7 +8,7 @@ import { store } from './app/store';
 
 
 import 'bootstrap/dist/css/bootstrap.min.css'; // bootstrap CSS 추가
-import { json } from 'react-router-dom';
+import { Router, json } from 'react-router-dom';
 import { getmyInfo } from './features/main/mainSlice';
 // import 'react-toastify/dist/ReactToastify.min.css'; // ReactToastify CSS 추가
 

@@ -65,7 +65,6 @@ function App() {
             <Route path='signup' element={<SignUp />} />
             <Route path='signup1' element={<SignUp1 />} />
             <Route path='signup2' element={<SignUp2 />} />
-            {/* <Route path='signup3' element={<SignUp3 />} /> */}
             <Route path='signup4' element={<Signup4 />} />
           </Route>
           <Route path='/' element={<Layout />} >
@@ -75,7 +74,6 @@ function App() {
             <Route path='feedetail' element={<FeeChartDetail />} />
             <Route path='menu2' element={<Menu2 />} />
             <Route path='menu3' element={<Menu3 />} />
-            
             <Route path='menu4' element={<Menu4 />}>
               <Route index element={<BoardList />} />
               <Route path='board' element={<Boardmain />} />

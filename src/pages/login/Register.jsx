@@ -11,32 +11,29 @@ import styled from "styled-components";
 
 
 const Container = styled.form`
-  display: flex;
   width: 600px;
   height: 600px;
-  background-color: #edfbfff7;
-  margin: auto;
-  border-radius: 3cap;
+  display: flex;
   align-items: center;
   justify-content: center;
+  background-color: #edfbfff7;
+  margin: auto;
+  border-radius: 3rem;
   flex-direction: column;
-  position: relative;
-  
+
+  div{
+    display : flex;
+    margin-bottom: 10px;
+    /* margin-top: 10px; */
+    margin-left: 3px;
+  }
+
   input{
     background-color: transparent;
     border: none;
   }
-  .form-control:focus{
-    /* color: none;
-    background-color:none;
-    border-color: none;
-    outline: 0;
-    box-shadow: none;
-    border-radius: none; */
-    border-bottom: .25rem solid rgba(13, 110, 253, .25);
-}
+
   .bottomline{
-    /* border-bottom: 1px solid #8b888f; */
     padding: 10px;
   }
 
@@ -52,6 +49,7 @@ const Container = styled.form`
   .sizeup2{
     width: 380px;
     font-size: 20px;
+    margin-top: 1.5rem;
   }
   .sizeup3{
     width: 380px;
@@ -67,8 +65,6 @@ const Container = styled.form`
     margin: auto 0;
     margin-left: 8px;
   }
-
-
 `;
 
 
@@ -112,9 +108,6 @@ function Register() {
 
   return (
     <Container>
-      {/* <div className="h1design">
-        환영합니다
-      </div> */}
       <div className="bottomline">
         <div>
           <GoPerson className="iconsize"/>
