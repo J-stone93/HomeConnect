@@ -113,13 +113,26 @@ function Community() {
               }}
             >독서
             </Dropdown.Item>
-            <Dropdown.Item href="">운동</Dropdown.Item>
-            <Dropdown.Item href="">등산</Dropdown.Item>
+            <Dropdown.Item
+              href=""
+              onClick={() => {
+                dispatch(selectCategory('운동'));
+                navigate(`/menu4/communityregister`);
+              }}
+            >
+              운동</Dropdown.Item>
+            <Dropdown.Item
+              href=""
+              onClick={() => {
+                dispatch(selectCategory('등산'));
+                navigate(`/menu4/communityregister`);
+              }}
+            >
+              등산</Dropdown.Item>
           </DropdownButton>
-          <Nav.Item>
-            {/* <Button variant="dark" onClick={() => navigate('/menu4/communitycategory')}>모임 개설하기</Button> */}
+          {/* <Nav.Item>
             <Button variant="dark" onClick={() => navigate(`/menu4/communityregister`)}>모임 개설하기</Button>
-          </Nav.Item>
+          </Nav.Item> */}
         </StyledNav>
       </Constyle>
       <CommunityContainer>
