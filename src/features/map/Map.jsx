@@ -233,7 +233,7 @@ function Map() {
     if (place.reviews && place.reviews.length > 0) {
       const reviewsDiv = document.createElement('div');
       reviewsDiv.className = 'reviews';
-      place.reviews.forEach((review, index) => {
+      place.reviews.forEach((review) => {
         const reviewDiv = document.createElement('div');
         reviewDiv.className = 'review';
         const reviewerSpan = document.createElement('span');
