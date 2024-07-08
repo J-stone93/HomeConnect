@@ -55,7 +55,7 @@ function CommunityCategory() {
       <Wrapper>
         <Container>
           {/* <Nav.Link onClick={()=>{navigate('/mypage')}} className="cursor-pointer"> */}
-            <img src="../../image/002.png" alt="여행" onClick={()=>{navigate('/menu4/communityregister')}} className="cursor-pointer"/>
+            <img src="../../image/002.png" alt="여행" onClick={()=>{navigate('/communityregister')}} className="cursor-pointer"/>
           {/* </Nav.Link> */}
           <img src="../../image/009.png" alt="여행" />
           <img src="../../image/011.png" alt="여행" />

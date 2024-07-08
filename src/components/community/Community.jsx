@@ -100,7 +100,7 @@ function Community() {
               // onClick={() => navigate(`/menu4/communityregister`)}
               onClick={() => {
                 dispatch(selectCategory('맛집'));
-                navigate(`/menu4/communityregister`);
+                navigate(`/communityregister`);
               }}
             >
               맛집투어
@@ -109,7 +109,7 @@ function Community() {
               href=""
               onClick={() => {
                 dispatch(selectCategory('독서'));
-                navigate(`/menu4/communityregister`);
+                navigate(`/communityregister`);
               }}
             >독서
             </Dropdown.Item>
@@ -117,7 +117,7 @@ function Community() {
               href=""
               onClick={() => {
                 dispatch(selectCategory('운동'));
-                navigate(`/menu4/communityregister`);
+                navigate(`/communityregister`);
               }}
             >
               운동</Dropdown.Item>
@@ -125,7 +125,7 @@ function Community() {
               href=""
               onClick={() => {
                 dispatch(selectCategory('등산'));
-                navigate(`/menu4/communityregister`);
+                navigate(`/communityregister`);
               }}
             >
               등산</Dropdown.Item>

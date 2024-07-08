@@ -83,7 +83,6 @@ const RegisterButton = styled(Button)`
 
 function CommunityRegister() {
   const category = useSelector(selectCommunityList);
-  console.log(category);
   const navigate = useNavigate();
   const fileEl = useRef(null);
   const [titleValue, setTitleValue] = useState('');
@@ -136,13 +135,13 @@ function CommunityRegister() {
       formData.append("category", category);
       formData.append("Authorization", localStorage.getItem('token'));
 
-      if (titleValue === null || contentValue === null || img === null) {
-        alert('모든 항목을 입력해주세요.');
-      } else {
+      if (!(titleValue === null || contentValue === null || img === null)) {
         const response = await axios.post(`http://localhost:8080/menu4/communityregister`, formData, {
           headers: { 'content-type': 'multipart/form-data', 'Authorization' : `${token}`},
         });
-        navigate('/menu4/community');
+        navigate('/community');
+      } else {
+        alert('모든 항목을 입력해주세요.');
       }
 
       // 2
@@ -199,7 +198,7 @@ function CommunityRegister() {
           <RegisterButton onClick={addCommunityContent}>
             등록
           </RegisterButton>
-          <RegisterButton onClick={() => navigate('/menu4/community')}>뒤로가기</RegisterButton>
+          <RegisterButton onClick={() => navigate('/community')}>뒤로가기</RegisterButton>
         </Nav.Link>
       </ButtonWrapper>
     </Wrapper>

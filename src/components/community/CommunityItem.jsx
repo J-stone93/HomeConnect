@@ -88,7 +88,7 @@ function CommunityItem(props) {
     <Wrapper>
       <table>
         {communityList && communityList.map((communityItem) => (
-          <tbody key={communityItem.no} onClick={() => navigate(`/menu4/communityread/${communityItem.no}`)}>
+          <tbody key={communityItem.no} onClick={() => navigate(`/communityread/${communityItem.no}`)}>
             <tr>
               <td><img src={`../../image/${communityItem.imgPath}`} alt="" /></td>
               {/* <img src="/image/여우.jpg" alt="여행" /> */}

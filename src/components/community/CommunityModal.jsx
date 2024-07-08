@@ -74,8 +74,8 @@ function CommunityModal(props) {
       })
       if (response.status === 200) {
         setcommunityList(communityListGet);
-        alert("댓글이 수정되었습니다.");
-        navigate('/menu4/community');
+        alert("게시글이 수정되었습니다.");
+        navigate('/community');
       } else {
         throw new Error(`API error: ${response.status} ${response.statusText}`);
       }

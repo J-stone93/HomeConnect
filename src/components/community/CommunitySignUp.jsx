@@ -135,7 +135,7 @@ function CommunitySignUp() {
           throw new Error(`api error: ${response.status} ${response.statusText}`);
         } else {
           alert('삭제가 완료되었습니다.');
-          navigate('/menu4/community')
+          navigate('/community')
         }
       } else {
         alert('삭제가 취소되었습니다.');
@@ -164,13 +164,13 @@ function CommunitySignUp() {
             <p>모임 위치</p>
             <p>작성자:{communityList.writer}</p>
             <p>회원수:</p>
-            <Nav.Link onClick={() => navigate('/menu4/community')}>
+            <Nav.Link onClick={() => navigate('/community')}>
               <Button>가입하기</Button>
             </Nav.Link>
           </CommunityContainer>
         }
         <ButtonContainer>
-          <Nav.Link onClick={() => navigate('/menu4/community')}>
+          <Nav.Link onClick={() => navigate('/community')}>
             <Button>목록가기</Button>
           </Nav.Link>
           <Nav.Link>
