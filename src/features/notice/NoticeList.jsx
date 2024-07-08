@@ -8,7 +8,6 @@ import styled from 'styled-components';
 function NoticeList() {
     const NoticeList = useSelector(selectNoticeInfo);
     const navigate = useNavigate();
-
     const TableWrapper = styled(Table)`
         margin-top: 20px;
         width: 100%;
