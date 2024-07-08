@@ -29,7 +29,6 @@ ChartJS.register(
 const CalContainer = styled.div`
   width: 80%;
   margin: 0 auto ;
-  margin-top: 60px;
   display: flex;
   flex-direction: column;
   /* border: 1px solid black; */
@@ -55,7 +54,7 @@ const CalDiv = styled.div`
 
 const StyledDiv2 = styled.div`
   width: 80%;
-  height: 800px;
+  max-height: 800px;
   margin: 0 auto ;
   margin-top: 10px;
   padding: 1rem; 
@@ -376,10 +375,40 @@ function FeeChartDetail() {
 
   return (
     <>
+  <CalContainer>
+    <TestDivWrapper>
+    <TestDiv>
+      <h2>2024년 평균 관리비</h2>
+    </TestDiv>
+    <TestDiv >
+      <h2>2024년 관리비 합계</h2>
+    </TestDiv>
+    </TestDivWrapper>
+    <CalDivWrapper>
+    <CalDiv>
+      <p>
+        ◼ 전기세 평균: {formatter.format(averageFees.electric)}원
+        <br/>
+        ◼ 수도세 평균: {formatter.format(averageFees.water)}원
+        <br/>
+        ◼ 관리비 평균: {formatter.format(averageFees.maintenance)}원
+      </p>
+    </CalDiv>
+    <CalDiv>
+      <p>
+        ◼ 전기세 총합: {formatter.format(totalFees.electric)}원
+        <br/>
+        ◼ 수도세 총합: {formatter.format(totalFees.water)}원
+        <br/>
+        ◼ 관리비 총합: {formatter.format(totalFees.maintenance)}원
+      </p> 
+    </CalDiv>
+      </CalDivWrapper>
+  </CalContainer>
     <StyledDiv2>
       <HeaderDiv>
         <h2>2024년 관리비 상세내역</h2>
-            <PaymentButton type='text' onClick={openModal}>결제하기</PaymentButton>
+            <PaymentButton type='text' onClick={onClickPayment}>결제하기</PaymentButton>
           <StyledSelect 
             value={selectedMonth} 
             onChange={(e) => setSelectedMonth(e.target.value)}
@@ -391,42 +420,12 @@ function FeeChartDetail() {
             ))}
           </StyledSelect >
       </HeaderDiv>
-      <Bar data={data} options={options} />
+      <Bar data={data} options={options}/>
     </StyledDiv2>
 
+    <StyledDiv3></StyledDiv3>
 
-    <CalContainer>
-      <TestDivWrapper>
-      <TestDiv>
-        <h2>2024년 평균 관리비</h2>
-      </TestDiv>
-      <TestDiv >
-        <h2>2024년 관리비 합계</h2>
-      </TestDiv>
-      </TestDivWrapper>
-      <CalDivWrapper>
-      <CalDiv>
-        <p>
-          전기세 평균: {formatter.format(averageFees.electric)}원
-          <br/>
-          수도세 평균: {formatter.format(averageFees.water)}원
-          <br/>
-          관리비 평균: {formatter.format(averageFees.maintenance)}원
-        </p>
-      </CalDiv>
-      <CalDiv>
-        <p>
-          전기세 총합: {formatter.format(totalFees.electric)}원
-          <br/>
-          수도세 총합: {formatter.format(totalFees.water)}원
-          <br/>
-          관리비 총합: {formatter.format(totalFees.maintenance)}원
-        </p> 
-      </CalDiv>
-        </CalDivWrapper>
-    </CalContainer>
-
-    <StyledDiv3>
+    {/* <StyledDiv3>
         <h3>결제 내역</h3>
         {data.length === 0 ? (
           <p>결제 내역이 없습니다.</p>
@@ -440,7 +439,7 @@ function FeeChartDetail() {
             ))}
           </ul>
         )}
-      </StyledDiv3>
+      </StyledDiv3> */}
 
       {/* <Modal
         isOpen={isModalOpen}
