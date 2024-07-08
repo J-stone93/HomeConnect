@@ -97,8 +97,9 @@ const Layout = () => {
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="me-auto">
                 <StyledNavbar onClick={() => navigate('/feedetail')}>관리비</StyledNavbar>
-                <StyledNavbar onClick={() => navigate('/menu2')}>MENU2</StyledNavbar>
-                <StyledNavbar onClick={() => navigate('/menu3')}>MENU3</StyledNavbar>
+                <StyledNavbar onClick={() => navigate('/calendar')}>달력</StyledNavbar>
+                <StyledNavbar onClick={() => navigate('/community')}>모임</StyledNavbar>
+                <StyledNavbar onClick={() => navigate('/map')}>동네지도</StyledNavbar>
                 <StyledNavbar onClick={() => navigate('/menu4')}>게시판</StyledNavbar>
               </Nav>
               <Nav className="ms-auto">

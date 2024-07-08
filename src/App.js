@@ -31,6 +31,7 @@ import Boardmain from './features/board/Boardmain.jsx';
 import BoardListDetail from './features/board/BoardListDetail.jsx';
 import BoardList from './features/board/BoardList.jsx';
 import BoardModify from './features/board/BoardModify.jsx';
+import CalendarMain from './components/calendar/CalendarMain.jsx';
 
 
 const GlobalStyle = createGlobalStyle`
@@ -66,7 +67,11 @@ function App() {
             <Route path='mypage' element={<MyPage />} />
             <Route path='feeinput' element={<FeeInputPage />} />
             <Route path='feedetail' element={<FeeChartDetail />} />
-            <Route path='menu2' element={<Menu2 />} />
+            <Route path='calendar' element={<CalendarMain />} />
+            <Route path='community' element={<Community />}/> 
+            <Route path='communitycategory' element={<CommunityCategory />}/>
+            <Route path='communityregister' element={<CommunityRegister />}/>
+            <Route path='communityread/:communityId' element={<CommunitySignUp />}/>
             <Route path='map' element={<Map />} />
             <Route path='menu4' element={<Menu4 />}>
               <Route index element={<BoardList />} />
@@ -77,10 +82,6 @@ function App() {
               <Route path='noticemain' element={<NoticeMain />} />
               <Route path='noticelist' element={<NoticeList />} />
               <Route path='noticelist/:boardId' element={<NoticeListDetail />} />
-              <Route path='community' element={<Community />}/> 
-              <Route path='communitycategory' element={<CommunityCategory />}/>
-              <Route path='communityregister' element={<CommunityRegister />}/>
-              <Route path='communityread/:communityId' element={<CommunitySignUp />}/>
             </Route>
           </Route>
           <Route path="*" element={<NoMatchPage />} />
