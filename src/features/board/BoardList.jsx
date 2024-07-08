@@ -55,15 +55,15 @@ const TableWrapper = styled(Table)`
   }
 `;
 
-const StyledButton = styled(Button)`
-  margin-bottom: 20px;
-  font-size: 18px;
-  background-color: #007bff;
-  border: none;
+const ButtonContainer = styled.div`
+  width: 80%;
+  margin: 0 auto;
+  margin-top: 1rem;
+`;
 
-  &:hover {
-    background-color: #0056b3;
-  }
+const StyledButton = styled(Button)`
+  font-size: 16px;
+  margin-right: 6px;
 `;
 
 const SubmitButton = styled(Button)`
@@ -162,7 +162,13 @@ function BoardList() {
 
   return (
     <>
-      <StyledButton onClick={() => navigate('/menu4/board')}>게시글 작성</StyledButton>
+      <ButtonContainer>
+        <StyledButton variant="primary" className="buttonstyle" onClick={() => navigate('/menu4/board')}>게시글 작성</StyledButton>
+        {
+          userInfo.role === 'ROLE_ADMIN' &&
+          <StyledButton variant="danger" className="buttonstyle" onClick={() => navigate('/menu4/board')}>공지 작성</StyledButton>
+        }
+      </ButtonContainer>
       <TableWrapper>
         <thead>
           <tr>
@@ -181,7 +187,15 @@ function BoardList() {
               <td onClick={() => navigate(`/menu4/read/${post.no}`)}>{formatDate(post.regDate).slice(0, 12)}</td>
               <td onClick={() => navigate(`/menu4/read/${post.no}`)}>{post.writer}</td>
               <td>
-                {post.writer === userInfo.userId && (
+                {/* if(user) */}
+                {/* 여기에서 계속 진행 */}
+                {/* {post.writer === userInfo.userId &&  (
+                  <>
+                    <BsPencilSquare className="icon" onClick={() => navigate(`/menu4/modify/${post.no}`)} />
+                    <CiSquareRemove className="icon" onClick={() => handleModalOpen(post)} />
+                  </>
+                )} */}
+                {post.writer === userInfo.userId ||  (
                   <>
                     <BsPencilSquare className="icon" onClick={() => navigate(`/menu4/modify/${post.no}`)} />
                     <CiSquareRemove className="icon" onClick={() => handleModalOpen(post)} />

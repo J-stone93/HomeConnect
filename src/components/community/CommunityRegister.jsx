@@ -2,9 +2,7 @@ import { useRef, useState } from "react";
 import { Button, Nav } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
-import Community from "./Community";
 import axios from "axios";
-// import { selectmyInfo } from "../main/mainSlice";
 import { useSelector } from "react-redux";
 import { selectmyInfo } from "../../features/main/mainSlice";
 import { selectCommunityList } from "../../features/community/communitySlice";
@@ -29,7 +27,7 @@ const Title = styled.input`
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 12px;
-  `;
+`;
 
 const Content = styled.textarea`
   width: 1000px;
@@ -80,7 +78,6 @@ const RegisterButton = styled(Button)`
   }
 `;
 
-
 function CommunityRegister() {
   const category = useSelector(selectCommunityList);
   const navigate = useNavigate();
@@ -100,66 +97,45 @@ function CommunityRegister() {
 
   const handleChangFile = (e) => {
     e.preventDefault();
-
-    // 확장자 유효성 검사 만들기 (검토해야함)
-    // const file = e.target.files[0];
-    // const fileExt = e.target.value.substring(e.target.value.lastIndexOf('.') + 1).toLowerCase();
-    // const fileExt = file.lastIndexOf('.');
-    // const newFileExt = file.substring().toLowerCase();
-    // if (fileExt === 'jpg' || fileExt === 'png' || fileExt === 'jpeg') {
-    //   const imageUrl = URL.createObjectURL(fileExt);
-    //   setImg(imageUrl);
-    // } else {
-    //   return alert('이미지 파일만 선택해주세요');
-    // }
-
     const file = e.target.files[0];
     const imageUrl = URL.createObjectURL(file);
     setImg(imageUrl);
-
   };
 
-  const addCommunityContent = async () => {
+  const addCommunityContent = async (e) => {
+    e.preventDefault();
+    const files = fileEl.current.files;
+    const token = localStorage.getItem('token');
+
+    if (!titleValue || !contentValue || !img) {
+      return alert('모든 항목을 입력해주세요.');
+    }
+
+    const formData = new FormData();
+    formData.append("no", 0);
+    formData.append("title", titleValue);
+    formData.append("content", contentValue);
+    formData.append("writer", user.name);
+    formData.append("uploadFile", files.length ? files[0] : null);
+    formData.append("category", category);
+    formData.append("Authorization", token);
+
     try {
-      console.log(fileEl.current.files[0]);
-      const files = fileEl.current.files;
-      const token = localStorage.getItem('token');
-
-      // 1
-      const formData = new FormData();
-      formData.append("no", 0);
-      formData.append("title", titleValue);
-      formData.append("content", contentValue);
-      formData.append("writer", user.name);
-      formData.append("uploadFile", files.length && files[0]);
-      formData.append("category", category);
-      formData.append("Authorization", localStorage.getItem('token'));
-
-      if (!(titleValue === null || contentValue === null || img === null)) {
-        const response = await axios.post(`http://localhost:8080/menu4/communityregister`, formData, {
-          headers: { 'content-type': 'multipart/form-data', 'Authorization' : `${token}`},
-        });
+      const response = await axios.post(`http://localhost:8080/menu4/communityregister`, formData, {
+        headers: { 'content-type': 'multipart/form-data', 'Authorization': `${token}` },
+      });
+      if (response.status === 200) {
+        e.preventDefault();
         navigate('/community');
-      } else {
-        alert('모든 항목을 입력해주세요.');
-      }
+        e.preventDefault();
 
-      // 2
-      // const response = await axios.post(`http://localhost:8080/menu4/communityregister`, {
-      //   no: 0,
-      //   title: titleValue,
-      //   content: contentValue,
-      //   writer: user.name,
-      //   uploadFile: files.length && files[0]
-      // }, {
-      //   headers: { 'content-type': 'multipart/form-data' },
-      // });
+      } else {
+        throw new Error(`api error: ${response.status} ${response.statusText}`);
+      }
     } catch (error) {
       console.error(error);
     }
-
   };
-
 
   return (
     <Wrapper>
@@ -175,7 +151,6 @@ function CommunityRegister() {
         value={contentValue}
         onChange={handleChangeContent}
       />
-
       <ButtonWrapper>
         <img
           src={img}
@@ -193,7 +168,6 @@ function CommunityRegister() {
           accept="image/jpg, image/jpeg, image/png"
           onChange={handleChangFile}
         />
-        {/* <Nav.Link> */}
         <Nav.Link>
           <RegisterButton onClick={addCommunityContent}>
             등록
@@ -202,8 +176,6 @@ function CommunityRegister() {
         </Nav.Link>
       </ButtonWrapper>
     </Wrapper>
-
-
   );
 };
 
