@@ -6,45 +6,87 @@ import { Modal, Button } from 'react-bootstrap';
 import axios from 'axios';
 import { selectmyInfo } from '../main/mainSlice';
 
-const Container = styled.form`
-  width: 100%;
-  height: 100%;
+const Container = styled.div`
+  width: 80%;
+  max-width: 800px;
+  margin: 50px auto;
+  padding: 30px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+`;
+
+const Form = styled.form`
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  gap: 20px;
 `;
 
-const BoardHeader = styled.input`
-  width: 1000px;
+const InputField = styled.input`
+  width: 100%;
   height: 50px;
-  margin: 0 auto 10px;
-  font-size: 16px;
   padding: 10px;
-  border: 1px solid #ccc;
+  font-size: 18px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  outline: none;
+  transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+
+  &:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  }
 `;
 
-const Board = styled.textarea`
-  width: 1000px;
-  height: 300px;
-  margin: 0 auto 10px;
-  overflow: auto;
+const TextArea = styled.textarea`
+  width: 100%;
+  height: 200px;
   padding: 10px;
   font-size: 16px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  outline: none;
+  resize: vertical;
+  transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+
+  &:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  }
 `;
 
-const BoardButton = styled(Button)`
-  width: 100px; 
-  height: 35px; 
-  font-size: 16px;
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const SubmitButton = styled(Button)`
+  width: 48%;
+  height: 50px;
+  font-size: 18px;
   background-color: #007bff;
-  color: #fff;
+  color: #ffffff;
   border: none;
-  margin: 30px 5px; 
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
 
   &:hover {
     background-color: #0056b3;
-    color: #fff;
+  }
+`;
+
+const CancelButton = styled(Button)`
+  width: 48%;
+  height: 50px;
+  font-size: 18px;
+  background-color: #6c757d;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #5a6268;
   }
 `;
 
@@ -99,8 +141,8 @@ function Boardmain() {
         return navigate('/menu4/boardlist');
       } else {
         setShowModal(false);
-        alert("오류 발생");
-        throw new Error(`api error: ${response.status} ${response.statusText}`);
+        alert("등록에 실패했습니다. 다시 시도해 주세요.");
+        throw new Error(`API error: ${response.status} ${response.statusText}`);
       }
     } catch (error) {
       console.error(error);
@@ -109,46 +151,44 @@ function Boardmain() {
 
   return (
     <>
-      <Container onSubmit={handleSubmit}>
-        <BoardHeader
-          type="text"
-          name="title"
-          placeholder="제목"
-          value={title}
-          onChange={handleChange}
-        />
-        <Board
-          name="content"
-          placeholder="내용을 입력하세요."
-          value={content}
-          onChange={handleChange}
-          required
-        />
-        <div>
-          <BoardButton type="submit">등록</BoardButton>
-          <BoardButton onClick={() => navigate('/menu4/boardlist')}>목록으로</BoardButton>
-        </div>
+      <Container>
+        <Form onSubmit={handleSubmit}>
+          <InputField
+            type="text"
+            name="title"
+            placeholder="제목을 입력하세요."
+            value={title}
+            onChange={handleChange}
+            required
+          />
+          <TextArea
+            name="content"
+            placeholder="내용을 입력하세요."
+            value={content}
+            onChange={handleChange}
+            required
+          />
+          <ButtonContainer>
+            <SubmitButton type="submit">등록</SubmitButton>
+            <CancelButton onClick={() => navigate('/menu4/boardlist')}>취소</CancelButton>
+          </ButtonContainer>
+        </Form>
       </Container>
 
-      <Modal show={showModal} onHide={handleModalClose}>
+      <Modal show={showModal} onHide={handleModalClose} centered>
         <Modal.Header closeButton>
           <Modal.Title>등록 확인</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <p>등록하시겠습니까?</p>
+          <p>게시글을 등록하시겠습니까?</p>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary" onClick={addBoardComment}>
-          확인
-        </Button>
-        <Button variant="secondary" onClick={handleModalClose}>
-          취소
-        </Button>
-      </Modal.Footer>
-    </Modal >
+          <SubmitButton onClick={addBoardComment}>확인</SubmitButton>
+          <CancelButton onClick={handleModalClose}>취소</CancelButton>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 }
 
 export default Boardmain;
-

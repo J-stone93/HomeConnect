@@ -16,10 +16,6 @@ import NoticeListDetail from './features/notice/NoticeListDetail';
 
 import Register from './pages/login/Register';
 import NoMatchPage from './pages/NoMatchPage';
-import SignUp1 from './pages/login/SignUp1';
-import SignUp2 from './pages/login/SignUp2';
-import SignUp3 from './pages/login/SignUp3';
-import Signup4 from './pages/login/Signup4';
 
 import FeeInputForm from './components/FeeInputForm';
 import FeeInputPage from './components/FeeInputPage';
@@ -34,6 +30,7 @@ import CommunitySignUp from './components/community/CommunitySignUp.jsx';
 import Boardmain from './features/board/Boardmain.jsx';
 import BoardListDetail from './features/board/BoardListDetail.jsx';
 import BoardList from './features/board/BoardList.jsx';
+import BoardModify from './features/board/BoardModify.jsx';
 
 
 const GlobalStyle = createGlobalStyle`
@@ -63,9 +60,6 @@ function App() {
           <Route path='/login' element={<Login />}>
             <Route index element={<Register />} />
             <Route path='signup' element={<SignUp />} />
-            <Route path='signup1' element={<SignUp1 />} />
-            <Route path='signup2' element={<SignUp2 />} />
-            <Route path='signup4' element={<Signup4 />} />
           </Route>
           <Route path='/' element={<Layout />} >
             <Route index element={<Main />} />
@@ -73,25 +67,21 @@ function App() {
             <Route path='feeinput' element={<FeeInputPage />} />
             <Route path='feedetail' element={<FeeChartDetail />} />
             <Route path='menu2' element={<Menu2 />} />
-            <Route path='menu3' element={<Menu3 />} />
+            <Route path='map' element={<Map />} />
             <Route path='menu4' element={<Menu4 />}>
               <Route index element={<BoardList />} />
               <Route path='board' element={<Boardmain />} />
               <Route path='boardlist' element={<BoardList />} />
               <Route path='read/:boardId' element={<BoardListDetail />} />
+              <Route path='modify/:boardId' element={<BoardModify/>} />
               <Route path='noticemain' element={<NoticeMain />} />
               <Route path='noticelist' element={<NoticeList />} />
               <Route path='noticelist/:boardId' element={<NoticeListDetail />} />
-              <Route path='community' element={<Community />}/>
+              <Route path='community' element={<Community />}/> 
               <Route path='communitycategory' element={<CommunityCategory />}/>
               <Route path='communityregister' element={<CommunityRegister />}/>
               <Route path='communityread/:communityId' element={<CommunitySignUp />}/>
-              <Route path='map' element={<Map />}/>
             </Route>
-            {/* <Route path='/management' element={<Management />}/> */}
-
-            {/* 나중에 params로 아이디에 맞는 메뉴화면 나오도록 하기 */}
-            {/* <Route path='health' element={<Health/>}/> */}
           </Route>
           <Route path="*" element={<NoMatchPage />} />
         </Routes>

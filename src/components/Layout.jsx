@@ -1,17 +1,16 @@
 import { Container, Nav, Navbar } from "react-bootstrap";
-import { json, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Outlet } from "react-router-dom";
 import { IoIosHome } from "react-icons/io";
-import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getmyInfo, selectmyInfo } from "../features/main/mainSlice";
-import axios from "axios";
-
 
 const StyledNavbar = styled(Navbar.Brand)`
   text-align: center;
-  align-items: center; /* 수직 가운데 정렬 */
+  cursor: pointer;
+  font-size: 1.2em;
+  margin: 0 10px;
 
   &:hover {
     color: green;
@@ -20,10 +19,8 @@ const StyledNavbar = styled(Navbar.Brand)`
 
 const Mypage = styled(Navbar.Text)`
   display: flex;
-  text-align: center;
   align-items: center;
-  justify-content: center;
-  img{
+  img {
     width: 50px;
     margin-right: 10px;
   }
@@ -33,52 +30,95 @@ const FixedHeader = styled.header`
   position: fixed;
   top: 0;
   width: 100%;
-  z-index: 10; /* 다른 요소보다 앞에 오도록 설정 */
+  z-index: 10;
+  background-color: #f8f9fa;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
 const Content = styled.div`
-  padding-top: 82px; /* 헤더의 높이만큼 패딩 추가 */
+  padding-top: 82px;
 `;
 
-function Layout() {
+const StyledFooter = styled.footer`
+  background-color: #343a40;
+  color: white;
+  text-align: center;
+  padding: 15px 0;
+  margin-top: 20px;
+`;
+
+const ProfileButton = styled.button`
+  background: none;
+  border: none;
+  font-size: 1em;
+  color: #007bff;
+  margin-left: 10px;
+  cursor: pointer;
+
+  &:hover {
+    color: #0056b3;
+  }
+`;
+
+const LogoutButton = styled.button`
+  background: none;
+  border: none;
+  font-size: 1em;
+  color: #dc3545;
+  margin-left: 10px;
+  cursor: pointer;
+
+  &:hover {
+    color: #c82333;
+  }
+`;
+
+const Layout = () => {
   const navigate = useNavigate();
-  // const dispatch = useDispatch();
-  const myInfo = useSelector(selectmyInfo);
+  const userInfo = useSelector(selectmyInfo);
+  console.log(userInfo);
+  const dispatch = useDispatch();
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    dispatch(getmyInfo({}));
+    navigate('/login');
+  };
 
   return (
     <>
-    <FixedHeader style={{position:'absolute'}}>
-      <Navbar className="bg-body-tertiary pt-82px">
-        <Container>
-        <Navbar.Collapse>
-          <IoIosHome onClick={() => navigate('/')} className="cursor-pointer"/>
-        </Navbar.Collapse>
-          <StyledNavbar onClick={()=>{navigate('/feedetail')}} className="cursor-pointer">관리비</StyledNavbar>
-          <StyledNavbar onClick={()=>{navigate('/menu2')}} className="cursor-pointer">MENU2</StyledNavbar>
-          <StyledNavbar onClick={()=>{navigate('/menu3')}} className="cursor-pointer">MENU3</StyledNavbar>
-          <StyledNavbar onClick={()=>{navigate('/menu4')}} className="cursor-pointer">게시판</StyledNavbar>
-          <Navbar.Toggle />
-          <Navbar.Collapse className="justify-content-end">
-            <Mypage>
-              <img src="/image/profile.png" alt="profile" />
-              <Nav.Link onClick={()=>{navigate('/mypage')}} className="cursor-pointer">{myInfo?.name}님 환영합니다.</Nav.Link>
-              <button type='text' onClick={() => navigate('/feeinput')}>관리비 입력</button>
-            </Mypage>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
-    </FixedHeader>
-
-      {/* 자식컴포넌트들이 나올 자리들 */}
+      <FixedHeader>
+        <Navbar expand="lg">
+          <Container>
+            <Navbar.Brand>
+              <IoIosHome onClick={() => navigate('/')} className="cursor-pointer" size={32} />
+            </Navbar.Brand>
+            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Navbar.Collapse id="basic-navbar-nav">
+              <Nav className="me-auto">
+                <StyledNavbar onClick={() => navigate('/feedetail')}>관리비</StyledNavbar>
+                <StyledNavbar onClick={() => navigate('/menu2')}>MENU2</StyledNavbar>
+                <StyledNavbar onClick={() => navigate('/menu3')}>MENU3</StyledNavbar>
+                <StyledNavbar onClick={() => navigate('/menu4')}>게시판</StyledNavbar>
+              </Nav>
+              <Nav className="ms-auto">
+                <Mypage>
+                  <img src="/image/profile.png" alt="profile" />
+                  <Nav.Link onClick={() => navigate('/mypage')} className="cursor-pointer">{userInfo?.name}님 환영합니다.</Nav.Link>
+                  <ProfileButton onClick={() => navigate('/feeinput')}>관리비 입력</ProfileButton>
+                  <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
+                </Mypage>
+              </Nav>
+            </Navbar.Collapse>
+          </Container>
+        </Navbar>
+      </FixedHeader>
       <Content>
         <Outlet />
       </Content>
-
-      <footer>
-        <p className="py-5 mb-0 bg-dark text-white text-center">
-          &copy; 코딩하는오합지졸. All Rights Reserved.
-        </p>
-      </footer>
+      <StyledFooter>
+        &copy; 코딩하는오합지졸. All Rights Reserved.
+      </StyledFooter>
     </>
   );
 };

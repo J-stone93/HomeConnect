@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { Provider } from 'react-redux';
+import { Provider, useDispatch } from 'react-redux';
 import { store } from './app/store';
 
 
@@ -14,11 +14,12 @@ import { getmyInfo } from './features/main/mainSlice';
 
 
 (()=>{
-  const user = JSON.parse(localStorage.getItem('user'))
-  // console.log(user);
+  const user = JSON.parse((localStorage.getItem('user')))
   if(!user) return;
+  console.log(user);
   store.dispatch(getmyInfo(user));
 })();
+
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

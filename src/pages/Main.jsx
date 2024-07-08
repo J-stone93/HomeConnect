@@ -99,10 +99,6 @@ function Main() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    dispatch(getmyInfo(JSON.parse(localStorage.getItem('user'))));
-  }, []);
-
   let options = {
     activeClass:          'active', // the class that is appended to the sections links
     anchors:              [ 'sectionOne', 'sectionTwo' ], // the anchors for each sections

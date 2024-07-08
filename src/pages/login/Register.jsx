@@ -2,71 +2,68 @@ import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import {  getmyInfo} from "../../features/main/mainSlice";
-import { GoPerson , GoLock  } from "react-icons/go";
-import { GoPersonFill } from "react-icons/go";
-import { FaLock } from "react-icons/fa";
+import { getmyInfo } from "../../features/main/mainSlice";
+import { FaUser, FaLock } from "react-icons/fa";
 import axios from "axios";
 import styled from "styled-components";
 
-
 const Container = styled.form`
-  width: 600px;
-  height: 600px;
+  width: 90%;
+  max-width: 400px;
+  padding: 2rem;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
   background-color: #edfbfff7;
   margin: auto;
-  border-radius: 3rem;
-  flex-direction: column;
+  border-radius: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 
-  div{
-    display : flex;
-    margin-bottom: 10px;
-    /* margin-top: 10px; */
-    margin-left: 3px;
-  }
-
-  input{
-    background-color: transparent;
-    border: none;
-  }
-
-  .bottomline{
-    padding: 10px;
-  }
-
-  .iconsize{
-    width: 50px;
-    height: 50px;
-  }
-
-  .sizeup{
-    width: 300px;
-    height: 70x;
-  }
-  .sizeup2{
-    width: 380px;
-    font-size: 20px;
-    margin-top: 1.5rem;
-  }
-  .sizeup3{
-    width: 380px;
-    height: 100x;
-    font-size: 16px;
-    font-weight: 500;
+  .input-group {
     display: flex;
     align-items: center;
-    justify-content: center;
-    margin-top: 33px;
+    width: 100%;
+    margin-bottom: 1.5rem;
+    background-color: #fff;
+    border: 1px solid #ced4da;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
   }
-  .buttonStyle{
-    margin: auto 0;
-    margin-left: 8px;
+
+  .input-group-icon {
+    color: #495057;
+    margin-right: 0.5rem;
+  }
+
+  .form-control {
+    border: none;
+    box-shadow: none;
+  }
+
+  .form-control:focus {
+    border: none;
+    box-shadow: none;
+  }
+
+  .btn-dark {
+    width: 100%;
+    height: 50px;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .btn-primary {
+    margin-left: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .register-link {
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
   }
 `;
-
 
 function Register() {
   const dispatch = useDispatch();
@@ -85,51 +82,43 @@ function Register() {
 
   const handleSubmitINFO = () => {
     const myInfo = async () => {
-        try {
-          const response = await axios.get(`http://localhost:8080/login?userId=${IDvalue}&pw=${PWvalue}`);
-          console.log(response.data);
-          if(!response.data) return alert("아이디나 비밀번호를 확인해주세요");
-          if (response.status === 200) {
-            localStorage.setItem('token',response.data.token);
-            localStorage.setItem('user',JSON.stringify(response.data.user));
-            alert("로그인 성공");
-            navigate('/');
-          } else { 
-            alert("오류 발생");
-            throw new Error(`api error: ${response.status} ${response.statusText}`);
-          }
-        } catch (error) {
+      try {
+        const response = await axios.get(`http://localhost:8080/login?userId=${IDvalue}&pw=${PWvalue}`);
+        if (!response.data) return alert("아이디나 비밀번호를 확인해주세요");
+        if (response.status === 200) {
+          localStorage.setItem('token', response.data.token);
+          localStorage.setItem('user', JSON.stringify(response.data.user));
+          const userInfo = JSON.parse((localStorage.getItem('user')));
+          console.log(userInfo);
+          dispatch(getmyInfo(userInfo));
+          alert("환영합니다!");
+          navigate('/');
+        } else {
           alert("오류 발생");
-          console.error(error);
+          throw new Error(`api error: ${response.status} ${response.statusText}`);
         }
-      };
+      } catch (error) {
+        alert("오류 발생");
+        console.error(error);
+      }
+    };
     myInfo();
   };
 
   return (
     <Container>
-      <div className="bottomline">
-        <div>
-          <GoPerson className="iconsize"/>
-        </div>
-        <div>
-          <Form.Control className="sizeup" type="text" placeholder="username" value={IDvalue} onChange={handleIDChange}/>
-        </div>
+      <div className="input-group">
+        <FaUser className="input-group-icon" />
+        <Form.Control type="text" placeholder="username" value={IDvalue} onChange={handleIDChange} />
       </div>
-      <div className="bottomline">
-        <div>
-          <GoLock  className="iconsize"/>
-        </div>
-        <div>
-          <Form.Control className="sizeup" type="password" placeholder="password" value={PWvalue} onChange={handlePWChange}/>
-        </div>
+      <div className="input-group">
+        <FaLock className="input-group-icon" />
+        <Form.Control type="password" placeholder="password" value={PWvalue} onChange={handlePWChange} />
       </div>
-      <div>
-        <Button className="sizeup2" variant="dark" onClick={handleSubmitINFO}>로그인</Button>
-      </div>
-      <div className="sizeup3">
+      <Button className="btn-dark" onClick={handleSubmitINFO}>로그인</Button>
+      <div className="register-link">
         가입을 안하셨나요?
-        <Button className="buttonStyle" type="button" variant="primary" onClick={()=>{navigate('/login/signup')}}>회원가입</Button> 
+        <Button variant="primary" onClick={() => { navigate('/login/signup') }}>회원가입</Button>
       </div>
     </Container>
   );
