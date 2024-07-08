@@ -14,8 +14,6 @@ import { selectMyFee } from "../features/fee/feeSlice";
 const StyledCard = styled.div`
   display: flex;
   justify-content: space-between;
-  padding-left: 1rem;
-  align-items: center;
   text-align: center;
   margin: 10px 60px;
 `;
@@ -47,7 +45,7 @@ const FeeContainer = styled.div`
 `;
 
 const FeeContainer2 = styled.div`
-  flex: 3;
+  flex: 2.5;
   border: 2px solid black;
   border-radius: 10px;
   font-size: 24px;
@@ -56,8 +54,8 @@ const FeeContainer2 = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 40%;
-  margin-top: 300px;
+  height: 30%;
+  margin-top: 22.8rem;
 `;
 
 const FeeContentsContainer = styled.div`
@@ -161,17 +159,17 @@ function Main() {
   }, []);
 
   let options = {
-    activeClass:          'active', // the class that is appended to the sections links
-    anchors:              [ 'sectionOne', 'sectionTwo' ], // the anchors for each sections
-    arrowNavigation:      true, // use arrow keys
-    className:            'SectionContainer', // the class name for the section container
-    delay:                1000, // the scroll animation speed
-    navigation:           true, // use dots navigatio
-    scrollBar:            false, // use the browser default scrollbar
-    sectionClassName:     'Section', // the section class name
-    sectionPaddingTop:    '0', // the section top padding
+    activeClass: 'active', // the class that is appended to the sections links
+    anchors: ['sectionOne', 'sectionTwo'], // the anchors for each sections
+    arrowNavigation: true, // use arrow keys
+    className: 'SectionContainer', // the class name for the section container
+    delay: 1000, // the scroll animation speed
+    navigation: true, // use dots navigatio
+    scrollBar: false, // use the browser default scrollbar
+    sectionClassName: 'Section', // the section class name
+    sectionPaddingTop: '0', // the section top padding
     sectionPaddingBottom: '0', // the section bottom padding
-    verticalAlign:        false // align the content of each section vertical
+    verticalAlign: false // align the content of each section vertical
   };
 
   const today2 = new Date();
@@ -184,57 +182,22 @@ function Main() {
 
   return (
     <>
-    <SectionsContainer {...options}>
-      <Section>
-        <ImageContainer>
-          <Overlay>
-            <TextOverlay>
-              <h2>HOMECONNECT</h2>
-              <p>아파트 관리 웹앱입니다.</p>
-            </TextOverlay>
-          </Overlay>
-        </ImageContainer>
-      </Section>
+      <SectionsContainer {...options}>
+        <Section>
+          <ImageContainer>
+            <Overlay>
+              <TextOverlay>
+                <h2>HOMECONNECT</h2>
+                <p>아파트 관리 웹앱입니다.</p>
+              </TextOverlay>
+            </Overlay>
+          </ImageContainer>
+        </Section>
 
         <Section>
           <Wrapper>
-            <ContentRow>
-              <FeeContainer>
-                <FeeChart />
-              </FeeContainer>
-
-              <FeeContainer2>
-                <FeeContentsContainer>
-                  <p>{myInfo?.name}님 {formattedDate}월 총 관리비는 
-                    <br/>
-                    {totalFee}원 입니다.
-                    <br/>
-                    <br/>
-                    <p style={{fontWeight:'200', fontSize:'16px', cursor:'pointer'}} onClick={() => navigate('/feedetail')}>
-                    - 관리비 상세보기
-                    </p>
-                  </p>
-                </FeeContentsContainer>
-              </FeeContainer2>
-            </ContentRow>
-
-            <StyledCard >
-        {NoticeInfo.slice(-4).map((notice)=>{ return (
-          <Card style={{ width: '18rem' }}>
-            <Card.Img variant="top" src="/image/002.png" width="5px" height="40px"/> 
-            <Card.Body>
-              <Card.Title>{notice.title}</Card.Title>
-              <Card.Text>
-                {notice.content}
-              </Card.Text>
-              <Button variant="primary">자세히 보기</Button>
-            </Card.Body>
-          </Card>);
-        })}
-      </StyledCard>
-
             <Card style={{ marginTop: '10px' }}>
-              <Card.Body>
+              <Card.Body style={{}}>
                 <blockquote className="blockquote m-0 auto text-center">
                   <p>
                     {dayText}
@@ -242,10 +205,51 @@ function Main() {
                 </blockquote>
               </Card.Body>
             </Card>
+            <ContentRow>
+              <FeeContainer>
+                <FeeChart />
+              </FeeContainer>
+
+              <FeeContainer2>
+                <FeeContentsContainer>
+                  <p>{myInfo?.name}님 {formattedDate}월 총 관리비는
+                    <br />
+                    {totalFee}원 입니다.
+                    <br />
+                    <br />
+                    <p style={{ fontWeight: '200', fontSize: '16px', cursor: 'pointer' }} onClick={() => navigate('/feedetail')}>
+                      - 관리비 상세보기
+                    </p>
+                  </p>
+                </FeeContentsContainer>
+              </FeeContainer2>
+            </ContentRow>
+
+            <StyledCard className="m-0 auto text-center">
+              {NoticeInfo.slice(-4).map((notice) => {
+                return (
+                  <Card style={{ width: '18rem' }}>
+                    {/* <Card.Img 
+                      variant="top" 
+                      src="/image/002.png" 
+                      width="5px" 
+                      height="40px"/>  
+                    */}
+                    <Card.Body>
+                      <Card.Title>{notice.title}</Card.Title>
+                      <Card.Text>
+                        {notice.content}
+                      </Card.Text>
+                      <p style={{ cursor: 'pointer' }} onClick={() => navigate('/menu4/noticelist')}>바로가기</p>
+                    </Card.Body>
+                  </Card>);
+              })}
+            </StyledCard>
+
           </Wrapper>
         </Section>
 
-        </SectionsContainer>
+      </SectionsContainer>
     </>
   );
 };
