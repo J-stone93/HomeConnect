@@ -78,6 +78,7 @@ const TestDiv = styled.div`
   flex: 5;
   /* border: 1px solid black; */
   text-align: center;
+  margin-top: 10px;
   `
 
 const TestDivWrapper = styled.div`
@@ -163,6 +164,10 @@ function FeeChartDetail() {
     setSelectedMonth(month);
     closeModal();
   };
+
+  const today = new Date();
+
+  const formattedYear = `${today.getFullYear()}`
   
   // 결제 시스템
   const Payment = (effect, deps) => {
@@ -378,36 +383,36 @@ function FeeChartDetail() {
   <CalContainer>
     <TestDivWrapper>
     <TestDiv>
-      <h2>2024년 평균 관리비</h2>
+      <h2>{formattedYear}년 평균 관리비</h2>
     </TestDiv>
     <TestDiv >
-      <h2>2024년 관리비 합계</h2>
+      <h2>{formattedYear}년 관리비 합계</h2>
     </TestDiv>
     </TestDivWrapper>
     <CalDivWrapper>
     <CalDiv>
       <p>
-        ◼ 전기세 평균: {formatter.format(averageFees.electric)}원
+        ◼ 전기세: {formatter.format(averageFees.electric)}원
         <br/>
-        ◼ 수도세 평균: {formatter.format(averageFees.water)}원
+        ◼ 수도세: {formatter.format(averageFees.water)}원
         <br/>
-        ◼ 관리비 평균: {formatter.format(averageFees.maintenance)}원
+        ◼ 관리비: {formatter.format(averageFees.maintenance)}원
       </p>
     </CalDiv>
     <CalDiv>
       <p>
-        ◼ 전기세 총합: {formatter.format(totalFees.electric)}원
+        ◼ 전기세: {formatter.format(totalFees.electric)}원
         <br/>
-        ◼ 수도세 총합: {formatter.format(totalFees.water)}원
+        ◼ 수도세: {formatter.format(totalFees.water)}원
         <br/>
-        ◼ 관리비 총합: {formatter.format(totalFees.maintenance)}원
+        ◼ 관리비: {formatter.format(totalFees.maintenance)}원
       </p> 
     </CalDiv>
       </CalDivWrapper>
   </CalContainer>
     <StyledDiv2>
       <HeaderDiv>
-        <h2>2024년 관리비 상세내역</h2>
+        <h2>{formattedYear}년 관리비 상세내역</h2>
             <PaymentButton type='text' onClick={onClickPayment}>결제하기</PaymentButton>
           <StyledSelect 
             value={selectedMonth} 
