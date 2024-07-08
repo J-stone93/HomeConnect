@@ -8,17 +8,20 @@ const initialState = {
     {
       id : 1,
       title: '공지사항입니다.1',
-      content: '전기점검 날짜입니다.1'
+      content: '전기점검 날짜입니다.1',
+      date: '2024.07.05'
     },
     {
       id : 2,
       title: '공지사항입니다.2',
-      content: '전기점검 날짜입니다.2'
+      content: '전기점검 날짜입니다.2',
+      date: '2024.07.15'
     },
     {
       id : 3,
       title: '공지사항입니다.3',
-      content: '전기점검 날짜입니다.3'
+      content: '전기점검 날짜입니다.3',
+      date: '2024.07.24'
     },
     {
       id : 3,
