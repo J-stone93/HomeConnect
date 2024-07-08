@@ -62,17 +62,21 @@ const FeeContentsContainer = styled.div`
 p {
   margin: 0;
 
-  @media (max-width: 923px) {
+  @media (max-width: 1058px) {
       font-size: 18px;
     }
 
-  @media (max-width: 692px) {
+  @media (max-width: 788px) {
       font-size: 14px;
     }
 
-  @media (max-width: 544px) {
+  @media (max-width: 618px) {
       font-size: 12px;
     }
+
+  @media (max-width: 529px) {
+    font-size: 10px;
+  }
 }
 `
 
