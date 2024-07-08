@@ -6,34 +6,87 @@ import FeeChart from '../components/FeeChart';
 import { selectNoticeInfo } from "../features/board/boardSlice";
 import { useEffect } from "react";
 import axios from "axios";
-import { getmyInfo } from "../features/main/mainSlice";
+import { getmyInfo, selectmyInfo } from "../features/main/mainSlice";
 import { SectionsContainer, Section } from "react-fullpage";
 import { useNavigate } from "react-router-dom";
+import { selectMyFee } from "../features/fee/feeSlice";
 
 const StyledCard = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   padding-left: 1rem;
   align-items: center;
   text-align: center;
+  margin: 10px 60px;
 `;
 
 const Wrapper = styled.div`
-  width: 80%;
+  display: flex;
+  flex-direction: column;
+  width: 86%;
   height: 86%;
-  border: 1px solid black;
+  /* border: 1px solid black; */
   margin: 0 auto;
   margin-top: 20px;
 `
 
-const FeeWrapper = styled.div`
-  width: 50%;
-  height: 50%;
-  background-color: aqua;
+const ContentRow = styled.div`
+  display: flex;
+  flex: 1;
+  width: 100%;
+  /* border: 1px solid black; */
+`;
+
+const FeeContainer = styled.div`
+  flex: 7;
+  /* border: 1px solid black; */
   border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
+const FeeContainer2 = styled.div`
+  flex: 3;
+  border: 2px solid black;
+  border-radius: 10px;
+  font-size: 24px;
+  font-weight: 600;
+  text-align: end;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40%;
+  margin-top: 300px;
+`;
 
+const FeeContentsContainer = styled.div`
+p {
+  margin: 0;
+
+  @media (max-width: 923px) {
+      font-size: 18px;
+    }
+
+  @media (max-width: 692px) {
+      font-size: 14px;
+    }
+
+  @media (max-width: 544px) {
+      font-size: 12px;
+    }
+}
 `
+
+const daysOfWeek = [
+  "일요일입니다. 오늘은 휴식을 취하세요!",
+  "월요일입니다. 새로운 한 주를 시작해보세요!",
+  "화요일입니다. 활기차게 시작하세요!",
+  "수요일입니다. 주 중반을 잘 보내세요!",
+  "목요일입니다. 조금만 더 힘내세요!",
+  "금요일입니다. 주말이 다가왔어요!",
+  "토요일입니다. 즐거운 주말 보내세요!"
+];
 
 const ImageContainer = styled.div`
   position: relative;
@@ -98,6 +151,10 @@ function Main() {
   const NoticeInfo = useSelector(selectNoticeInfo);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const myInfo = useSelector(selectmyInfo);
+  const today = new Date();
+  const currentMonth = today.getMonth() + 1;
+  const fee = useSelector(state => selectMyFee(state, currentMonth));
 
   useEffect(() => {
     dispatch(getmyInfo(JSON.parse(localStorage.getItem('user'))));
@@ -117,6 +174,14 @@ function Main() {
     verticalAlign:        false // align the content of each section vertical
   };
 
+  const today2 = new Date();
+
+  const formattedDate = `${today2.getMonth() + 1}`
+
+  const dayText = daysOfWeek[today.getDay()];
+
+  const totalFee = fee.electric + fee.water + fee.maintenance
+
   return (
     <>
     <SectionsContainer {...options}>
@@ -131,19 +196,32 @@ function Main() {
         </ImageContainer>
       </Section>
 
-      {/* <Card>
-        <Card.Body>
-          <blockquote className="blockquote mb-0 auto text-center">
-            <p>
-              공지 내용입니다.
-            </p>
-          </blockquote>
-        </Card.Body>
-      </Card>
-      <StyledCard >
-        {NoticeInfo.slice(-3).map((notice)=>{ return (
+        <Section>
+          <Wrapper>
+            <ContentRow>
+              <FeeContainer>
+                <FeeChart />
+              </FeeContainer>
+
+              <FeeContainer2>
+                <FeeContentsContainer>
+                  <p>{myInfo?.name}님 {formattedDate}월 총 관리비는 
+                    <br/>
+                    {totalFee}원 입니다.
+                    <br/>
+                    <br/>
+                    <p style={{fontWeight:'200', fontSize:'16px', cursor:'pointer'}} onClick={() => navigate('/feedetail')}>
+                    - 관리비 상세보기
+                    </p>
+                  </p>
+                </FeeContentsContainer>
+              </FeeContainer2>
+            </ContentRow>
+
+            <StyledCard >
+        {NoticeInfo.slice(-4).map((notice)=>{ return (
           <Card style={{ width: '18rem' }}>
-            {/* <Card.Img variant="top" src="holder.js/100px180" /> 
+            <Card.Img variant="top" src="/image/002.png" width="5px" height="40px"/> 
             <Card.Body>
               <Card.Title>{notice.title}</Card.Title>
               <Card.Text>
@@ -154,24 +232,19 @@ function Main() {
           </Card>);
         })}
       </StyledCard>
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '50px' }}>
-          <h1 
-            onClick={() => navigate('/feedetail')}
-            style={{ cursor: 'pointer'}}
-          > 관리비</h1>
-          <div style={{ width: '80%', margin: '0 auto', padding: '1rem', cursor: 'pointer' }}
-          onClick={() => navigate('/feedetail')}
-          >
-            <FeeChart />
-          </div>
-        </div> */}
-      <Section>
-        <Wrapper>
-          <FeeWrapper>
 
-          </FeeWrapper>
-        </Wrapper>
-      </Section>
+            <Card style={{ marginTop: '10px' }}>
+              <Card.Body>
+                <blockquote className="blockquote m-0 auto text-center">
+                  <p>
+                    {dayText}
+                  </p>
+                </blockquote>
+              </Card.Body>
+            </Card>
+          </Wrapper>
+        </Section>
+
         </SectionsContainer>
     </>
   );

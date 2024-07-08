@@ -20,6 +20,11 @@ const initialState = {
       title: '공지사항입니다.3',
       content: '전기점검 날짜입니다.3'
     },
+    {
+      id : 3,
+      title: '공지사항입니다.4',
+      content: '전기점검 날짜입니다.4'
+    },
   ],
 }
 
