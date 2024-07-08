@@ -16,7 +16,6 @@ const ContentWrapper = styled.div`
 function Menu4() {
   return (
     <Wrapper>
-      <BoardSidebar />
       <ContentWrapper>
         < Outlet />
       </ContentWrapper>
