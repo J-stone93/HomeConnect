@@ -3,16 +3,15 @@ import { useState } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { useSelector } from 'react-redux';
-import styled from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import { selectNoticeInfo } from '../../features/board/boardSlice';
 
 const Wrapper = styled.div`
   width: 100%;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  justify-content: space-between;  /* 변경된 부분 */
   padding: 50px;
+  align-items: flex-start;
 
   .react-calendar {
     width: 100%;
@@ -22,6 +21,8 @@ const Wrapper = styled.div`
     padding: 3% 5%;
     background-color: white;
   }
+
+
 
   .react-calendar__month-view {
     abbr {
@@ -51,9 +52,11 @@ const Wrapper = styled.div`
   }
 
   .react-calendar__navigation__label > span {
-    font-size: 20px;
-    font-weight: bold;
-    color: black;
+    color: var(--festie-gray-800, #3a3a3a);
+    font-family: SUIT Variable;
+    font-size: 25px;
+    font-weight: 600;
+    line-height: 140%;
   }
 
   .react-calendar__navigation button {
@@ -71,7 +74,7 @@ const Wrapper = styled.div`
   .react-calendar__month-view__weekdays {
     abbr {
       color: black;
-      font-size: 2rem;
+      font-size: 1.2rem;
       font-weight: 500;
     }
   }
@@ -106,24 +109,74 @@ const Wrapper = styled.div`
     color: red; /* 일요일 날짜 글씨 빨간색 */
   }
   .react-calendar__tile--marked {
-    background-color: #ffeb3b;
+    background-color: #FFF8DC;
     color: black;
   }
 `;
 
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+
+const fadeOut = keyframes`
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+`;
+
+
 const NoticeWrapper = styled.div`
-  width: 100%;
+  width: 30%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 10px;
+  margin-left: 50px;
+  opacity: 0;
+  height: 0;
+  animation-duration: 0.25s;
+  animation: ${(props) => props.showDate ? css`${fadeIn} 1s forwards` : css`${fadeOut} 0s forwards`};
+
 
   .notice {
     font-size: 2rem;
     font-weight: bold;
     margin-bottom: 10px;
   }
+  .text-gray-500 {
+    margin-top: 20px;
+    font-size: 1.2rem;
+    color: #666666;
+  }
 `;
+
+const TitleInput = styled.input`
+  width: 100%;
+  text-align: center;
+  background-color: #FFF8DC;
+  margin-top: 30px;
+  text-decoration: none;
+  border-width: 0 0 1px;
+  &:focus {
+    outline:none;
+  }
+`;
+
+const ContentInput = styled.input`
+  margin-top: 2px;
+  border: none;
+  &:focus {
+    outline:none;
+  }
+`;
+
 
 // type ValuePiece = Date | null;
 // type Value = ValuePiece | [ValuePiece, ValuePiece];
@@ -131,8 +184,9 @@ const NoticeWrapper = styled.div`
 
 function CalendarMain() {
   const [value, onChange] = useState(new Date());
+  const [showDate, setShowDate] = useState(false); // 날짜 정보 보이기/숨기기 토글 상태
+  const [selectedDate, setSelectedDate] = useState(null);
   const NoticeList = useSelector(selectNoticeInfo);
-  console.log(NoticeList);
 
   const tileClassName = ({ date, view }) => {
     if (view === 'month' && date.getDay() === 0) {
@@ -145,34 +199,57 @@ function CalendarMain() {
   };
 
   const tileContent = ({ date }) => {
-    const notices = NoticeList.filter(notice => moment(notice.date).isSame(date, 'day'));
-    return notices.map((notice, index) => (
-      <div key={index}>{notice.content}</div>
-    ));
+    const notices = NoticeList.filter((notice) => moment(notice.date).isSame(date, 'day'));
+    return notices.map((notice, index) => <div key={index}>{notice.content}</div>);
   };
 
+  const handleDateClick = (date) => {
+    onChange(date);
+    setSelectedDate(date);
+    setShowDate(true); // 날짜를 선택하면 날짜 정보 보이기
+  };
+
+  const toggleShowDate = () => {
+    setShowDate(!showDate); // 토글 함수
+  };
+
+  const handleClickDate = (date) => {
+    setSelectedDate(date);
+    setShowDate(true);
+  };
+  console.log(NoticeList);
   return (
-    <Wrapper>
-      <NoticeWrapper>
-        <div className="notice">공지사항</div>
-        <Calendar
-          onChange={onChange}
-          value={value}
-          next2Label={null}
-          prev2Label={null}
-          calendarType="gregory"
-          formatDay={(locale, date) => date.toLocaleString('en', { day: 'numeric' })}
-          showNeighboringMonth={false}
-          minDetail="year"
-          tileContent={tileContent}
-          tileClassName={tileClassName} 
-        />
+    <Wrapper showDate={showDate}>
+      <Calendar
+        onChange={handleDateClick}
+        value={value}
+        next2Label={null}
+        prev2Label={null}
+        calendarType="gregory"
+        formatDay={(locale, date) => date.toLocaleString('en', { day: 'numeric' })}
+        showNeighboringMonth={false}
+        minDetail="year"
+        tileContent={tileContent}
+        tileClassName={tileClassName}
+        onClickDay={handleClickDate}
+      />
+      <NoticeWrapper showDate={showDate}>
+        {/* <h2 className="notice">공지사항</h2> */}
+        {showDate && selectedDate && (
+          <div className="text-gray-500">
+            {NoticeList.map((notice) => (
+              moment(notice.date).isSame(selectedDate, 'day') && (
+                <div key={notice.id}>
+                  <TitleInput type="text" value={notice.title} readOnly />
+                  <ContentInput type="text" value={notice.content} readOnly />
+                </div>
+              )
+            ))}
+          </div>
+        )}
       </NoticeWrapper>
-        <div className="text-gray-500 mt-4">
-          {moment(value).format("YYYY년 MM월 DD일")}
-        </div>
     </Wrapper>
   );
-};
+}
 
 export default CalendarMain;
