@@ -7,7 +7,7 @@ import { selectNoticeInfo } from "../features/board/boardSlice";
 import { useEffect } from "react";
 import axios from "axios";
 import { getmyInfo, selectmyInfo } from "../features/main/mainSlice";
-import { SectionsContainer, Section } from "react-fullpage";
+import { SectionsContainer, Section, Footer } from "react-fullpage";
 import { useNavigate } from "react-router-dom";
 import { selectMyFee } from "../features/fee/feeSlice";
 
@@ -16,6 +16,7 @@ const StyledCard = styled.div`
   justify-content: space-between;
   text-align: center;
   margin: 10px 60px;
+  margin-bottom: 10px;
 `;
 
 const Wrapper = styled.div`
@@ -25,7 +26,6 @@ const Wrapper = styled.div`
   height: 86%;
   /* border: 1px solid black; */
   margin: 0 auto;
-  margin-top: 20px;
 `
 
 const ContentRow = styled.div`
@@ -79,6 +79,14 @@ p {
   }
 }
 `
+
+const StyledFooter = styled.footer`
+  width: 100%;
+  background-color: #343a40;
+  color: white;
+  text-align: center;
+  padding: 15px 0;
+`;
 
 const daysOfWeek = [
   "일요일입니다. 오늘은 휴식을 취하세요!",
@@ -196,7 +204,7 @@ function Main() {
 
         <Section>
           <Wrapper>
-            <Card style={{ marginTop: '10px' }}>
+            <Card style={{ marginTop: '1px' }}>
               <Card.Body style={{}}>
                 <blockquote className="blockquote m-0 auto text-center">
                   <p>
@@ -247,6 +255,9 @@ function Main() {
             </StyledCard>
 
           </Wrapper>
+            <StyledFooter>
+              &copy; 코딩하는오합지졸. All Rights Reserved.
+            </StyledFooter>
         </Section>
 
       </SectionsContainer>
