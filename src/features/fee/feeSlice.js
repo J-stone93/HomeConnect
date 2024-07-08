@@ -26,6 +26,7 @@ const feeSlice = createSlice({
     setFee: (state, action) => {
       const { month, type, amount } = action.payload;
       state.fees[month - 1][type] = amount; // 월의 인덱스와 타입에 따라 금액 설정
+      console.log(action);
     },
     // addPayment: (state, action) => {
     //   state.payments.push(action.payload); // 결제 내역 추가
@@ -38,4 +39,7 @@ const feeSlice = createSlice({
 });
 
 export const { setFee, addPayment, cancelPayment } = feeSlice.actions;
+
+export const selectMyFee = (state, month) => state.fees.fees[month - 1];
+
 export default feeSlice.reducer;

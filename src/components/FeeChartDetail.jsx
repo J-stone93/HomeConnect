@@ -26,23 +26,65 @@ ChartJS.register(
   Legend
 );
 
-const StyledDiv = styled.div`
-  width: 55%;
+const CalContainer = styled.div`
+  width: 80%;
   margin: 0 auto ;
-  margin-top: 3rem;
-  padding: 1rem;
-  text-align: center;
+  margin-top: 60px;
+  display: flex;
+  flex-direction: column;
+  /* border: 1px solid black; */
+`
+
+const CalDivWrapper = styled.div`
   display: flex;
   justify-content: space-between;
+`;
+
+const CalDiv = styled.div`
+  width: 30%;
+  height: 7rem;
+  margin: 0 auto ;
+  text-align: center;
+  border: 2px solid black;
+  border-radius: 10px;
+  p {
+    margin-top: 10px;
+    font-size: 18px;
+  }
 `
+
 const StyledDiv2 = styled.div`
   width: 80%;
-  max-height: 800px;
+  height: 800px;
   margin: 0 auto ;
   margin-top: 10px;
   padding: 1rem; 
   text-align: center;
+  /* border: 1px solid black; */
 `
+
+const StyledDiv3 = styled.div`
+  width: 80%;
+  max-height: 400px;
+  margin: 0 auto ;
+  margin-top: 10px;
+  padding: 1rem; 
+  text-align: center;
+  /* border: 1px solid black; */
+`
+
+const TestDiv = styled.div`
+  height: 10%;
+  width: 80%;
+  flex: 5;
+  /* border: 1px solid black; */
+  text-align: center;
+  `
+
+const TestDivWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+`;
 
 const HeaderDiv = styled.div`
   display: flex;
@@ -50,6 +92,7 @@ const HeaderDiv = styled.div`
   align-items: center;
   margin-bottom: 20px;
   position: relative;
+  /* border: 1px solid black; */
 `;
 
 const PaymentButton = styled.button`
@@ -352,22 +395,38 @@ function FeeChartDetail() {
     </StyledDiv2>
 
 
-    <StyledDiv>
-      <div style={{ fontSize: '1rem', textAlign: 'center', fontWeight: '900' }}>
-        <p>전기세 총합: {formatter.format(totalFees.electric)}원</p> 
-        <p>전기세 평균: {formatter.format(averageFees.electric)}원</p>
-      </div>
-      <div style={{ fontSize: '1rem', textAlign: 'center', fontWeight: '900' }}>
-        <p>수도세 총합: {formatter.format(totalFees.water)}원</p>
-        <p>수도세 평균: {formatter.format(averageFees.water)}원</p>
-      </div>
-      <div style={{ fontSize: '1rem', textAlign: 'center', fontWeight: '900' }}>
-        <p>관리비 총합: {formatter.format(totalFees.maintenance)}원</p>
-        <p>관리비 평균: {formatter.format(averageFees.maintenance)}원</p>
-      </div>
-    </StyledDiv>
+    <CalContainer>
+      <TestDivWrapper>
+      <TestDiv>
+        <h2>2024년 평균 관리비</h2>
+      </TestDiv>
+      <TestDiv >
+        <h2>2024년 관리비 합계</h2>
+      </TestDiv>
+      </TestDivWrapper>
+      <CalDivWrapper>
+      <CalDiv>
+        <p>
+          전기세 평균: {formatter.format(averageFees.electric)}원
+          <br/>
+          수도세 평균: {formatter.format(averageFees.water)}원
+          <br/>
+          관리비 평균: {formatter.format(averageFees.maintenance)}원
+        </p>
+      </CalDiv>
+      <CalDiv>
+        <p>
+          전기세 총합: {formatter.format(totalFees.electric)}원
+          <br/>
+          수도세 총합: {formatter.format(totalFees.water)}원
+          <br/>
+          관리비 총합: {formatter.format(totalFees.maintenance)}원
+        </p> 
+      </CalDiv>
+        </CalDivWrapper>
+    </CalContainer>
 
-    <StyledDiv2>
+    <StyledDiv3>
         <h3>결제 내역</h3>
         {data.length === 0 ? (
           <p>결제 내역이 없습니다.</p>
@@ -381,7 +440,7 @@ function FeeChartDetail() {
             ))}
           </ul>
         )}
-      </StyledDiv2>
+      </StyledDiv3>
 
       {/* <Modal
         isOpen={isModalOpen}

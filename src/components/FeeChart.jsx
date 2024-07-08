@@ -60,7 +60,7 @@ function FeeChart() {
   };
 
   return (
-    <div style={{ width: '80%', height: '700px', margin: '0 auto', padding: '1rem' }}>
+    <div style={{ width: '90%', height: '550px', margin: '0 auto' }}>
       <Bar data={data} options={options} />
     </div>
   );
