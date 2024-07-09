@@ -11,48 +11,6 @@ const initialState = {
       content: '전기점검 날짜입니다.1',
       date: '2024.07.05'
     },
-    {
-      id : 2,
-      title: '공지사항입니다.2',
-      content: '전기점검 날짜입니다.2',
-      date: '2024.07.15'
-    },
-    {
-      id : 3,
-      title: '공지사항입니다.3',
-      content: '전기점검 날짜입니다.3',
-      date: '2024.07.24'
-    },
-    {
-      id : 4,
-      title: '공지사항입니다.4',
-      content: '전기점검 날짜입니다.4',
-      date: '2024.07.24'
-    },
-    {
-      id : 5,
-      title: '공지사항입니다.4',
-      content: '전기점검 날짜입니다.4',
-      date: '2024.07.24'
-    },
-    {
-      id : 6,
-      title: '공지사항입니다.4',
-      content: '전기점검 날짜입니다.4',
-      date: '2024.07.24'
-    },
-    {
-      id : 7,
-      title: '공지사항입니다.4',
-      content: '전기점검 날짜입니다.4',
-      date: '2024.07.24'
-    },
-    {
-      id : 8,
-      title: '공지사항입니다.4',
-      content: '전기점검 날짜입니다.4',
-      date: '2024.07.24'
-    },
   ],
 }
 
@@ -73,13 +31,8 @@ const boardSlice = createSlice({
         content: action.payload.content
       });
     },
-    NoticeContent: (state, action) => {
-      state.noticeList.push({
-        id: action.payload.id,
-        title: action.payload.title,
-        content: action.payload.content,
-        date: action.payload.date 
-      });
+    NoticeContent: (state, {payload : noticeList}) => {
+      state.noticeList = noticeList;
     },
     removeHealthList: (state, { payload: id }) => {
       const newList = state.healthList.filter(list => list.id !== id);
