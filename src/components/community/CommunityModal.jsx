@@ -7,37 +7,59 @@ import { useNavigate } from "react-router-dom";
 
 const Container = styled(Modal.Body)`
   width: 500px;
-  height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
 `;
 
 const ModalTitle = styled.input`
   width: 100%;
   height: 50px;
-  margin: 0 auto 10px;
-  font-size: 16px;
+  margin-bottom: 10px;
   padding: 10px;
-  border: 1px solid #ccc;
+  font-size: 16px;
+  border: 2px solid #ccc;
   border-radius: 12px;
+  &:focus {
+    outline: none;
+    border-color: #8d8d8d; 
+  }
 `;
 
 const ModalContent = styled.textarea`
   width: 100%;
   min-height: 400px;
-  margin: 0 auto 10px;
-  overflow: auto;
+  margin-bottom: 10px;
   padding: 10px;
   font-size: 16px;
-  resize: none;
+  resize: none; /* 세로 크기 조절 허용 */
+  border: 2px solid #ccc;
   border-radius: 12px;
+  &:focus {
+    outline: none;
+    border-color: #8d8d8d; 
+  }
 `;
 
+const ModalFooter = styled(Modal.Footer)`
+  justify-content: center;
+`;
+
+const ModalButton = styled.button`
+  width: 100px;
+  height: 35px;
+  margin: 0 5px;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.8;
+  }
+`;
 
 function CommunityModal(props) {
-  const { showModal, handleModalClose, communityList, setcommunityList, communityId } = props;
+  const { showModal, handleModalClose, communityList, setCommunityList, communityId } = props;
   const [titleValue, setTitleValue] = useState('');
   const [contentValue, setContentValue] = useState('');
   const navigate = useNavigate();
@@ -48,8 +70,7 @@ function CommunityModal(props) {
       setContentValue(communityList.content);
     }
   }, [communityList]);
-  console.log(communityList);
-  console.log(communityList);
+
   const handleChangeTitle = (e) => {
     setTitleValue(e.target.value);
   };
@@ -59,31 +80,45 @@ function CommunityModal(props) {
   };
 
   const modifyComment = async () => {
+    const token = localStorage.getItem('token');
+  
     try {
-      const response = await axios.put(`http://localhost:8080/menu4/communitymodify`, {
-        no: communityList.no,
-        title: titleValue,
-        content: contentValue
-      }, {
-        headers: {
-          Authorization: localStorage.getItem('token')
+      const response = await axios.put(
+        `http://localhost:8080/menu4/communitymodify`,
+        {
+          no: communityList.no,
+          title: titleValue,
+          content: contentValue
+        },
+        {
+          headers: { Authorization: token }
         }
-      });
-      const communityListGet = await axios.get(`http://localhost:8080/menu4/communityread?no=${communityId}`, {
-        headers: {Authorization: localStorage.getItem('token')}
-      })
+      );
+  
       if (response.status === 200) {
-        setcommunityList(communityListGet);
-        alert("게시글이 수정되었습니다.");
-        navigate('/community');
+        const communityListGet = await axios.get(
+          `http://localhost:8080/menu4/communityread?no=${communityId}`,
+          {
+            headers: { Authorization: token }
+          }
+        );
+  
+        if (communityListGet.status === 200) {
+          setCommunityList(communityListGet.data);
+          alert("게시글이 수정되었습니다.");
+          handleModalClose();
+          navigate('/community');
+        } else {
+          throw new Error(`API error: ${communityListGet.status} ${communityListGet.statusText}`);
+        }
       } else {
         throw new Error(`API error: ${response.status} ${response.statusText}`);
       }
     } catch (err) {
-      console.error(err);
+      console.error("Error occurred during modification:", err);
     }
   };
-  console.log(contentValue);
+
   return (
     <Modal show={showModal} onHide={handleModalClose} backdrop="static">
       <Modal.Header closeButton>
@@ -91,25 +126,25 @@ function CommunityModal(props) {
       </Modal.Header>
       <Container>
         <ModalTitle
-          Value={titleValue}
+          value={titleValue}
           onChange={handleChangeTitle}
+          placeholder="제목을 입력하세요"
         />
         <ModalContent
-          defaultValue={contentValue}
+          value={contentValue}
           onChange={handleChangeContent}
+          placeholder="내용을 입력하세요"
         />
       </Container>
-      <Modal.Footer>
-        {/* <Button variant="primary" onClick={addBoardComment}> */}
-        <Button variant="primary" onClick={modifyComment}>
+      <ModalFooter>
+        <ModalButton onClick={modifyComment}>
           확인
-        </Button>
-        <Button variant="secondary" onClick={handleModalClose}>
-        {/* <Button variant="secondary"> */}
+        </ModalButton>
+        <ModalButton onClick={handleModalClose}>
           취소
-        </Button>
-      </Modal.Footer>
-    </Modal >
+        </ModalButton>
+      </ModalFooter>
+    </Modal>
   );
 };
 
