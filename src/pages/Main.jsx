@@ -253,13 +253,13 @@ function Main() {
                   </Card>);
               })}
             </StyledCard>
-
           </Wrapper>
+
             <StyledFooter>
               &copy; 코딩하는오합지졸. All Rights Reserved.
             </StyledFooter>
+            
         </Section>
-
       </SectionsContainer>
     </>
   );
