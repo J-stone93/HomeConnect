@@ -17,6 +17,7 @@ const Wrapper = styled.form`
   display: flex;
   justify-content: center;
   align-items: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 `;
 
 const Title = styled.input`
@@ -43,6 +44,7 @@ const Content = styled.textarea`
 
 const ButtonWrapper = styled.div`
   display: flex;
+  justify-content: space-between;
 `;
 
 const FileLabel = styled.label`
@@ -149,28 +151,33 @@ function CommunityRegister() {
         onChange={handleChangeContent}
       />
       <ButtonWrapper>
-        <img
-          src={img}
-          alt=""
-          style={{ width: "100px", height: "100px" }} />
-        <div>
-          <FileLabel htmlFor="file-input">
-            썸네일 업로드
-          </FileLabel>
+        <div style={{ display: "flex"}}>
+          <img
+            src={img}
+            alt=""
+            style={{ width: "100px", height: "100px", borderRadius: "25%" }} />
+          <div>
+            <FileLabel htmlFor="file-input">
+              썸네일 업로드
+            </FileLabel>
+          </div>
         </div>
-        <FileInput
-          ref={fileEl}
-          type="file"
-          id="file-input"
-          accept="image/jpg, image/jpeg, image/png"
-          onChange={handleChangFile}
-        />
-        <Nav.Link>
-          <RegisterButton onClick={addCommunityContent}>
-            등록
-          </RegisterButton>
-          <RegisterButton onClick={() => navigate('/community')}>뒤로가기</RegisterButton>
-        </Nav.Link>
+
+        <div>
+          <FileInput
+            ref={fileEl}
+            type="file"
+            id="file-input"
+            accept="image/jpg, image/jpeg, image/png"
+            onChange={handleChangFile}
+          />
+          <Nav.Link>
+            <RegisterButton onClick={addCommunityContent}>
+              등록
+            </RegisterButton>
+            <RegisterButton onClick={() => navigate('/community')}>뒤로가기</RegisterButton>
+          </Nav.Link>
+        </div>
       </ButtonWrapper>
     </Wrapper>
   );

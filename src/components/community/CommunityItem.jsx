@@ -8,28 +8,44 @@ import styled from "styled-components";
 const Wrapper = styled.div`
   width: 95%;
   margin: 0 auto;
+  overflow-x: auto; /* 가로 스크롤이 생길 경우를 대비 */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    border-radius: 12px;
+    overflow: hidden; /* 테이블 셀이 넘칠 경우를 대비 */
+  }
   img {
     width: 100px;
     height: 100px;
+    border-radius: 25%; /* 이미지를 원형으로 만듦 */
+    object-fit: cover; /* 이미지를 적절히 조정하여 테이블 셀에 맞춤 */
   }
   tbody {
   }
   tr {
-    padding-top: 20px;
-    width: 600px;
+    background-color: #fafafa; /* 테이블 행 배경색 */
+    padding: 10px;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
     align-items: center;
+    border-bottom: 1px solid #ddd; /* 테이블 행 경계선 */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    &:hover {
+      background-color: #e0e0e0; /* 호버 시 배경색 변경 */
+    }
+  }
+  td {
+    padding: 10px;
+    text-align: left;
   }
 `;
-
-
 
 function CommunityItem(props) {
   const { categoryName } = props;
   const { categoryId = '맛집' } = useParams();
-  // console.log(categoryName);
-
   const navigate = useNavigate()
   const [communityList, setcommunityList] = useState();
 
@@ -38,28 +54,6 @@ function CommunityItem(props) {
 		const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
 		return new Date(dateString).toLocaleDateString(undefined, options);
 	};
-
-  // db에서 community전체 목록 갖고 와서 렌더링하기
-  // useEffect(() => {
-  //   const communitylist = async () => {
-  //     try {
-  //       const response = await axios.get(`http://localhost:8080/menu4/community`, {
-  //         headers : {
-  //           Authorization : localStorage.getItem('token'),
-  //         }
-  //       });
-  //       setcommunityList(response.data);
-  //       if (response.status === 200) {
-  //         // return dispatch(getBoardList(response.data));
-  //       } else {
-  //         throw new Error(`api error: ${response.status} ${response.statusText}`);
-  //       }
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
-  //   communitylist();
-  // }, []);
 
   // DB에서 community 카테고리 별 목록 가져오기
   useEffect(() => {
@@ -71,9 +65,7 @@ function CommunityItem(props) {
           }
         });
         setcommunityList(response.data);
-        if (response.status === 200) {
-          // return dispatch(getBoardList(response.data));
-        } else {
+        if (response.status !== 200) {
           throw new Error(`api error: ${response.status} ${response.statusText}`);
         }
       } catch (error) {
@@ -83,7 +75,6 @@ function CommunityItem(props) {
     communitylist();
   }, [categoryName]);
 
-  // console.log(communityList);
   return (
     <Wrapper>
       <table>
@@ -91,10 +82,9 @@ function CommunityItem(props) {
           <tbody key={communityItem.no} onClick={() => navigate(`/communityread/${communityItem.no}`)}>
             <tr>
               <td><img src={`../../image/${communityItem.imgPath}`} alt="" /></td>
-              {/* <img src="/image/여우.jpg" alt="여행" /> */}
               <td>{communityItem.title}</td>
-              <td>작성자:{communityItem.writer}</td>
-              <td>개설일:{formatDate(communityItem.regDate).slice(0, 12)}</td>
+              <td>작성자: {communityItem.writer}</td>
+              <td>개설일: {formatDate(communityItem.regDate).slice(0, 12)}</td>
             </tr>
           </tbody>
         ))}

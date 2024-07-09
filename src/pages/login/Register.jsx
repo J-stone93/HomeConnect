@@ -80,6 +80,12 @@ function Register() {
     setPWvalue(e.target.value);
   };
 
+  const enterLogin = (e) => {
+    if (e.key === 'Enter') {
+      handleSubmitINFO();
+    }
+  };
+
   const handleSubmitINFO = () => {
     const myInfo = async () => {
       try {
@@ -106,14 +112,14 @@ function Register() {
   };
 
   return (
-    <Container>
+    <Container onKeyDown={enterLogin}>
       <div className="input-group">
         <FaUser className="input-group-icon" />
         <Form.Control type="text" placeholder="username" value={IDvalue} onChange={handleIDChange} />
       </div>
       <div className="input-group">
         <FaLock className="input-group-icon" />
-        <Form.Control type="password" placeholder="password" value={PWvalue} onChange={handlePWChange} />
+        <Form.Control type="password" placeholder="password" value={PWvalue} onChange={handlePWChange}/>
       </div>
       <Button className="btn-dark" onClick={handleSubmitINFO}>로그인</Button>
       <div className="register-link">

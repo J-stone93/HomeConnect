@@ -76,8 +76,8 @@ const LogoutButton = styled.button`
 const Layout = () => {
   const navigate = useNavigate();
   const userInfo = useSelector(selectmyInfo);
-  console.log(userInfo);
   const dispatch = useDispatch();
+
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');

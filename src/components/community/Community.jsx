@@ -6,17 +6,14 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { selectCategory } from "../../features/community/communitySlice";
 
-
 const Wrapper = styled.div`
-  /* padding-top: 30px 30px 30px 30px;
-  width: 90%;
-  height: 100vh; */
   margin: 0 auto;
-  margin: 50px;
-  width: 90%;
+  margin-top: 50px;
+  width: 80%;
   padding: 50px;
-  background-color: #f8f9fa;
+  background-color: #ffffff;
   border-radius: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 `;
 
 const CommunityContainer = styled.div`
@@ -25,7 +22,6 @@ const CommunityContainer = styled.div`
   margin-top: 50px;
   padding: 10px;
   display: flex;
-  /* border: 1px solid #ccc; */
   border-radius: 15px;
   justify-content: space-evenly;
 `;
@@ -33,17 +29,18 @@ const CommunityContainer = styled.div`
 const ItemContainer = styled.div`
   height: 400px;
   flex: 1;
-  border: 2px solid black;
+  border: 2px solid #e0e0e0;
   margin: 2px;
   padding: 10px;
   border-radius: 10px;
   overflow-y: auto;
+  background-color: #fafafa;
   &::-webkit-scrollbar {
     width: 10px;
   }
   &::-webkit-scrollbar-thumb {
     border-radius: 5px;
-    background: #000000;
+    background: #ccc;
   }
 `;
 
@@ -52,30 +49,24 @@ const Constyle = styled.div`
 `;
 
 const StyledNav = styled(Nav)`
-  text-decoration: none;
-  font-weight: bold;
-  color: black;
-  .color-nav {
-    text-decoration: none;
+  .nav-link {
+    color: #333 !important;  /* 기본 링크 색상 수정 */
     font-weight: bold;
-    color: black;
+    &:hover {
+      color: #555 !important;  /* 링크 호버 시 색상 수정 */
+    }
+    &.active {
+      color: #000 !important;  /* 활성화된 링크 색상 수정 */
+      border-bottom: 2px solid #000; /* 활성화된 링크 밑줄 */
+    }
   }
-  `;
+`;
 
 function Community() {
   const navigate = useNavigate();
   const [currentTab, setCurrentTab] = useState('delicious');
   const [categoryName, setCategoryName] = useState('맛집');
-  const [categorySelect, setCategorySelect] = useState('');
-  // console.log(categorySelect);
   const dispatch = useDispatch();
-
-  // const handleDelicious = () => {
-  //   setCategorySelect('맛집');
-  //   <CommunityRegister categorySelect={categorySelect}/>
-  //   console.log(categorySelect);
-  //   navigate(`/menu4/communityregister`);
-  // };
 
   return (
     <Wrapper>
@@ -94,10 +85,8 @@ function Community() {
             <Nav.Link eventKey="link-4" onClick={() => setCategoryName('등산')}>등산</Nav.Link>
           </Nav.Item>
 
-          <DropdownButton id="dropdown-basic-button" title="모임 개설하기">
+          <DropdownButton id="dropdown-basic-button" title="모임 개설하기" variant="dark">
             <Dropdown.Item
-              href=""
-              // onClick={() => navigate(`/menu4/communityregister`)}
               onClick={() => {
                 dispatch(selectCategory('맛집'));
                 navigate(`/communityregister`);
@@ -106,7 +95,6 @@ function Community() {
               맛집투어
             </Dropdown.Item>
             <Dropdown.Item
-              href=""
               onClick={() => {
                 dispatch(selectCategory('독서'));
                 navigate(`/communityregister`);
@@ -128,25 +116,12 @@ function Community() {
             >
               등산</Dropdown.Item>
           </DropdownButton>
-          {/* <Nav.Item>
-            <Button variant="dark" onClick={() => navigate(`/menu4/communityregister`)}>모임 개설하기</Button>
-          </Nav.Item> */}
         </StyledNav>
       </Constyle>
       <CommunityContainer>
-        {/* 카테고리 별 목록 불러오기 테스트 */}
-        {/* {{
-          'delicious': <ItemContainer><CommunityItem /></ItemContainer>,
-          'book': <ItemContainer><CommunityItem /></ItemContainer>,
-          'health': <ItemContainer><CommunityItem /></ItemContainer>,
-          'hiking': <ItemContainer><CommunityItem /></ItemContainer>
-        }[categoryName]} */}
         <ItemContainer>
-          <CommunityItem
-            categoryName={categoryName}
-          />
+          <CommunityItem categoryName={categoryName} />
         </ItemContainer>
-
       </CommunityContainer>
     </Wrapper>
   );

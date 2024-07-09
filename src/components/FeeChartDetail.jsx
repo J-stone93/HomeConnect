@@ -444,7 +444,10 @@ function FeeChartDetail() {
             ))}
           </ul>
         )}
-      </StyledDiv3> */}
+      </StyledDiv3> 
+      
+      결제 완료되면 결제완료 페이지로 가기, 내역 페이지 라우팅 
+      */}
 
       {/* <Modal
         isOpen={isModalOpen}
