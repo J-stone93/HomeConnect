@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { setFee } from '../features/fee/feeSlice';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setFee, setFees } from '../features/fee/feeSlice';
 import { addData } from '../api/feeAPI';
+import { selectmyInfo } from '../features/main/mainSlice';
+import axios from 'axios';
 
 function FeeInputForm() {
   const [month, setMonth] = useState('');
@@ -15,6 +17,27 @@ function FeeInputForm() {
     maintenance: ""
   });
   const dispatch = useDispatch();
+  const userInfo = useSelector(selectmyInfo);
+
+  useEffect(() => {
+    const fetchFeeInfo = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/fee/read',
+        { headers: {
+          Authorization: localStorage.getItem('token'),
+        }}
+        );
+      console.log(response);
+        if (response.status === 200) {
+          setFormData(response.data);
+        }
+      } catch (error) {
+        console.error("Error fetching fee data:", error);
+      }
+    }
+    fetchFeeInfo();
+  }, []);
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -41,7 +64,7 @@ function FeeInputForm() {
       const response = await addData(formData);
       console.log("Data successfully submitted:", response);
       setFormData({
-          userId: "",
+          userId: `${userInfo.userId}`,
           month: "",
           water: "",
           electric: "",
@@ -90,12 +113,12 @@ function FeeInputForm() {
 
     <form onSubmit={handleSubmit2}>
       <h2>백에 데이터 보내기</h2>
-      <div>
+      {/* <div>
         <label>
         UserID:
-          <input type="text" name="userId" value={formData.userId} onChange={handleChange2} required />
+          <input type="text" name="userId" value={formData.userId} onChange={handleChange2} required>{userInfo.userId}</input>
         </label>
-      </div>
+      </div> */}
 
       <div>
         <label>

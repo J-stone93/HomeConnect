@@ -185,16 +185,16 @@ function FeeChartDetail() {
     }, []);
   };
 
-  useEffect(() => {
-    axios.get('http://localhost:8080/pay/list')
-      .then(response => {
-        setData2(response.data);
-        console.log(response.data);
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
-      });
-  }, []);
+  // 결제취소
+  // useEffect(() => {
+  //   axios.get('http://localhost:8080/pay/list')
+  //     .then(response => {
+  //       setData2(response.data);
+  //     })
+  //     .catch(error => {
+  //       console.error('Error fetching data:', error);
+  //     });
+  // }, []);
 
   const onClickPayment = () => {
     if (!selectedMonth) {
