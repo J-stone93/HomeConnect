@@ -32,6 +32,8 @@ import BoardListDetail from './features/board/BoardListDetail.jsx';
 import BoardList from './features/board/BoardList.jsx';
 import BoardModify from './features/board/BoardModify.jsx';
 import CalendarMain from './components/calendar/CalendarMain.jsx';
+import Loading from './components/Loading.jsx';
+import { useEffect, useState } from 'react';
 
 
 const GlobalStyle = createGlobalStyle`
@@ -53,6 +55,14 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 function App() {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+  }, []);
+
   return (
     <>
       <GlobalStyle />
@@ -62,7 +72,9 @@ function App() {
             <Route index element={<Register />} />
             <Route path='signup' element={<SignUp />} />
           </Route>
-          <Route path='/' element={<Layout />} >
+          <Route path='/' element={
+            isLoading ? (<Loading />) : <> <Layout /> </>
+          } >
             <Route index element={<Main />} />
             <Route path='mypage' element={<MyPage />} />
             <Route path='feeinput' element={<FeeInputPage />} />
