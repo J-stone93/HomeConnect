@@ -1,7 +1,7 @@
-import { useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { Button, Nav } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { styled } from "styled-components";
+import styled from "styled-components";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { selectmyInfo } from "../../features/main/mainSlice";
@@ -103,7 +103,7 @@ function CommunityRegister() {
   };
 
   const addCommunityContent = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // 폼 제출 동작 방지
     const files = fileEl.current.files;
     const token = localStorage.getItem('token');
 
@@ -125,12 +125,9 @@ function CommunityRegister() {
         headers: { 'content-type': 'multipart/form-data', 'Authorization': `${token}` },
       });
       if (response.status === 200) {
-        e.preventDefault();
         navigate('/community');
-        e.preventDefault();
-
       } else {
-        throw new Error(`api error: ${response.status} ${response.statusText}`);
+        throw new Error(`API 에러: ${response.status} ${response.statusText}`);
       }
     } catch (error) {
       console.error(error);

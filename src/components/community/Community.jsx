@@ -114,7 +114,6 @@ function Community() {
             >독서
             </Dropdown.Item>
             <Dropdown.Item
-              href=""
               onClick={() => {
                 dispatch(selectCategory('운동'));
                 navigate(`/communityregister`);
@@ -122,7 +121,6 @@ function Community() {
             >
               운동</Dropdown.Item>
             <Dropdown.Item
-              href=""
               onClick={() => {
                 dispatch(selectCategory('등산'));
                 navigate(`/communityregister`);
