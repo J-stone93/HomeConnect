@@ -53,6 +53,22 @@ const TableWrapper = styled(Table)`
       color: #495057;
     }
   }
+
+  .notice {
+    background-color: #ffeeba !important;
+    color: #856404 !important;
+    font-weight: bold;
+    font-size: 18px;
+
+    &:hover {
+      background-color: #ffd966 !important;
+    }
+  }
+
+  .notice td {
+    background-color: inherit !important; 
+    color: inherit !important; 
+  }
 `;
 
 const ButtonContainer = styled.div`
@@ -103,7 +119,6 @@ function BoardList() {
   const navigate = useNavigate();
   const userInfo = useSelector(selectmyInfo);
   console.log(userInfo);
-
 
   const handleModalClose = () => {
     setShowModal(false);
@@ -180,6 +195,15 @@ function BoardList() {
           </tr>
         </thead>
         <tbody>
+
+          <tr className="notice">
+            <td>1</td>
+            <td>공지사항 제목</td>
+            <td>{formatDate('2024-07-01').slice(0, 12)}</td>
+            <td>관리자</td>
+            <td></td>
+          </tr>
+
           {posts.map((post) => (
             <tr key={post.no}>
               <td onClick={() => navigate(`/menu4/read/${post.no}`)}>{post.no}</td>
@@ -187,15 +211,7 @@ function BoardList() {
               <td onClick={() => navigate(`/menu4/read/${post.no}`)}>{formatDate(post.regDate).slice(0, 12)}</td>
               <td onClick={() => navigate(`/menu4/read/${post.no}`)}>{post.writer}</td>
               <td>
-                {/* if(user) */}
-                {/* 여기에서 계속 진행 */}
-                {/* {post.writer === userInfo.userId &&  (
-                  <>
-                    <BsPencilSquare className="icon" onClick={() => navigate(`/menu4/modify/${post.no}`)} />
-                    <CiSquareRemove className="icon" onClick={() => handleModalOpen(post)} />
-                  </>
-                )} */}
-                {post.writer === userInfo.userId ||  (
+                {(post.writer === userInfo.userId || userInfo.role === "ROLE_ADMIN") && (
                   <>
                     <BsPencilSquare className="icon" onClick={() => navigate(`/menu4/modify/${post.no}`)} />
                     <CiSquareRemove className="icon" onClick={() => handleModalOpen(post)} />
