@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { Modal, Button } from 'react-bootstrap';
-import axios from 'axios';
-import { selectmyInfo } from '../main/mainSlice';
+import { useState } from "react";
+import { Button, Modal } from "react-bootstrap";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import { selectmyInfo } from "../../main/mainSlice";
+import axios from "axios";
 
 const Container = styled.div`
   width: 80%;
@@ -90,7 +90,7 @@ const CancelButton = styled(Button)`
   }
 `;
 
-function Boardmain() {
+function NoticeMain() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [showModal, setShowModal] = useState(false);
@@ -119,11 +119,11 @@ function Boardmain() {
     setShowModal(true); // Modal 열기
   };
 
-  const addBoardComment = async () => {
+  const addNoticeContent = async () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.post(
-        'http://localhost:8080/board/register',
+        'http://localhost:8080/notice/register',
         { 
           "no": 0,
           "title": title,
@@ -175,15 +175,15 @@ function Boardmain() {
         </Form>
       </Container>
 
-      <Modal show={showModal} onHide={handleModalClose} centered>
+      <Modal   show={showModal} onHide={handleModalClose} centered>
         <Modal.Header closeButton>
           <Modal.Title>등록 확인</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <p>게시글을 등록하시겠습니까?</p>
+          <p>공지를 등록하시겠습니까?</p>
         </Modal.Body>
         <Modal.Footer>
-          <SubmitButton onClick={addBoardComment}>확인</SubmitButton>
+          <SubmitButton onClick={addNoticeContent}>확인</SubmitButton>
           <CancelButton onClick={handleModalClose}>취소</CancelButton>
         </Modal.Footer>
       </Modal>
@@ -191,4 +191,4 @@ function Boardmain() {
   );
 }
 
-export default Boardmain;
+export default NoticeMain;

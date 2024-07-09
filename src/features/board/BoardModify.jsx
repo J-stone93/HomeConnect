@@ -124,7 +124,7 @@ function BoardModify() {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.put(
-        'http://localhost:8080/menu4/modify',
+        'http://localhost:8080/board/modify',
         { 
           "no": boardId,
           "title": title,
@@ -138,7 +138,7 @@ function BoardModify() {
       if (response.status === 200) {
         // alert("수정 성공");
         setShowModal(false);
-        navigate('/menu4/boardlist');
+        navigate('/boardlist');
       } else {
         setShowModal(false);
         alert("오류 발생.");
@@ -154,7 +154,7 @@ function BoardModify() {
       try {
         const token = localStorage.getItem('token');
         const response = await axios.get(
-          `http://localhost:8080/menu4/read?no=${boardId}`,
+          `http://localhost:8080/board/read?no=${boardId}`,
           {
             headers : {
             Authorization : token
@@ -193,7 +193,7 @@ function BoardModify() {
           />
           <ButtonContainer>
             <SubmitButton type="submit">등록</SubmitButton>
-            <CancelButton onClick={() => navigate('/menu4/boardlist')}>취소</CancelButton>
+            <CancelButton onClick={() => navigate('/boardlist')}>취소</CancelButton>
           </ButtonContainer>
         </Form>
       </Container>

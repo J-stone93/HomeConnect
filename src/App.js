@@ -6,13 +6,8 @@ import { createGlobalStyle } from 'styled-components';
 import 'bootstrap/dist/css/bootstrap.css';
 import Layout from './components/Layout';
 import Menu4 from './components/Menu4';
-import Menu2 from './components/Menu2';
-import Menu3 from './components/Menu3';
 import MyPage from './components/MyPage';
 import SignUp from './pages/login/SignUp';
-import NoticeMain from "./features/notice/NoticeMain";
-import NoticeList from './features/notice/NoticeList';
-import NoticeListDetail from './features/notice/NoticeListDetail';
 
 import Register from './pages/login/Register';
 import NoMatchPage from './pages/NoMatchPage';
@@ -32,6 +27,9 @@ import BoardListDetail from './features/board/BoardListDetail.jsx';
 import BoardList from './features/board/BoardList.jsx';
 import BoardModify from './features/board/BoardModify.jsx';
 import CalendarMain from './components/calendar/CalendarMain.jsx';
+import NoticeMain from './features/board/notice/NoticeMain.jsx';
+import NoticeListDetail from './features/board/notice/NoticeListDetail.jsx';
+import NoticeModify from './features/board/notice/NoticeModify.jsx';
 
 
 const GlobalStyle = createGlobalStyle`
@@ -65,24 +63,27 @@ function App() {
           <Route path='/' element={<Layout />} >
             <Route index element={<Main />} />
             <Route path='mypage' element={<MyPage />} />
+
             <Route path='feeinput' element={<FeeInputPage />} />
             <Route path='feedetail' element={<FeeChartDetail />} />
+
             <Route path='calendar' element={<CalendarMain />} />
+
             <Route path='community' element={<Community />}/> 
             <Route path='communitycategory' element={<CommunityCategory />}/>
             <Route path='communityregister' element={<CommunityRegister />}/>
             <Route path='communityread/:communityId' element={<CommunitySignUp />}/>
+
             <Route path='map' element={<Map />} />
-            <Route path='menu4' element={<Menu4 />}>
-              <Route index element={<BoardList />} />
-              <Route path='board' element={<Boardmain />} />
-              <Route path='boardlist' element={<BoardList />} />
-              <Route path='read/:boardId' element={<BoardListDetail />} />
-              <Route path='modify/:boardId' element={<BoardModify/>} />
-              <Route path='noticemain' element={<NoticeMain />} />
-              <Route path='noticelist' element={<NoticeList />} />
-              <Route path='noticelist/:boardId' element={<NoticeListDetail />} />
-            </Route>
+
+            <Route path='board' element={<Boardmain />} />
+            <Route path='boardlist' element={<BoardList />} />
+            <Route path='boardread/:boardId' element={<BoardListDetail />} />
+            <Route path='boardmodify/:boardId' element={<BoardModify/>} />
+
+            <Route path='notice' element={<NoticeMain />} />
+            <Route path='noticeread/:noticeId' element={<NoticeListDetail />} />
+            <Route path='noticemodify/:noticeId' element={<NoticeModify/>} />
           </Route>
           <Route path="*" element={<NoMatchPage />} />
         </Routes>

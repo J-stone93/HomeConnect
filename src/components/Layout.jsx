@@ -100,7 +100,7 @@ const Layout = () => {
                 <StyledNavbar onClick={() => navigate('/calendar')}>달력</StyledNavbar>
                 <StyledNavbar onClick={() => navigate('/community')}>모임</StyledNavbar>
                 <StyledNavbar onClick={() => navigate('/map')}>동네지도</StyledNavbar>
-                <StyledNavbar onClick={() => navigate('/menu4')}>게시판</StyledNavbar>
+                <StyledNavbar onClick={() => navigate('/boardlist')}>게시판</StyledNavbar>
               </Nav>
               <Nav className="ms-auto">
                 <Mypage>

@@ -248,7 +248,7 @@ function Main() {
                       <Card.Text>
                         {notice.content}
                       </Card.Text>
-                      <p style={{ cursor: 'pointer' }} onClick={() => navigate('/menu4/noticelist')}>바로가기</p>
+                      <p style={{ cursor: 'pointer' }} onClick={() => navigate('/noticelist')}>바로가기</p>
                     </Card.Body>
                   </Card>);
               })}

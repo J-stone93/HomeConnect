@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { useParams, useNavigate } from 'react-router-dom';
-import { getBoardList,selectBoardList} from './boardSlice';
-
-import styled from 'styled-components';
-import axios from 'axios';
-
-import BoardCommentListItem from './BoardCommentListItem';
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+import styled from "styled-components";
+import { getBoardList, NoticeContent, selectNoticeInfo } from "../boardSlice";
+import axios from "axios";
+import BoardCommentListItem from "../BoardCommentListItem";
 
 const CommentContainer = styled.div`
   border: 1px solid #ccc;
@@ -70,27 +68,27 @@ const PostContent = styled.div`
   border-bottom: 2px dashed #ccc;
 `;
 
-function BoardListDetail() {
+function NoticeListDetail() {
   const [comment, setComment] = useState('');
   const [commentList, setCommentList] = useState([]);
 
-  const { boardId } = useParams();
+  const { noticeId } = useParams();
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const boardItem = useSelector(selectBoardList);    
+  const noticeItem = useSelector(selectNoticeInfo);    
 
   useEffect(() => {
-    const boardlist = async () => {
+    const noticelist = async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/board/read?no=${boardId}`,{
+      const response = await axios.get(`http://localhost:8080/notice/read?no=${noticeId}`,{
         headers : {
           Authorization : localStorage.getItem('token'),
         }
       });
       if(!response.data) return;
       if (response.status === 200) { 
-          return dispatch(getBoardList(response.data));
+          return dispatch(NoticeContent(response.data));
       } else { 
           throw new Error(`api error: ${response.status} ${response.statusText}`);
       }
@@ -98,13 +96,13 @@ function BoardListDetail() {
           console.error(error);
       }
     };
-    boardlist();
+    noticelist();
   },[]);
 
   useEffect(() => {
     const commentList = async() => {
       try{
-        const response = await axios.get(`http://localhost:8080/comment/list?boardNo=${boardId}`, {
+        const response = await axios.get(`http://localhost:8080/comment/notice/list?noticeNo=${noticeId}`, {
           headers : {
             Authorization :  localStorage.getItem('token'),
           }
@@ -133,7 +131,7 @@ function BoardListDetail() {
         const token = localStorage.getItem('token');
         const response = await axios.post(`http://localhost:8080/comment/register`,
         {
-          "boardNo" : boardId,
+          "noticeNo" : noticeId,
           "content" : comment,
         },
         {
@@ -142,16 +140,16 @@ function BoardListDetail() {
           }
         });
         if (response.status === 200) { 
-          const boardlist = async () => {
+          const noticelist = async () => {
             try {
-              const response = await axios.get(`http://localhost:8080/board/read?no=${boardId}`,{
+              const response = await axios.get(`http://localhost:8080/notice/list?no=${noticeId}`,{
                 headers : {
                   Authorization : localStorage.getItem('token'),
                 }
               });
               if(!response.data) return;
               if (response.status === 200) { 
-                return dispatch(getBoardList(response.data));
+                return dispatch(NoticeContent(response.data));
               } else { 
                 throw new Error(`api error: ${response.status} ${response.statusText}`);
               }
@@ -159,11 +157,11 @@ function BoardListDetail() {
               console.error(error);
             }
           };
-          boardlist();
+          noticelist();
 
       const commentList = async() => {
         try{
-          const response = await axios.get(`http://localhost:8080/comment/list?boardNo=${boardId}`, {
+          const response = await axios.get(`http://localhost:8080/comment/notice/list?noticeNo=${noticeId}`, {
             headers : {
               Authorization :  localStorage.getItem('token'),
             }
@@ -203,17 +201,17 @@ function BoardListDetail() {
   return (
   <>
     <CommentContainer>
-      {boardItem &&
+      {noticeItem &&
       <PostContent >
         <PostTitleWriterContainer>
           <img className='imgs' src="/image/profile.png" alt="profile" />
           <PostTitleWriter>
-            <h1>{boardItem.writer}</h1>
-            <p>{formatDate(boardItem.modDate)}</p>
+            <h1>{noticeItem.writer}</h1>
+            <p>{formatDate(noticeItem.modDate)}</p>
           </PostTitleWriter>
         </PostTitleWriterContainer>
-        <h1>{boardItem.title}</h1>
-        <p className='mt-4'>{boardItem.content}</p>
+        <h1>{noticeItem.title}</h1>
+        <p className='mt-4'>{noticeItem.content}</p>
       </PostContent>}
 
       <h3>댓글</h3>
@@ -228,7 +226,7 @@ function BoardListDetail() {
               index = {index} 
               isEdit={comment.isEdit}
               setCommentList={setCommentList}
-              boardId={boardId}
+              noticeId={noticeId}
               modDate = {comment.modDate}
               />
             </>
@@ -253,4 +251,4 @@ function BoardListDetail() {
   );  
 };
 
-export default BoardListDetail;
+export default NoticeListDetail;

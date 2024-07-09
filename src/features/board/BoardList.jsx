@@ -114,6 +114,7 @@ const CancelButton = styled(Button)`
 
 function BoardList() {
   const [posts, setPosts] = useState([]);
+  const [notices, setNotices] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedPost, setSelectedPost] = useState(null); 
   const navigate = useNavigate();
@@ -139,7 +140,7 @@ function BoardList() {
     if (!selectedPost) return;
     
     try {
-      const response = await axios.delete(`http://localhost:8080/menu4/remove?no=${selectedPost.no}`, {
+      const response = await axios.delete(`http://localhost:8080/board/remove?no=${selectedPost.no}`, {
         headers: {
           Authorization: localStorage.getItem('token'),
         },
@@ -158,12 +159,13 @@ function BoardList() {
   useEffect(() => {
     const fetchBoardList = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/menu4/boardlist', {
+        const response = await axios.get('http://localhost:8080/board/list', {
           headers: {
-            Authorization: localStorage.getItem('token'),
+            Authorization: localStorage.getItem('token'), 
           },
         });
         if (response.status === 200) {
+          console.log(response.data);
           setPosts(response.data);
         } else {
           throw new Error(`API error: ${response.status} ${response.statusText}`);
@@ -175,13 +177,33 @@ function BoardList() {
     fetchBoardList();
   }, []);
 
+  useEffect(() => {
+    const fetchNoticeList = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/notice/list', {
+          headers: {
+            Authorization: localStorage.getItem('token'),
+          },
+        });
+        if (response.status === 200) {
+          setNotices(response.data);
+        } else {
+          throw new Error(`API error: ${response.status} ${response.statusText}`);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchNoticeList();
+  }, []);
+
   return (
     <>
       <ButtonContainer>
-        <StyledButton variant="primary" className="buttonstyle" onClick={() => navigate('/menu4/board')}>게시글 작성</StyledButton>
+        <StyledButton variant="primary" className="buttonstyle" onClick={() => navigate('/board')}>게시글 작성</StyledButton>
         {
           userInfo.role === 'ROLE_ADMIN' &&
-          <StyledButton variant="danger" className="buttonstyle" onClick={() => navigate('/menu4/board')}>공지 작성</StyledButton>
+          <StyledButton variant="danger" className="buttonstyle" onClick={() => navigate('/notice')}>공지 작성</StyledButton>
         }
       </ButtonContainer>
       <TableWrapper>
@@ -195,25 +217,34 @@ function BoardList() {
           </tr>
         </thead>
         <tbody>
-
-          <tr className="notice">
-            <td>1</td>
-            <td>공지사항 제목</td>
-            <td>{formatDate('2024-07-01').slice(0, 12)}</td>
-            <td>관리자</td>
-            <td></td>
-          </tr>
-
+          
+          {notices.map((notice)=>(
+            <tr key={notice.no} className="notice">
+              <td onClick={() => navigate(`/noticeread/${notice.no}`)}>{notice.no}</td>
+              <td onClick={() => navigate(`/noticeread/${notice.no}`)}>{notice.title}</td>
+              <td onClick={() => navigate(`/noticeread/${notice.no}`)}>{formatDate(notice.regDate).slice(0, 12)}</td>
+              <td onClick={() => navigate(`/noticeread/${notice.no}`)}>관리자</td>
+              <td>
+                {(userInfo.role === "ROLE_ADMIN") && (
+                  <>
+                    <BsPencilSquare className="icon" onClick={() => navigate(`/noticemodify/${notice.no}`)} />
+                    <CiSquareRemove className="icon" onClick={() => handleModalOpen(notice)} />
+                  </>
+                )}
+              </td>
+            </tr>
+          ))}
+          
           {posts.map((post) => (
             <tr key={post.no}>
-              <td onClick={() => navigate(`/menu4/read/${post.no}`)}>{post.no}</td>
-              <td onClick={() => navigate(`/menu4/read/${post.no}`)}>{post.title}</td>
-              <td onClick={() => navigate(`/menu4/read/${post.no}`)}>{formatDate(post.regDate).slice(0, 12)}</td>
-              <td onClick={() => navigate(`/menu4/read/${post.no}`)}>{post.writer}</td>
+              <td onClick={() => navigate(`/boardread/${post.no}`)}>{post.no}</td>
+              <td onClick={() => navigate(`/boardread/${post.no}`)}>{post.title}</td>
+              <td onClick={() => navigate(`/boardread/${post.no}`)}>{formatDate(post.regDate).slice(0, 12)}</td>
+              <td onClick={() => navigate(`/boardread/${post.no}`)}>{post.writer}</td>
               <td>
                 {(post.writer === userInfo.userId || userInfo.role === "ROLE_ADMIN") && (
                   <>
-                    <BsPencilSquare className="icon" onClick={() => navigate(`/menu4/modify/${post.no}`)} />
+                    <BsPencilSquare className="icon" onClick={() => navigate(`/boardmodify/${post.no}`)} />
                     <CiSquareRemove className="icon" onClick={() => handleModalOpen(post)} />
                   </>
                 )}
