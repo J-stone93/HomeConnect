@@ -41,7 +41,7 @@ export const getMoreProducts = async () => {
 // boardList 정보 가져오기
 export const getBoardListInfo = async () => {
   try {
-    const response = await axios.get('http://localhost:8080/menu4/boardlist');
+    const response = await axios.get('http://localhost:8080/board/list');
     if (response.status === 200) {
       return response.data;
     } else {
