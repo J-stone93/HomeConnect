@@ -5,7 +5,6 @@ import Login from './pages/login/Login';
 import { createGlobalStyle } from 'styled-components';
 import 'bootstrap/dist/css/bootstrap.css';
 import Layout from './components/Layout';
-import Menu4 from './components/Menu4';
 import MyPage from './components/MyPage';
 import SignUp from './pages/login/SignUp';
 
@@ -70,9 +69,10 @@ function App() {
             <Route index element={<Register />} />
             <Route path='signup' element={<SignUp />} />
           </Route>
-          <Route path='/' element={
+          {/* <Route path='/' element={
             isLoading ? (<Loading />) : <> <Layout /> </>
-          } >
+          } > */}
+          <Route path='/' element={<Layout/>}>
             <Route index element={<Main />} />
             <Route path='mypage' element={<MyPage />} />
 

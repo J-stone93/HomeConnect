@@ -4,7 +4,7 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { useSelector } from 'react-redux';
 import styled, { css, keyframes } from 'styled-components';
-import { selectNoticeInfo } from '../../features/board/boardSlice';
+import { selectNoticeList } from '../../features/board/boardSlice';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -186,7 +186,7 @@ function CalendarMain() {
   const [value, onChange] = useState(new Date());
   const [showDate, setShowDate] = useState(false); // 날짜 정보 보이기/숨기기 토글 상태
   const [selectedDate, setSelectedDate] = useState(null);
-  const NoticeList = useSelector(selectNoticeInfo);
+  const NoticeList = useSelector(selectNoticeList);
 
   const tileClassName = ({ date, view }) => {
     if (view === 'month' && date.getDay() === 0) {

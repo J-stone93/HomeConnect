@@ -1,11 +1,11 @@
-import { useEffect, useState, useCallback } from "react";
+import axios from "axios";
+import { useCallback, useEffect, useState } from "react";
 import { Button, Form, InputGroup } from "react-bootstrap";
-import styled from "styled-components";
 import { BsPencilSquare } from "react-icons/bs";
 import { CiSquareRemove } from "react-icons/ci";
-import axios from "axios";
 import { useSelector } from "react-redux";
-import { selectmyInfo } from "../main/mainSlice";
+import styled from "styled-components";
+import { selectmyInfo } from "../../main/mainSlice";
 
 const DivContainer = styled.div`
   width: 100%;
@@ -44,12 +44,12 @@ const ButtonContainer = styled.div`
   }
 `;
 
-function BoardCommentListItem(props) {
-  const { content, index, modDate, isEdit, commentNo, writer, setCommentList, boardId } = props;
+
+function NoticeCommentListItem(props) {
+  const { content, index, modDate, isEdit, commentNo, writer, setCommentList, noticeId } = props;
 
   const [value, setValue] = useState(content);
   const userInfo = useSelector(selectmyInfo);
-
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -64,7 +64,7 @@ function BoardCommentListItem(props) {
 
   const fetchCommentList = useCallback(async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/comment/list?boardNo=${boardId}`, {
+      const response = await axios.get(`http://localhost:8080/noticeComment/list?noticeNo=${noticeId}`, {
         headers: {
           Authorization: localStorage.getItem('token'),
         }
@@ -78,7 +78,7 @@ function BoardCommentListItem(props) {
     } catch (error) {
       console.error(error);
     }
-  }, [boardId, setCommentList]);
+  }, [noticeId, setCommentList]);
 
   useEffect(() => {
     fetchCommentList();
@@ -102,7 +102,7 @@ function BoardCommentListItem(props) {
 
       const modifyComment = async () => {
         try {
-          const response = await axios.put(`http://localhost:8080/comment/modify`, {
+          const response = await axios.put(`http://localhost:8080/noticeComment/modify`, {
             commentNo: commentNo,
             content: value,
           }, {
@@ -132,7 +132,7 @@ function BoardCommentListItem(props) {
 
   const handleRemoveComment = async () => {
     try {
-      const response = await axios.delete(`http://localhost:8080/comment/remove?commentNo=${commentNo}`, 
+      const response = await axios.delete(`http://localhost:8080/noticeComment/remove?commentNo=${commentNo}`, 
         { 
           headers: {
           Authorization: localStorage.getItem('token')
@@ -182,4 +182,5 @@ function BoardCommentListItem(props) {
   );
 };
 
-export default BoardCommentListItem;
+
+export default NoticeCommentListItem;

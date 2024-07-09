@@ -116,10 +116,11 @@ function BoardList() {
   const [posts, setPosts] = useState([]);
   const [notices, setNotices] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [showNoticeModal, setShowNoticeModal] = useState(false);
   const [selectedPost, setSelectedPost] = useState(null); 
+  const [selectedNotice, setSelectedNotice] = useState(null);
   const navigate = useNavigate();
   const userInfo = useSelector(selectmyInfo);
-  console.log(userInfo);
 
   const handleModalClose = () => {
     setShowModal(false);
@@ -129,6 +130,16 @@ function BoardList() {
   const handleModalOpen = (post) => {
     setSelectedPost(post);
     setShowModal(true);
+  };
+
+  const handleNoticeModalClose = () => {
+    setShowNoticeModal(false);
+    setSelectedNotice(null); 
+  };
+
+  const handleNoticeModalOpen = (notice) => {
+    setShowNoticeModal(true);
+    setSelectedNotice(notice);
   };
 
   const formatDate = (dateString) => {
@@ -156,6 +167,26 @@ function BoardList() {
     }
   };
 
+  const handleNoticeDelete = async () => {
+    if (!selectedNotice) return;
+    
+    try {
+      const response = await axios.delete(`http://localhost:8080/notice/remove?no=${selectedNotice.no}`, {
+        headers: {
+          Authorization: localStorage.getItem('token'),
+        },
+      });
+      if (response.status === 200) {
+        setNotices(notices.filter(notice => notice.no !== selectedNotice.no)); 
+        handleNoticeModalClose();
+      } else {
+        throw new Error(`API error: ${response.status} ${response.statusText}`);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     const fetchBoardList = async () => {
       try {
@@ -165,7 +196,6 @@ function BoardList() {
           },
         });
         if (response.status === 200) {
-          console.log(response.data);
           setPosts(response.data);
         } else {
           throw new Error(`API error: ${response.status} ${response.statusText}`);
@@ -228,7 +258,7 @@ function BoardList() {
                 {(userInfo.role === "ROLE_ADMIN") && (
                   <>
                     <BsPencilSquare className="icon" onClick={() => navigate(`/noticemodify/${notice.no}`)} />
-                    <CiSquareRemove className="icon" onClick={() => handleModalOpen(notice)} />
+                    <CiSquareRemove className="icon" onClick={() => handleNoticeModalOpen(notice)} />
                   </>
                 )}
               </td>
@@ -264,6 +294,19 @@ function BoardList() {
         <Modal.Footer>
           <SubmitButton onClick={handleDelete}>확인</SubmitButton>
           <CancelButton onClick={handleModalClose}>취소</CancelButton>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal show={showNoticeModal} onHide={handleNoticeModalClose} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>삭제 확인</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>정말 삭제하시겠습니까?</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <SubmitButton onClick={handleNoticeDelete}>확인</SubmitButton>
+          <CancelButton onClick={handleNoticeModalClose}>취소</CancelButton>
         </Modal.Footer>
       </Modal>
     </>

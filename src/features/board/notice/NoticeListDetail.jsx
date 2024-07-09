@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
-import { getBoardList, NoticeContent, selectNoticeInfo } from "../boardSlice";
+import {getNoticeList,selectNoticeList } from "../boardSlice";
 import axios from "axios";
 import BoardCommentListItem from "../BoardCommentListItem";
+import NoticeCommentListItem from "./NoticeCommentListItem";
 
 const CommentContainer = styled.div`
   border: 1px solid #ccc;
@@ -74,12 +75,12 @@ function NoticeListDetail() {
 
   const { noticeId } = useParams();
 
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const noticeItem = useSelector(selectNoticeInfo);    
-
+  // const dispatch = useDispatch();
+  // const noticeItem = useSelector(selectNoticeList);    
+  const [noticeItem, setNoticeItem] = useState([]);
   useEffect(() => {
-    const noticelist = async () => {
+    const noticeDetail = async () => {
     try {
       const response = await axios.get(`http://localhost:8080/notice/read?no=${noticeId}`,{
         headers : {
@@ -88,7 +89,7 @@ function NoticeListDetail() {
       });
       if(!response.data) return;
       if (response.status === 200) { 
-          return dispatch(NoticeContent(response.data));
+          return setNoticeItem(response.data);
       } else { 
           throw new Error(`api error: ${response.status} ${response.statusText}`);
       }
@@ -96,20 +97,19 @@ function NoticeListDetail() {
           console.error(error);
       }
     };
-    noticelist();
+    noticeDetail();
   },[]);
 
   useEffect(() => {
-    const commentList = async() => {
+    const noticeCommentList = async() => {
       try{
-        const response = await axios.get(`http://localhost:8080/comment/notice/list?noticeNo=${noticeId}`, {
+        const response = await axios.get(`http://localhost:8080/noticeComment/list?noticeNo=${noticeId}`, {
           headers : {
             Authorization :  localStorage.getItem('token'),
           }
         });
         if (response.status === 200) { 
           const data = response.data.map((data)=>({...data,isEdit : false}));
-          console.log(data);
           return setCommentList(data);
         } else { 
           throw new Error(`api error: ${response.status} ${response.statusText}`);
@@ -118,7 +118,7 @@ function NoticeListDetail() {
       console.error(error);
       }
     };
-    commentList();
+    noticeCommentList();
   },[]);
 
   const handlekeyDown = (e) => {
@@ -129,7 +129,7 @@ function NoticeListDetail() {
     const exportContents = async() => {
       try{
         const token = localStorage.getItem('token');
-        const response = await axios.post(`http://localhost:8080/comment/register`,
+        const response = await axios.post(`http://localhost:8080/noticeComment/register`,
         {
           "noticeNo" : noticeId,
           "content" : comment,
@@ -140,16 +140,16 @@ function NoticeListDetail() {
           }
         });
         if (response.status === 200) { 
-          const noticelist = async () => {
+          const noticeDetail = async () => {
             try {
-              const response = await axios.get(`http://localhost:8080/notice/list?no=${noticeId}`,{
+              const response = await axios.get(`http://localhost:8080/notice/read?no=${noticeId}`,{
                 headers : {
                   Authorization : localStorage.getItem('token'),
                 }
               });
               if(!response.data) return;
               if (response.status === 200) { 
-                return dispatch(NoticeContent(response.data));
+                return setNoticeItem(response.data);
               } else { 
                 throw new Error(`api error: ${response.status} ${response.statusText}`);
               }
@@ -157,35 +157,34 @@ function NoticeListDetail() {
               console.error(error);
             }
           };
-          noticelist();
+          noticeDetail();
 
-      const commentList = async() => {
-        try{
-          const response = await axios.get(`http://localhost:8080/comment/notice/list?noticeNo=${noticeId}`, {
-            headers : {
-              Authorization :  localStorage.getItem('token'),
+          const NoticeCommentList = async() => {
+            try{
+              const response = await axios.get(`http://localhost:8080/noticeComment/list?noticeNo=${noticeId}`, {
+                headers : {
+                  Authorization :  localStorage.getItem('token'),
+                }
+              });
+              if (response.status === 200) { 
+                return setCommentList(response.data);
+              } else { 
+                throw new Error(`api error: ${response.status} ${response.statusText}`);
+              }
+            } catch (error) {
+              console.error(error);
             }
-          });
-          if (response.status === 200) { 
-            return setCommentList(response.data);
-          } else { 
-            throw new Error(`api error: ${response.status} ${response.statusText}`);
-          }
+          };
+          NoticeCommentList();
+        } else { 
+          throw new Error(`api error: ${response.status} ${response.statusText}`);
+        }
         } catch (error) {
           console.error(error);
-        }
-      };
-      commentList();
-      return console.log("성공");
-      } else { 
-        throw new Error(`api error: ${response.status} ${response.statusText}`);
-      }
-      } catch (error) {
-        console.error(error);
-      }};
-    exportContents();
-    setComment(''); 
-  };
+        }};
+      exportContents();
+      setComment(''); 
+    };
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -219,7 +218,7 @@ function NoticeListDetail() {
         {commentList.map((comment,index)=>{
           return (
             <>
-              <BoardCommentListItem 
+              <NoticeCommentListItem 
               writer = {comment.writer} 
               commentNo = {comment.commentNo} 
               content = {comment.content} 

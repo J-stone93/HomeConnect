@@ -1,12 +1,9 @@
-import { Card, Button, Carousel } from "react-bootstrap";
-import { Provider, useDispatch, useSelector } from "react-redux";
+import { Card } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { store } from "../app/store";
 import FeeChart from '../components/FeeChart';
-import { selectNoticeInfo } from "../features/board/boardSlice";
-import { useEffect } from "react";
-import axios from "axios";
-import { getmyInfo, selectmyInfo } from "../features/main/mainSlice";
+import { selectNoticeList } from "../features/board/boardSlice";
+import { selectmyInfo } from "../features/main/mainSlice";
 import { SectionsContainer, Section, Footer } from "react-fullpage";
 import { useNavigate } from "react-router-dom";
 import { selectMyFee } from "../features/fee/feeSlice";
@@ -158,7 +155,7 @@ const TextOverlay = styled.div`
 `;
 
 function Main() {
-  const NoticeInfo = useSelector(selectNoticeInfo);
+  const NoticeInfo = useSelector(selectNoticeList);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const myInfo = useSelector(selectmyInfo);

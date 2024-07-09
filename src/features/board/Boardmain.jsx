@@ -95,7 +95,6 @@ function Boardmain() {
   const [content, setContent] = useState('');
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
-  const user = useSelector(selectmyInfo);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

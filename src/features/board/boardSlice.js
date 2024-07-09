@@ -1,9 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { act } from "react";
 
 const initialState = {
   boardList: [],
-  healthList: [],
   noticeList: [
     {
       id : 1,
@@ -21,39 +19,18 @@ const boardSlice = createSlice({
     getBoardList: (state, {payload : boardList}) => {
       state.boardList = boardList;
     },
-    removeBoardList: (state, { payload: id }) => {
-      state.boardList = state.boardList.filter(list => list.id !== id);
-    },
-    HealthContent: (state, action) => {
-      state.healthList.push({
-        id: action.payload.id,
-        title: action.payload.title,
-        content: action.payload.content
-      });
-    },
-    NoticeContent: (state, {payload : noticeList}) => {
+    getNoticeList: (state, {payload : noticeList}) => {
       state.noticeList = noticeList;
-    },
-    removeHealthList: (state, { payload: id }) => {
-      const newList = state.healthList.filter(list => list.id !== id);
-      state.healthList = newList;
-    },
-    clearBoardList : (state) => {
-      state.boardList = [];
     },
   }
 });
 
 export const {
   getBoardList,
-  HealthContent,
-  NoticeContent,
-  removeBoardList,
-  clearBoardList,
+  getNoticeList,
 } = boardSlice.actions;
 
 export const selectBoardList = state => state.board.boardList;
-export const selectHealthInfo = state => state.board.healthList;
-export const selectNoticeInfo = state => state.board.noticeList;
+export const selectNoticeList = state => state.board.noticeList;
 
 export default boardSlice.reducer;
