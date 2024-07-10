@@ -35,9 +35,12 @@ const StyledNavbar = styled(Navbar.Brand)`
   }
 `;
 
-const Mypage = styled(Navbar.Text)`
+const Mypage = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
+  flex: 1;
+
   img {
     width: 50px;
     margin-right: 10px;
@@ -46,15 +49,15 @@ const Mypage = styled(Navbar.Text)`
 
 
 const Content = styled.div`
-  /* padding-top: 82px; */ // <-- 문제임
-  padding-top: 82px; // 왜 지운거...죠...?
-  /* margin-top: 11%; */ //오잉??
+/* padding-top: 82px; */ // <-- 문제임
+  margin-top: 4%;
 `;
 
 const StyledFooter = styled.footer`
   width: 100%; //추가
   height: 60px;
-  transform : translateY(110%);
+  position: relative;
+  transform: translateY(110%);
   background-color: #343a40;
   color: white;
   text-align: center;
@@ -89,6 +92,20 @@ const LogoutButton = styled.button`
   }
 `;
 
+const StyledNav = styled(Nav)`
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+`;
+
+const StyledWeather = styled.div`
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+`;
+
 const Layout = () => {
   const navigate = useNavigate();
   const userInfo = useSelector(selectmyInfo);
@@ -101,42 +118,40 @@ const Layout = () => {
     navigate('/login');
   };
 
-
   return (
     <>
-        <FixedHeader>
-          <Navbar className="widthAdjust" expand="lg">
-            <Container>
-              <Navbar.Brand>
-                <IoIosHome onClick={() => navigate('/')} className="cursor-pointer" size={32} />
-              </Navbar.Brand>
-              <Navbar.Toggle aria-controls="basic-navbar-nav" />
-              <Navbar.Collapse id="basic-navbar-nav">
-                <Nav className="me-auto">
-                  <StyledNavbar onClick={() => navigate('/feedetail')}>관리비</StyledNavbar>
-                  <StyledNavbar onClick={() => navigate('/calendar')}>달력</StyledNavbar>
-                  <StyledNavbar onClick={() => navigate('/community')}>모임</StyledNavbar>
-                  <StyledNavbar onClick={() => navigate('/map')}>동네지도</StyledNavbar>
-                  <StyledNavbar onClick={() => navigate('/boardlist')}>게시판</StyledNavbar>
-                </Nav>
-                <Nav className="ms-auto">
-                  <Mypage>
-                    <img src="/image/profile.png" alt="profile" />
-                    <Nav.Link onClick={() => navigate('/mypage')} className="cursor-pointer">{userInfo?.name}님 환영합니다.</Nav.Link>
-                    <ProfileButton onClick={() => navigate('/feeinput')}>관리비 입력</ProfileButton>
-                    <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
-                  </Mypage>
-                </Nav>
-              </Navbar.Collapse>
-            </Container>
-          </Navbar>
-        </FixedHeader>
-        {/* <WeatherMain /> */}
+      <FixedHeader>
+        <Navbar className="widthAdjust"  expand="lg">
+          <Container>
+            <Navbar.Brand>
+              <IoIosHome onClick={() => navigate('/')} className="cursor-pointer" size={32} />
+            </Navbar.Brand>
+            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Navbar.Collapse id="basic-navbar-nav">
+              <StyledNav>
+                <StyledNavbar onClick={() => navigate('/feedetail')}>관리비</StyledNavbar>
+                <StyledNavbar onClick={() => navigate('/calendar')}>달력</StyledNavbar>
+                <StyledNavbar onClick={() => navigate('/community')}>모임</StyledNavbar>
+                <StyledNavbar onClick={() => navigate('/map')}>동네지도</StyledNavbar>
+                <StyledNavbar onClick={() => navigate('/boardlist')}>게시판</StyledNavbar>
+              </StyledNav>
+              <StyledWeather>
+                <WeatherMain />
+              </StyledWeather>
+              <Mypage>
+                <img src="/image/profile.png" alt="profile" />
+                <Nav.Link onClick={() => navigate('/mypage')} className="cursor-pointer">{userInfo?.name}님 환영합니다.</Nav.Link>
+                <ProfileButton onClick={() => navigate('/feeinput')}>관리비 입력</ProfileButton>
+                <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
+              </Mypage>
+            </Navbar.Collapse>
+          </Container>
+        </Navbar>
+      </FixedHeader>
 
-        <Content>
-          <Outlet />
-        </Content>
-
+      <Content>
+        <Outlet />
+      </Content>
 
       <StyledFooter>
         &copy; 코딩하는오합지졸. All Rights Reserved.
