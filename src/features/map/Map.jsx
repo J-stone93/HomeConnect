@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
-import ReactDOMServer from 'react-dom/server';
-// import "./Mapstyle.css";
+import "./Mapstyle.css";
 
 const Container = styled.div`
   margin: 30px;
@@ -187,7 +186,7 @@ function Map() {
 
       // 검색 결과 초기화 및 입력값 초기화
       setSearchResults([]);
-      setInputValue("");
+      // setInputValue("");
     }
   }, [selectedPlace, map]);
 
@@ -240,7 +239,7 @@ function Map() {
     setSearchResults([]);
 
     // 검색창의 입력값을 비워줍니다.
-    setInputValue("");
+    // setInputValue("");
   };
 
   // Kakao 지도 이벤트 설정
@@ -265,6 +264,8 @@ function Map() {
     });
 
     const content = document.createElement('div');
+    content.className = 'info-window';
+
     const closeButton = document.createElement('button');
     closeButton.className = 'close-button';
     closeButton.innerHTML = 'X';
@@ -286,6 +287,7 @@ function Map() {
       roadAddressSpan.title = place.road_address_name;
       roadAddressSpan.innerText = place.road_address_name;
       addressDiv.appendChild(roadAddressSpan);
+      addressDiv.appendChild(document.createElement('br'));
       const jibunSpan = document.createElement('span');
       jibunSpan.className = 'jibun';
       jibunSpan.title = place.address_name;
@@ -527,7 +529,7 @@ function Map() {
     }
 
     // 검색창의 입력값을 비워줍니다.
-    setInputValue("");
+    // setInputValue("");
   }; 
 
   return (
@@ -550,7 +552,7 @@ function Map() {
         <SearchResults ref={searchResultsRef}>
           {searchResults.map((place, index) => (
             <ResultItem 
-              key={place.id}
+              key={place}
               onClick={() => handleSelectPlace(place)}
               className={index === selectedItemIndex ? "selected" : ""}
               >
