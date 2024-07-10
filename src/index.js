@@ -13,12 +13,12 @@ import { getmyInfo } from './features/main/mainSlice';
 // import 'react-toastify/dist/ReactToastify.min.css'; // ReactToastify CSS 추가
 
 
-// (()=>{
-//   const user = JSON.parse((localStorage.getItem('user')))
-//   if(!user) return;
-//   console.log(user);
-//   store.dispatch(getmyInfo(user));
-// })();
+(()=>{
+  const user = JSON.parse((localStorage.getItem('user')))
+  if(!user) return;
+  console.log(user);
+  store.dispatch(getmyInfo(user));
+})();
 
 
 

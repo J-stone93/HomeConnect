@@ -6,6 +6,12 @@ import { IoIosHome } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { getmyInfo, selectmyInfo } from "../features/main/mainSlice";
 
+const Wrapper = styled.div`
+  height: auto;
+  min-height: 100%;
+  padding-bottom: 80px;
+`;
+
 const StyledNavbar = styled(Navbar.Brand)`
   text-align: center;
   cursor: pointer;
@@ -40,6 +46,9 @@ const Content = styled.div`
 `;
 
 const StyledFooter = styled.footer`
+  height: 60px;
+  position : relative;
+  transform : translateY(110%);
   background-color: #343a40;
   color: white;
   text-align: center;
@@ -87,37 +96,38 @@ const Layout = () => {
 
   return (
     <>
-      <FixedHeader>
-        <Navbar expand="lg">
-          <Container>
-            <Navbar.Brand>
-              <IoIosHome onClick={() => navigate('/')} className="cursor-pointer" size={32} />
-            </Navbar.Brand>
-            <Navbar.Toggle aria-controls="basic-navbar-nav" />
-            <Navbar.Collapse id="basic-navbar-nav">
-              <Nav className="me-auto">
-                <StyledNavbar onClick={() => navigate('/feedetail')}>관리비</StyledNavbar>
-                <StyledNavbar onClick={() => navigate('/calendar')}>달력</StyledNavbar>
-                <StyledNavbar onClick={() => navigate('/community')}>모임</StyledNavbar>
-                <StyledNavbar onClick={() => navigate('/map')}>동네지도</StyledNavbar>
-                <StyledNavbar onClick={() => navigate('/boardlist')}>게시판</StyledNavbar>
-              </Nav>
-              <Nav className="ms-auto">
-                <Mypage>
-                  <img src="/image/profile.png" alt="profile" />
-                  <Nav.Link onClick={() => navigate('/mypage')} className="cursor-pointer">{userInfo?.name}님 환영합니다.</Nav.Link>
-                  <ProfileButton onClick={() => navigate('/feeinput')}>관리비 입력</ProfileButton>
-                  <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
-                </Mypage>
-              </Nav>
-            </Navbar.Collapse>
-          </Container>
-        </Navbar>
-      </FixedHeader>
-      
-      <Content>
-        <Outlet />
-      </Content>
+        <FixedHeader>
+          <Navbar expand="lg">
+            <Container>
+              <Navbar.Brand>
+                <IoIosHome onClick={() => navigate('/')} className="cursor-pointer" size={32} />
+              </Navbar.Brand>
+              <Navbar.Toggle aria-controls="basic-navbar-nav" />
+              <Navbar.Collapse id="basic-navbar-nav">
+                <Nav className="me-auto">
+                  <StyledNavbar onClick={() => navigate('/feedetail')}>관리비</StyledNavbar>
+                  <StyledNavbar onClick={() => navigate('/calendar')}>달력</StyledNavbar>
+                  <StyledNavbar onClick={() => navigate('/community')}>모임</StyledNavbar>
+                  <StyledNavbar onClick={() => navigate('/map')}>동네지도</StyledNavbar>
+                  <StyledNavbar onClick={() => navigate('/boardlist')}>게시판</StyledNavbar>
+                </Nav>
+                <Nav className="ms-auto">
+                  <Mypage>
+                    <img src="/image/profile.png" alt="profile" />
+                    <Nav.Link onClick={() => navigate('/mypage')} className="cursor-pointer">{userInfo?.name}님 환영합니다.</Nav.Link>
+                    <ProfileButton onClick={() => navigate('/feeinput')}>관리비 입력</ProfileButton>
+                    <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
+                  </Mypage>
+                </Nav>
+              </Navbar.Collapse>
+            </Container>
+          </Navbar>
+        </FixedHeader>
+
+        <Content>
+          <Outlet />
+        </Content>
+
 
       <StyledFooter>
         &copy; 코딩하는오합지졸. All Rights Reserved.

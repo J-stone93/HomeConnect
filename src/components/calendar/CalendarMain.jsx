@@ -1,10 +1,11 @@
 import moment from 'moment';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { useSelector } from 'react-redux';
 import styled, { css, keyframes } from 'styled-components';
 import { selectNoticeList } from '../../features/board/boardSlice';
+import axios from 'axios';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -184,22 +185,43 @@ const ContentInput = styled.input`
 
 function CalendarMain() {
   const [value, onChange] = useState(new Date());
-  const [showDate, setShowDate] = useState(false); // 날짜 정보 보이기/숨기기 토글 상태
+  const [showDate, setShowDate] = useState(false); 
   const [selectedDate, setSelectedDate] = useState(null);
-  const NoticeList = useSelector(selectNoticeList);
+  // const NoticeList = useSelector(selectNoticeList);
+  const [noticeList, setNoticeList] = useState([]);
+
+  const fetchNoticeList = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/notice/list', {
+        headers: {
+          Authorization: localStorage.getItem('token'),
+        },
+      });
+      if (response.status === 200) {
+        setNoticeList(response.data);
+      } else {
+        throw new Error(`API error: ${response.status} ${response.statusText}`);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  useEffect(() => {
+    fetchNoticeList();
+  }, []);
 
   const tileClassName = ({ date, view }) => {
     if (view === 'month' && date.getDay() === 0) {
       return 'react-calendar__tile--sunday';
     }
-    if (NoticeList.some((notice) => moment(notice.date).isSame(date, 'day'))) {
+    if (noticeList.some((notice) => moment(notice.date).isSame(date, 'day'))) {
       return 'react-calendar__tile--marked';
     }
     return null;
   };
 
   const tileContent = ({ date }) => {
-    const notices = NoticeList.filter((notice) => moment(notice.date).isSame(date, 'day'));
+    const notices = noticeList.filter((notice) => moment(notice.date).isSame(date, 'day'));
     return notices.map((notice, index) => <div key={index}>{notice.content}</div>);
   };
 
@@ -217,7 +239,7 @@ function CalendarMain() {
     setSelectedDate(date);
     setShowDate(true);
   };
-  console.log(NoticeList);
+  // console.log(NoticeList);
   return (
     <Wrapper showDate={showDate}>
       <Calendar
@@ -237,7 +259,8 @@ function CalendarMain() {
         {/* <h2 className="notice">공지사항</h2> */}
         {showDate && selectedDate && (
           <div className="text-gray-500">
-            {NoticeList.map((notice) => (
+
+            {noticeList.map((notice) => (
               moment(notice.date).isSame(selectedDate, 'day') && (
                 <div key={notice.id}>
                   <TitleInput type="text" value={notice.title} readOnly />
