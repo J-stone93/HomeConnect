@@ -6,7 +6,9 @@ import { selectNoticeList } from "../features/board/boardSlice";
 import { selectmyInfo } from "../features/main/mainSlice";
 import { SectionsContainer, Section, Footer } from "react-fullpage";
 import { useNavigate } from "react-router-dom";
-import { selectMyFee } from "../features/fee/feeSlice";
+import { selectMyFee, setFees } from "../features/fee/feeSlice";
+import { useEffect } from "react";
+import axios from "axios";
 
 const StyledCard = styled.div`
   display: flex;
@@ -158,10 +160,11 @@ function Main() {
   const NoticeInfo = useSelector(selectNoticeList);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const myInfo = useSelector(selectmyInfo);
+  const userInfo = useSelector(selectmyInfo);
   const today = new Date();
   const currentMonth = today.getMonth() + 1;
-  const fee = useSelector(state => selectMyFee(state, currentMonth));
+  const fee = useSelector(state => selectMyFee(state, currentMonth)) || { electric: 0, water: 0, maintenance: 0 };
+
 
   let options = {
     activeClass: 'active', // the class that is appended to the sections links
@@ -184,6 +187,26 @@ function Main() {
   const dayText = daysOfWeek[today.getDay()];
 
   const totalFee = fee.electric + fee.water + fee.maintenance
+
+  useEffect(() => {
+    const fetchFeeInfo = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/fee/list',
+        { headers: {
+          Authorization: localStorage.getItem('token')
+        }}
+        );
+        if (response.status === 200) {
+          dispatch(setFees(response.data));
+        }
+      } catch (error) {
+        console.error("Error fetching fee data:", error);
+      }
+    }
+    if (userInfo && userInfo.userId) {
+      fetchFeeInfo();
+    }
+  }, [userInfo]);
 
   return (
     <>
@@ -217,7 +240,7 @@ function Main() {
 
               <FeeContainer2>
                 <FeeContentsContainer>
-                  <p>{myInfo?.name}님 {formattedDate}월 총 관리비는
+                  <p>{userInfo?.name}님 {formattedDate}월 총 관리비는
                     <br />
                     {totalFee}원 입니다.
                     <br />
