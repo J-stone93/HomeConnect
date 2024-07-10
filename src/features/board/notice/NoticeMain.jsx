@@ -5,11 +5,18 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { selectmyInfo } from "../../main/mainSlice";
 import axios from "axios";
+import BasicCalendar from "../../../components/calendar/BasicCalendar";
+
+const Wrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+`;
 
 const Container = styled.div`
-  width: 80%;
+  width: 50%;
   max-width: 800px;
-  margin: 50px auto;
+  margin-top: 50px;
   padding: 30px;
   background-color: #ffffff;
   border-radius: 8px;
@@ -124,15 +131,15 @@ function NoticeMain() {
       const token = localStorage.getItem('token');
       const response = await axios.post(
         'http://localhost:8080/notice/register',
-        { 
+        {
           "no": 0,
           "title": title,
           "content": content,
         },
         {
-          headers : {
-          Authorization : token
-          } 
+          headers: {
+            Authorization: token
+          }
         });
       if (response.status === 200) {
         setTitle('');
@@ -151,31 +158,35 @@ function NoticeMain() {
 
   return (
     <>
-      <Container>
-        <Form onSubmit={handleSubmit}>
-          <InputField
-            type="text"
-            name="title"
-            placeholder="제목을 입력하세요."
-            value={title}
-            onChange={handleChange}
-            required
-          />
-          <TextArea
-            name="content"
-            placeholder="내용을 입력하세요."
-            value={content}
-            onChange={handleChange}
-            required
-          />
-          <ButtonContainer>
-            <SubmitButton type="submit">등록</SubmitButton>
-            <CancelButton onClick={() => navigate('/boardlist')}>취소</CancelButton>
-          </ButtonContainer>
-        </Form>
-      </Container>
+      <Wrapper>
+        <Container>
+          <Form onSubmit={handleSubmit}>
+            <InputField
+              type="text"
+              name="title"
+              placeholder="제목을 입력하세요."
+              value={title}
+              onChange={handleChange}
+              required
+            />
+            <TextArea
+              name="content"
+              placeholder="내용을 입력하세요."
+              value={content}
+              onChange={handleChange}
+              required
+            />
+            <ButtonContainer>
+              <SubmitButton type="submit">등록</SubmitButton>
+              <CancelButton onClick={() => navigate('/boardlist')}>취소</CancelButton>
+            </ButtonContainer>
+          </Form>
+        </Container>
+        <BasicCalendar />
 
-      <Modal   show={showModal} onHide={handleModalClose} centered>
+      </Wrapper>
+
+      <Modal show={showModal} onHide={handleModalClose} centered>
         <Modal.Header closeButton>
           <Modal.Title>등록 확인</Modal.Title>
         </Modal.Header>
