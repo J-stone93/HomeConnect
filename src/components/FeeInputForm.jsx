@@ -23,13 +23,15 @@ function FeeInputForm() {
     const fetchFeeInfo = async () => {
       try {
         const response = await axios.get('http://localhost:8080/fee/read',
-        { headers: {
-          Authorization: localStorage.getItem('token'),
-        }}
+        // { headers: {
+        //   Authorization: localStorage.getItem('token'),
+        // }}
         );
       console.log(response);
         if (response.status === 200) {
           setFormData(response.data);
+        } else {
+          throw new Error(`API error: ${response.status} ${response.statusText}`);
         }
       } catch (error) {
         console.error("Error fetching fee data:", error);
