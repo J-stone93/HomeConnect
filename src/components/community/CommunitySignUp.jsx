@@ -97,7 +97,7 @@ function CommunitySignUp() {
   useEffect(() => {
     const fetchCommunity = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/menu4/communityread?no=${communityId}`, {
+        const response = await axios.get(`http://localhost:8080/community/read?no=${communityId}`, {
           headers: {
             Authorization: localStorage.getItem('token'),
           }
@@ -114,7 +114,7 @@ function CommunitySignUp() {
     try {
       const result = window.confirm('정말로 삭제하시겠습니까?');
       if (result) {
-        const response = await axios.delete(`http://localhost:8080/menu4/communityremove?no=${communityId}`, {
+        const response = await axios.delete(`http://localhost:8080/community/remove?no=${communityId}`, {
           headers: {
             Authorization: localStorage.getItem('token')
           }

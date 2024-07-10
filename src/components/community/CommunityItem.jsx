@@ -59,7 +59,7 @@ function CommunityItem(props) {
   useEffect(() => {
     const communitylist = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/menu4/communitycategory?category=${categoryName}`, {
+        const response = await axios.get(`http://localhost:8080/community/category?category=${categoryName}`, {
           headers : {
             Authorization : localStorage.getItem('token'),
           }
@@ -81,6 +81,8 @@ function CommunityItem(props) {
         {communityList && communityList.map((communityItem) => (
           <tbody key={communityItem.no} onClick={() => navigate(`/communityread/${communityItem.no}`)}>
             <tr>
+              <td><img src={`../../image/${communityItem.imgPath}`} alt="" /></td>
+
               <td><img src={`../../image/${communityItem.imgPath}`} alt="" /></td>
               <td>{communityItem.title}</td>
               <td>작성자: {communityItem.writer}</td>
