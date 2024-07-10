@@ -84,7 +84,7 @@ function CommunityModal(props) {
   
     try {
       const response = await axios.put(
-        `http://localhost:8080/menu4/communitymodify`,
+        `http://localhost:8080/community/modify`,
         {
           no: communityList.no,
           title: titleValue,
@@ -97,7 +97,7 @@ function CommunityModal(props) {
   
       if (response.status === 200) {
         const communityListGet = await axios.get(
-          `http://localhost:8080/menu4/communityread?no=${communityId}`,
+          `http://localhost:8080/community/read?no=${communityId}`,
           {
             headers: { Authorization: token }
           }

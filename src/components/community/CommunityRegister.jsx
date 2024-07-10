@@ -8,8 +8,8 @@ import { selectmyInfo } from "../../features/main/mainSlice";
 import { selectCommunityList } from "../../features/community/communitySlice";
 
 const Wrapper = styled.form`
-  margin: 50px;
-  width: 90%;
+  margin: 0 auto;
+  width: 70%;
   padding: 50px;
   background-color: #f8f9fa;
   border-radius: 20px;
@@ -110,7 +110,7 @@ function CommunityRegister() {
     const token = localStorage.getItem('token');
 
     if (!titleValue || !contentValue || !img) {
-      return alert('모든 항목을 입력해주세요.');
+      return alert('제목, 내용, 썸네일을 모두 등록해주세요');
     }
 
     const formData = new FormData();
@@ -122,11 +122,13 @@ function CommunityRegister() {
     formData.append("category", category);
     formData.append("Authorization", token);
 
+    
     try {
-      const response = await axios.post(`http://localhost:8080/menu4/communityregister`, formData, {
-        headers: { 'content-type': 'multipart/form-data', 'Authorization': `${token}` },
+      const response = await axios.post(`http://localhost:8080/community/register`, formData, {
+        headers: { 'Authorization': `${token}` },
       });
-      if (response.status === 200) {
+      console.log(response);
+      if (response.status === 200 || response.status === 304) {
         navigate('/community');
       } else {
         throw new Error(`API 에러: ${response.status} ${response.statusText}`);
@@ -172,10 +174,10 @@ function CommunityRegister() {
             onChange={handleChangFile}
           />
           <Nav.Link>
-            <RegisterButton onClick={addCommunityContent}>
+            <RegisterButton type="button" onClick={addCommunityContent}>
               등록
             </RegisterButton>
-            <RegisterButton onClick={() => navigate('/community')}>뒤로가기</RegisterButton>
+            <RegisterButton type="button" onClick={() => navigate('/community')}>뒤로가기</RegisterButton>
           </Nav.Link>
         </div>
       </ButtonWrapper>

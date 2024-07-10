@@ -5,6 +5,7 @@ import { Outlet } from "react-router-dom";
 import { IoIosHome } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { getmyInfo, selectmyInfo } from "../features/main/mainSlice";
+import WeatherMain from "./weather/WeatherMain";
 
 const Wrapper = styled.div`
   height: auto;
@@ -42,7 +43,8 @@ const FixedHeader = styled.header`
 `;
 
 const Content = styled.div`
-  padding-top: 82px;
+  /* padding-top: 82px; */ // <-- 문제임
+  margin-top: 11%;
 `;
 
 const StyledFooter = styled.footer`
@@ -123,6 +125,7 @@ const Layout = () => {
             </Container>
           </Navbar>
         </FixedHeader>
+        <WeatherMain />
 
         <Content>
           <Outlet />
