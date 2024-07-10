@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
-import ReactDOMServer from 'react-dom/server';
-// import "./Mapstyle.css";
+import "./Mapstyle.css";
 
 const Container = styled.div`
   margin: 30px;
@@ -187,7 +186,7 @@ function Map() {
 
       // 검색 결과 초기화 및 입력값 초기화
       setSearchResults([]);
-      setInputValue("");
+      // setInputValue("");
     }
   }, [selectedPlace, map]);
 
@@ -223,7 +222,6 @@ function Map() {
 
   // 장소 선택 시 호출되는 핸들러
   const handleSelectPlace = (place) => {
-
     // 선택된 장소의 마커를 생성하여 지도에 표시
     const marker = new window.kakao.maps.Marker({
       position: new window.kakao.maps.LatLng(place.y, place.x),
@@ -240,7 +238,11 @@ function Map() {
     setSearchResults([]);
 
     // 검색창의 입력값을 비워줍니다.
-    setInputValue("");
+    // setInputValue("");
+
+    setSelectedItemIndex(-1); // Clear selected item index
+
+    setInputValue(place.place_name);
   };
 
   // Kakao 지도 이벤트 설정
@@ -265,6 +267,8 @@ function Map() {
     });
 
     const content = document.createElement('div');
+    content.className = 'info-window';
+
     const closeButton = document.createElement('button');
     closeButton.className = 'close-button';
     closeButton.innerHTML = 'X';
@@ -286,6 +290,7 @@ function Map() {
       roadAddressSpan.title = place.road_address_name;
       roadAddressSpan.innerText = place.road_address_name;
       addressDiv.appendChild(roadAddressSpan);
+      addressDiv.appendChild(document.createElement('br'));
       const jibunSpan = document.createElement('span');
       jibunSpan.className = 'jibun';
       jibunSpan.title = place.address_name;
@@ -346,16 +351,32 @@ function Map() {
       if (selectedItemIndex < searchResults.length - 1) {
         setSelectedItemIndex(selectedItemIndex + 1);
         scrollToItem(selectedItemIndex + 1);
+         // 선택된 항목의 텍스트를 실시간으로 검색창에 반영
+        setInputValue(searchResults[selectedItemIndex + 1].place_name);
       }
     } else if (event.key === "ArrowUp") {
       event.preventDefault();
       if (selectedItemIndex > 0) {
         setSelectedItemIndex(selectedItemIndex - 1);
         scrollToItem(selectedItemIndex - 1);
+        // 선택된 항목의 텍스트를 실시간으로 검색창에 반영
+        setInputValue(searchResults[selectedItemIndex - 1].place_name);
       }
-    } else if (event.key === "Enter" && selectedItemIndex !== -1) {
-      handleSelectPlace(searchResults[selectedItemIndex]);
-      setSelectedItemIndex(-1);
+    } else if (event.key === "Enter") {
+      if (selectedItemIndex !== -1) {
+        // 검색창에 선택된 항목의 텍스트를 입력
+        setInputValue(searchResults[selectedItemIndex].place_name);
+        
+        // 선택된 항목 처리
+        handleSelectPlace(searchResults[selectedItemIndex]);
+        setSelectedItemIndex(-1);
+      } else if (inputValue.trim() !== "") {
+        // 검색어가 입력된 경우 검색 실행
+        handleSearchClick();
+      } else {
+        // 검색어가 없는 경우 처리
+        console.log("검색어를 입력하세요");
+      }
     }
   };
 
@@ -517,7 +538,7 @@ function Map() {
     }
 
     // 검색창의 입력값을 비워줍니다.
-    setInputValue("");
+    // setInputValue("");
   }; 
 
   return (
@@ -540,7 +561,7 @@ function Map() {
         <SearchResults ref={searchResultsRef}>
           {searchResults.map((place, index) => (
             <ResultItem 
-              key={place.id}
+              key={place}
               onClick={() => handleSelectPlace(place)}
               className={index === selectedItemIndex ? "selected" : ""}
               >
