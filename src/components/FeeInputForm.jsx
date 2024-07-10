@@ -27,7 +27,9 @@ function FeeInputForm() {
         console.error("Error fetching fee data:", error);
       }
     }
-    fetchFeeInfo();
+    if (userInfo && userInfo.userId) {
+      fetchFeeInfo();
+    }
   }, [userInfo]);
 
   const handleFeeSubmit = async () => {

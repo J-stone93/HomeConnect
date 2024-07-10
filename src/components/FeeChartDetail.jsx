@@ -12,8 +12,9 @@ import {
   ArcElement,
 } from 'chart.js';
 import styled from 'styled-components';
-import { cancelPayment } from '../features/fee/feeSlice';
+import { cancelPayment, setFees } from '../features/fee/feeSlice';
 import axios from 'axios';
+import { selectmyInfo } from '../features/main/mainSlice';
 
 // Chart.js에 필요한 구성 요소 등록
 ChartJS.register(
@@ -156,6 +157,7 @@ function FeeChartDetail() {
   const payments = useSelector((state) => state.fees.payments);
   const [data2, setData2] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const userInfo = useSelector(selectmyInfo);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -168,6 +170,26 @@ function FeeChartDetail() {
   const today = new Date();
 
   const formattedYear = `${today.getFullYear()}`
+
+  useEffect(() => {
+    const fetchFeeInfo = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/fee/list',
+        { headers: {
+          Authorization: localStorage.getItem('token')
+        }}
+        );
+        if (response.status === 200) {
+          dispatch(setFees(response.data));
+        }
+      } catch (error) {
+        console.error("Error fetching fee data:", error);
+      }
+    }
+    if (userInfo && userInfo.userId) {
+      fetchFeeInfo();
+    }
+  }, [userInfo]);
   
   // 결제 시스템
   const Payment = (effect, deps) => {
@@ -332,19 +354,19 @@ function FeeChartDetail() {
     {
       label: '전기세',
       data: fees.map(fee => fee.electric),
-      backgroundColor: 'rgba(255, 99, 132, 0.6)',
+      backgroundColor: 'rgba(224, 14, 60, 0.6)',
       hidden: !visibleDatasets.includes('electric'),
     },
     {
       label: '수도세',
       data: fees.map(fee => fee.water),
-      backgroundColor: 'rgba(54, 162, 235, 0.6)',
+      backgroundColor: 'rgba(5, 138, 226, 0.6)',
       hidden: !visibleDatasets.includes('water'),
     },
     {
       label: '관리비',
       data: fees.map(fee => fee.maintenance),
-      backgroundColor: 'rgba(75, 192, 192, 0.6)',
+      backgroundColor: 'rgba(14, 199, 199, 0.6)',
       hidden: !visibleDatasets.includes('maintenance'),
     },
   ];

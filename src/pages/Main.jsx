@@ -188,6 +188,26 @@ function Main() {
 
   const totalFee = fee.electric + fee.water + fee.maintenance
 
+  useEffect(() => {
+    const fetchFeeInfo = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/fee/list',
+        { headers: {
+          Authorization: localStorage.getItem('token')
+        }}
+        );
+        if (response.status === 200) {
+          dispatch(setFees(response.data));
+        }
+      } catch (error) {
+        console.error("Error fetching fee data:", error);
+      }
+    }
+    if (userInfo && userInfo.userId) {
+      fetchFeeInfo();
+    }
+  }, [userInfo]);
+
   return (
     <>
       <SectionsContainer {...options}>
