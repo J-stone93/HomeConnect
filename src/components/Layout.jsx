@@ -21,7 +21,13 @@ const FixedHeader = styled.header`
   .widthAdjust{
     width: 80%;
   } //추가
+`;
 
+const SpaceBetweenContainer = styled(Container)`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 const StyledNavbar = styled(Navbar.Brand)`
@@ -50,7 +56,8 @@ const Mypage = styled.div`
 
 const Content = styled.div`
 /* padding-top: 82px; */ // <-- 문제임
-  margin-top: 4%;
+  padding-top: 67px; //오잉?
+  /* margin-top: 4%; */
 `;
 
 const StyledFooter = styled.footer`
@@ -122,10 +129,12 @@ const Layout = () => {
     <>
       <FixedHeader>
         <Navbar className="widthAdjust"  expand="lg">
-          <Container>
+          <SpaceBetweenContainer>
+
             <Navbar.Brand>
               <IoIosHome onClick={() => navigate('/')} className="cursor-pointer" size={32} />
             </Navbar.Brand>
+
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
               <StyledNav>
@@ -135,17 +144,20 @@ const Layout = () => {
                 <StyledNavbar onClick={() => navigate('/map')}>동네지도</StyledNavbar>
                 <StyledNavbar onClick={() => navigate('/boardlist')}>게시판</StyledNavbar>
               </StyledNav>
+
               <StyledWeather>
                 <WeatherMain />
               </StyledWeather>
+
               <Mypage>
                 <img src="/image/profile.png" alt="profile" />
                 <Nav.Link onClick={() => navigate('/mypage')} className="cursor-pointer">{userInfo?.name}님 환영합니다.</Nav.Link>
                 <ProfileButton onClick={() => navigate('/feeinput')}>관리비 입력</ProfileButton>
                 <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
               </Mypage>
+
             </Navbar.Collapse>
-          </Container>
+          </SpaceBetweenContainer>
         </Navbar>
       </FixedHeader>
 
