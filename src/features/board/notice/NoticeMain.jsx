@@ -100,9 +100,9 @@ const CancelButton = styled(Button)`
 function NoticeMain() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [date, setDate] = useState('');
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
-  const user = useSelector(selectmyInfo);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -135,6 +135,7 @@ function NoticeMain() {
           "no": 0,
           "title": title,
           "content": content,
+          "noticeDate" : date,
         },
         {
           headers: {
@@ -182,8 +183,8 @@ function NoticeMain() {
             </ButtonContainer>
           </Form>
         </Container>
-        <BasicCalendar />
-
+        <BasicCalendar setDate = {setDate} />
+      
       </Wrapper>
 
       <Modal show={showModal} onHide={handleModalClose} centered>

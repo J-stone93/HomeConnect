@@ -15,19 +15,30 @@ const CalendarContainer = styled.div`
   text-align: center;
 `;
 
-function BasicCalendar() {
-  const [value, onChange] = useState(new Date());
+function BasicCalendar(props) {
+  const { setDate } = props;
 
-  const handleDateChange = (date) => {
-    onChange(date);
-    console.log('Selected date:', date);  // 클릭한 날짜 데이터 추출
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    
+    const year = date.getFullYear();
+    const month = ('0' + (date.getMonth() + 1)).slice(-2);
+    const day = ('0' + date.getDate()).slice(-2);
+  
+    return `${year}-${month}-${day}`;
   };
 
+  const [value, setValue] = useState('');
+
+  const handleDateChange = (date) => {
+    setValue(formatDate(date));
+    setDate(formatDate(date));
+  };
 
   return (
     <CalendarContainer>
       <h2>공지날짜 선택하기</h2>
-      <Calendar onChange={handleDateChange} value={value} />
+      <Calendar onClickDay={handleDateChange} value={value} />
     </CalendarContainer>
   );
 }

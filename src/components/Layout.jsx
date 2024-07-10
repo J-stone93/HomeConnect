@@ -7,6 +7,22 @@ import { useDispatch, useSelector } from "react-redux";
 import { getmyInfo, selectmyInfo } from "../features/main/mainSlice";
 import WeatherMain from "./weather/WeatherMain";
 
+const FixedHeader = styled.header`
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 10;
+  background-color: #f8f9fa;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  .widthAdjust{
+    width: 80%;
+  } //추가
+
+`;
 
 const StyledNavbar = styled(Navbar.Brand)`
   text-align: center;
@@ -28,31 +44,23 @@ const Mypage = styled(Navbar.Text)`
   }
 `;
 
-const FixedHeader = styled.header`
-  position: fixed;
-  top: 0;
-  width: 100%;
-  z-index: 10;
-  background-color: #f8f9fa;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-`;
 
 const Content = styled.div`
   /* padding-top: 82px; */ // <-- 문제임
-  margin-top: 11%;
+  padding-top: 82px; // 왜 지운거...죠...?
+  /* margin-top: 11%; */ //오잉??
 `;
 
 const StyledFooter = styled.footer`
+  width: 100%; //추가
   height: 60px;
-  position : relative;
   transform : translateY(110%);
   background-color: #343a40;
   color: white;
   text-align: center;
-  padding: 15px 0;
-  margin-top: 20px;
-  position: relative;
-  bottom: 0;
+  padding: 25px 0;
+  position: absolute; //추가
+  bottom: 0; //추가
 `;
 
 const ProfileButton = styled.button`
@@ -97,7 +105,7 @@ const Layout = () => {
   return (
     <>
         <FixedHeader>
-          <Navbar expand="lg">
+          <Navbar className="widthAdjust" expand="lg">
             <Container>
               <Navbar.Brand>
                 <IoIosHome onClick={() => navigate('/')} className="cursor-pointer" size={32} />
@@ -123,7 +131,7 @@ const Layout = () => {
             </Container>
           </Navbar>
         </FixedHeader>
-        <WeatherMain />
+        {/* <WeatherMain /> */}
 
         <Content>
           <Outlet />

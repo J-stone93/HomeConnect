@@ -1,14 +1,14 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
+// import axios from "axios";
+// import { useEffect, useState } from "react";
 
-function Weather() {
+// function Weather() {
 
-  const [weather, setWeather] = useState(null);
+//   const [weather, setWeather] = useState(null);
 
-  const API_KEY = process.env.REACT_APP_WEATHER_API_KEY;
+//   const API_KEY = process.env.REACT_APP_WEATHER_API_KEY;
 
-  const getWeather = async(lat, lon) => {
-    try {
+//   const getWeather = async(lat, lon) => {
+//     try {
       // const res = await axios.get(
       //   `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}`);
       // console.log(res);
@@ -27,24 +27,24 @@ function Weather() {
       //   temp: temp,
       //   icon: weatherIconAdrs,
       // });
-    } catch (err) {
-      console.error(err);
-    }
-  };
+//     } catch (err) {
+//       console.error(err);
+//     }
+//   };
 
-  useEffect(() => {
-    navigator.geolocation.getCurrentPosition((position) => {
-      let lat = position.coords.latitude;
-      let lon = position.coords.longitude;
-      getWeather(lat, lon);
-    });
-  }, []);
+//   useEffect(() => {
+//     navigator.geolocation.getCurrentPosition((position) => {
+//       let lat = position.coords.latitude;
+//       let lon = position.coords.longitude;
+//       getWeather(lat, lon);
+//     });
+//   }, []);
 
-  return (
-    <>
-    안녕하세요
-    </>
-  );
-};
+//   return (
+//     <>
+//     안녕하세요
+//     </>
+//   );
+// };
 
-export default Weather;
+// export default Weather;

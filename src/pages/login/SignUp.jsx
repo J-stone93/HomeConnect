@@ -119,6 +119,7 @@ function SignUp() {
 
   const handleBirthdayChange = (e) => {
     setBirthday(formatDate(e.target.value));
+    console.log(formatDate(e.target.value));
   };
 
   const handleSexChange = (e) => {
