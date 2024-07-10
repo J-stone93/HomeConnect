@@ -353,12 +353,22 @@ function Map() {
         setSelectedItemIndex(selectedItemIndex - 1);
         scrollToItem(selectedItemIndex - 1);
       }
-    } else if (event.key === "Enter" && selectedItemIndex !== -1) {
-      handleSelectPlace(searchResults[selectedItemIndex]);
-      setSelectedItemIndex(-1);
+    } else if (event.key === "Enter") {
+      if (inputValue.trim() !== "") {
+        // 검색어가 입력된 경우 검색 실행
+        handleSearchClick();
+      } else if (selectedItemIndex !== -1) {
+        // 검색어가 없고 선택된 항목이 있는 경우 장소 선택 실행
+        handleSelectPlace(searchResults[selectedItemIndex]);
+        setSelectedItemIndex(-1);
+      } else {
+        // 검색어가 없고 선택된 항목도 없는 경우 다른 처리 가능
+        console.log("검색어를 입력하세요");
+        // 또는 다른 처리를 하거나 없어도 됩니다.
+      }
     }
   };
-
+  
   const scrollToItem = (index) => {
     if (searchResultsRef.current && searchResultsRef.current.children.length > index) {
       const item = searchResultsRef.current.children[index];
