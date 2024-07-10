@@ -6,6 +6,7 @@ import { IoIosHome } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { getmyInfo, selectmyInfo } from "../features/main/mainSlice";
 
+
 const StyledNavbar = styled(Navbar.Brand)`
   text-align: center;
   cursor: pointer;
@@ -45,6 +46,8 @@ const StyledFooter = styled.footer`
   text-align: center;
   padding: 15px 0;
   margin-top: 20px;
+  position: relative;
+  bottom: 0;
 `;
 
 const ProfileButton = styled.button`
@@ -85,6 +88,7 @@ const Layout = () => {
     navigate('/login');
   };
 
+
   return (
     <>
       <FixedHeader>
@@ -116,6 +120,7 @@ const Layout = () => {
       </FixedHeader>
       
       <Content>
+        {/* <Weather/> */}
         <Outlet />
       </Content>
 
