@@ -222,7 +222,6 @@ function Map() {
 
   // 장소 선택 시 호출되는 핸들러
   const handleSelectPlace = (place) => {
-
     // 선택된 장소의 마커를 생성하여 지도에 표시
     const marker = new window.kakao.maps.Marker({
       position: new window.kakao.maps.LatLng(place.y, place.x),
@@ -240,6 +239,10 @@ function Map() {
 
     // 검색창의 입력값을 비워줍니다.
     // setInputValue("");
+
+    setSelectedItemIndex(-1); // Clear selected item index
+
+    setInputValue(place.place_name);
   };
 
   // Kakao 지도 이벤트 설정
@@ -348,29 +351,35 @@ function Map() {
       if (selectedItemIndex < searchResults.length - 1) {
         setSelectedItemIndex(selectedItemIndex + 1);
         scrollToItem(selectedItemIndex + 1);
+         // 선택된 항목의 텍스트를 실시간으로 검색창에 반영
+        setInputValue(searchResults[selectedItemIndex + 1].place_name);
       }
     } else if (event.key === "ArrowUp") {
       event.preventDefault();
       if (selectedItemIndex > 0) {
         setSelectedItemIndex(selectedItemIndex - 1);
         scrollToItem(selectedItemIndex - 1);
+        // 선택된 항목의 텍스트를 실시간으로 검색창에 반영
+        setInputValue(searchResults[selectedItemIndex - 1].place_name);
       }
     } else if (event.key === "Enter") {
-      if (inputValue.trim() !== "") {
-        // 검색어가 입력된 경우 검색 실행
-        handleSearchClick();
-      } else if (selectedItemIndex !== -1) {
-        // 검색어가 없고 선택된 항목이 있는 경우 장소 선택 실행
+      if (selectedItemIndex !== -1) {
+        // 검색창에 선택된 항목의 텍스트를 입력
+        setInputValue(searchResults[selectedItemIndex].place_name);
+        
+        // 선택된 항목 처리
         handleSelectPlace(searchResults[selectedItemIndex]);
         setSelectedItemIndex(-1);
+      } else if (inputValue.trim() !== "") {
+        // 검색어가 입력된 경우 검색 실행
+        handleSearchClick();
       } else {
-        // 검색어가 없고 선택된 항목도 없는 경우 다른 처리 가능
+        // 검색어가 없는 경우 처리
         console.log("검색어를 입력하세요");
-        // 또는 다른 처리를 하거나 없어도 됩니다.
       }
     }
   };
-  
+
   const scrollToItem = (index) => {
     if (searchResultsRef.current && searchResultsRef.current.children.length > index) {
       const item = searchResultsRef.current.children[index];
