@@ -300,6 +300,12 @@ function Map() {
     title.innerText = place.place_name;
     content.appendChild(title);
 
+    // 추가: 위도와 경도 표시
+    const coordinates = document.createElement('div');
+    coordinates.className = 'coordinates';
+    coordinates.innerText = `위도: ${place.y}, 경도: ${place.x}`;
+    content.appendChild(coordinates);
+
     if (place.road_address_name) {
       const addressDiv = document.createElement('div');
       addressDiv.className = 'address';
