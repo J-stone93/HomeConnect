@@ -129,6 +129,7 @@ function Map() {
   const [selectedPlace, setSelectedPlace] = useState(null); // 선택된 장소 상태
   const [searchResults, setSearchResults] = useState([]); // 검색 결과 상태
   const [selectedItemIndex, setSelectedItemIndex] = useState(-1); // 선택된 항목 인덱스 상태
+  const [selectedPlaceDetails, setSelectedPlaceDetails] = useState(null); // 상세 정보를 저장할 상태 변수
 
   const infoWindow = useRef(); // Kakao 지도 인포윈도우 useRef 사용
   const timerRef = useRef(null); // 검색 디바운스 타이머 useRef 사용
@@ -254,8 +255,8 @@ function Map() {
     // 검색 결과 목록을 비웁니다.
     setSearchResults([]);
 
-    // 검색창의 입력값을 비워줍니다.
-    // setInputValue("");
+    // 지도를 선택된 장소의 위치로 이동
+    map.panTo(new window.kakao.maps.LatLng(place.y, place.x));
 
     setSelectedItemIndex(-1); // Clear selected item index
 
@@ -389,7 +390,6 @@ function Map() {
       if (selectedItemIndex !== -1) {
         // 검색창에 선택된 항목의 텍스트를 입력
         setInputValue(searchResults[selectedItemIndex].place_name);
-        
         // 선택된 항목 처리
         handleSelectPlace(searchResults[selectedItemIndex]);
         setSelectedItemIndex(-1);
@@ -521,48 +521,53 @@ function Map() {
     });
   }, [selectedCategories, map]);
 
-  // 검색 버튼 클릭 시 호출되는 핸들러
-  const handleSearchClick = () => {
-    // 기존 마커 제거
-    removeMarkers();
+// 검색 버튼 클릭 시 호출되는 핸들러
+const handleSearchClick = () => {
+  // 기존 마커 제거
+  removeMarkers();
 
-    if (inputValue.trim() !== "" && map) {
-      const ps = new window.kakao.maps.services.Places(map);
-      ps.keywordSearch(inputValue, (data, status) => {
-        if (status === window.kakao.maps.services.Status.OK) {
-          // 첫 번째 장소의 마커를 생성하여 지도에 표시
-          if (data.length > 0) {
-            const marker = new window.kakao.maps.Marker({
-              position: new window.kakao.maps.LatLng(data[0].y, data[0].x),
-            });
+  if (inputValue.trim() !== "" && map) {
+    const ps = new window.kakao.maps.services.Places(map);
+    ps.keywordSearch(inputValue, (data, status) => {
+      if (status === window.kakao.maps.services.Status.OK) {
+        // 첫 번째 장소의 마커를 생성하여 지도에 표시
+        if (data.length > 0) {
+          const firstPlace = data[0];
+          const newCenter = new window.kakao.maps.LatLng(firstPlace.y, firstPlace.x);
+          
+          // 지도 이동
+          map.panTo(newCenter);
+          
+          const marker = new window.kakao.maps.Marker({
+            position: newCenter,
+          });
 
-            // 마커 클릭 시 장소 정보 표시
-            window.kakao.maps.event.addListener(marker, "click", function () {
-              displayPlaceInfo(marker, data[0]);
-            });
+          // 마커 클릭 시 장소 정보 표시
+          window.kakao.maps.event.addListener(marker, "click", function () {
+            displayPlaceInfo(marker, firstPlace);
+          });
 
-            marker.setMap(map); // 지도에 마커 표시
+          marker.setMap(map); // 지도에 마커 표시
 
-            // 검색 결과 목록을 비웁니다.
-            setSearchResults([]);
-          } else {
-            setSearchResults([]); // 검색 결과 초기화
-            console.log("검색 결과가 없습니다.");
-          }
-        } else if (status === window.kakao.maps.services.Status.ZERO_RESULT) {
+          // 검색 결과 목록을 비웁니다.
           setSearchResults([]);
+        } else {
+          setSearchResults([]); // 검색 결과 초기화
           console.log("검색 결과가 없습니다.");
-        } else if (status === window.kakao.maps.services.Status.ERROR) {
-          console.error("검색 중 오류가 발생했습니다.");
         }
-      });
-    } else {
-      setSearchResults([]); // 검색 결과 초기화
-    }
+      } else if (status === window.kakao.maps.services.Status.ZERO_RESULT) {
+        setSearchResults([]);
+        console.log("검색 결과가 없습니다.");
+      } else if (status === window.kakao.maps.services.Status.ERROR) {
+        console.error("검색 중 오류가 발생했습니다.");
+      }
+    });
+  } else {
+    setSearchResults([]); // 검색 결과 초기화
+  }
+};
 
-    // 검색창의 입력값을 비워줍니다.
-    // setInputValue("");
-  }; 
+
 
   return (
     <Container>
@@ -640,8 +645,8 @@ function Map() {
         </CategoryItem>
       </CategoryList>
       </MenuBar>
+        주변정보
       </Sidebar>
-
       <MapContainer id="map" />
     </Container>
   );
