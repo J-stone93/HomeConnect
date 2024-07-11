@@ -86,6 +86,8 @@ function Register() {
     }
   };
 
+  // const addressKey = process.env.REACT_APP_HOST_ADDRESS;
+
   const handleSubmitINFO = () => {
     const myInfo = async () => {
       try {
