@@ -6,11 +6,12 @@ import { useSelector } from 'react-redux';
 import styled, { css, keyframes } from 'styled-components';
 import { selectNoticeList } from '../../features/board/boardSlice';
 import axios from 'axios';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const Wrapper = styled.div`
   width: 100%;
   display: flex;
-  justify-content: space-between;  /* 변경된 부분 */
+  justify-content: space-between; 
   padding: 50px;
   align-items: flex-start;
 
@@ -54,7 +55,7 @@ const Wrapper = styled.div`
 
   .react-calendar__navigation__label > span {
     color: var(--festie-gray-800, #3a3a3a);
-    font-family: SUIT Variable;
+    /* font-family: SUIT Variable; */
     font-size: 25px;
     font-weight: 600;
     line-height: 140%;
@@ -142,8 +143,8 @@ const NoticeWrapper = styled.div`
   margin-left: 50px;
   opacity: 0;
   height: 0;
-  animation-duration: 0.25s;
-  animation: ${(props) => props.showDate ? css`${fadeIn} 1s forwards` : css`${fadeOut} 0s forwards`};
+  animation-duration: 3s;
+  animation: ${(props) => props.showDate ? css`${fadeIn} 1s forwards` : css`${fadeOut} 1s forwards`};
 
 
   .notice {
@@ -164,7 +165,8 @@ const TitleInput = styled.input`
   background-color: #FFF8DC;
   margin-top: 30px;
   text-decoration: none;
-  border-width: 0 0 1px;
+  border-radius: 5px 5px 0 0;
+  border-width: 0 0 3px;
   &:focus {
     outline:none;
   }
@@ -179,16 +181,12 @@ const ContentInput = styled.input`
 `;
 
 
-// type ValuePiece = Date | null;
-// type Value = ValuePiece | [ValuePiece, ValuePiece];
-
-
 function CalendarMain() {
   const [value, onChange] = useState(new Date());
-  const [showDate, setShowDate] = useState(false); 
+  const [showDate, setShowDate] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
-  // const NoticeList = useSelector(selectNoticeList);
   const [noticeList, setNoticeList] = useState([]);
+  const navigate = useNavigate();
 
   const fetchNoticeList = async () => {
     try {
@@ -264,7 +262,13 @@ function CalendarMain() {
             {noticeList.map((notice) => (
               moment(notice.noticeDate).isSame(selectedDate, 'day') && (
                 <div key={notice.id}>
-                  <TitleInput type="text" value={notice.title} readOnly />
+                  <TitleInput
+                    type="text"
+                    value={notice.title}
+                    readOnly
+                    className="cursor-pointer"
+                    onClick={() => navigate(`/noticeread/${notice.no}`)}
+                  />
                   <ContentInput type="text" value={notice.content} readOnly />
                 </div>
               )
