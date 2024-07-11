@@ -56,7 +56,8 @@ const Mypage = styled.div`
 
 const Content = styled.div`
 /* padding-top: 82px; */ // <-- 문제임
-  padding-top: 67px; //오잉?
+  padding-top: 67px;  
+  /* padding-top: 1%;  */
   /* margin-top: 4%; */
 `;
 
@@ -165,9 +166,9 @@ const Layout = () => {
         <Outlet />
       </Content>
 
-      <StyledFooter>
+      {/* <StyledFooter>
         &copy; 코딩하는오합지졸. All Rights Reserved.
-      </StyledFooter>
+      </StyledFooter> */}
     </>
   );
 };
