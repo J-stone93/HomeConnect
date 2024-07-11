@@ -16,7 +16,6 @@ import { getmyInfo } from './features/main/mainSlice';
 (()=>{
   const user = JSON.parse((localStorage.getItem('user')))
   if(!user) return;
-  // console.log(user);
   store.dispatch(getmyInfo(user));
 })();
 
@@ -26,7 +25,6 @@ root.render(
   <Provider store={store} >
     <App/>
   </Provider>
-
 );
 
 reportWebVitals();
