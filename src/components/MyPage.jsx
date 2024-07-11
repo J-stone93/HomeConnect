@@ -176,10 +176,7 @@ function MyPage() {
         <StyledPaper>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <StyledAvatar alt="User Name" src="https://via.placeholder.com/150" />
-            {showModify 
-              ? <MyPageModify value={user.userId} setShowModify={()=>setShowModify()} />
-              : <UserName>{user.userId}</UserName>
-            }
+            <UserName>{user.userId}</UserName>
             {showModify 
               ? <MyPageModify value={user.name} setShowModify={()=>setShowModify()}/>
               : <UserEmail>{user.name}</UserEmail>

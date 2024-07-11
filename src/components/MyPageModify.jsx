@@ -44,7 +44,9 @@ function MyPageModify(props) {
     <InputGroup className="mb-3">
       <Form.Control className='textcenter' value={state} onChange={(e)=>setState(e.target.value)}/>
       <Button variant="outline-secondary" className='sizeAdjust'>
-        <PiUserCheckBold size={24} onClick={()=>handleNameModify()} /> 
+        {value === user.name &&
+          <PiUserCheckBold size={24} onClick={()=>handleNameModify()} /> 
+        }
       </Button>
     </InputGroup>
   );
