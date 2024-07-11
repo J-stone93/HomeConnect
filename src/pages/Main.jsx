@@ -194,8 +194,12 @@ function Main() {
         const response = await axios.get('http://localhost:8080/fee/list',
         { headers: {
           Authorization: localStorage.getItem('token')
-        }}
-        );
+        },
+        params: {
+          userId: userInfo.userId
+        }
+      }
+    );
         if (response.status === 200) {
           dispatch(setFees(response.data));
         }
