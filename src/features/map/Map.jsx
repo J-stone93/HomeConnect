@@ -9,19 +9,14 @@ const Container = styled.div`
 
 const Sidebar = styled.div`
   width: 330px;
-  /* background-color: #f1f1f1; */
-  /* padding: 20px; */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 `;
 
 const MenuBar = styled.div`
   display: flex;
   flex-direction: column;
-  /* background-color: #f1f1f1; */
   padding: 10px;
-  /* border-radius: 5px; */
   margin-bottom: 20px;
-  /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
 `;
 
 const SearchContainer = styled.div`
@@ -32,7 +27,6 @@ const SearchContainer = styled.div`
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 5px 10px;
-  /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
 `;
 
 const Input = styled.input`
@@ -120,6 +114,52 @@ const CategoryItem = styled.li`
   }
 `;
 
+const SavedSearchItem = styled.div`
+  background-color: white;
+  margin-bottom: 5px;
+  padding: 15px;
+  border-radius: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+  &:hover {
+    background-color: #f9f9f9;
+  }
+`;
+
+const PlaceName = styled.p`
+  font-size: 15px;
+  font-weight: bold;
+  margin-bottom: 5px;
+`;
+
+const Address = styled.p`
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 5px;
+`;
+
+const Phone = styled.p`
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 5px;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+`;
+
+const StyledButton = styled.button`
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 16px;
+  cursor: pointer;
+  margin-left: 10px;
+`;
+
 function Map() {
   // 상태 관리를 위한 useState 훅 사용
   const [inputValue, setInputValue] = useState(""); // 검색어 입력 상태
@@ -129,7 +169,7 @@ function Map() {
   const [selectedPlace, setSelectedPlace] = useState(null); // 선택된 장소 상태
   const [searchResults, setSearchResults] = useState([]); // 검색 결과 상태
   const [selectedItemIndex, setSelectedItemIndex] = useState(-1); // 선택된 항목 인덱스 상태
-  const [selectedPlaceDetails, setSelectedPlaceDetails] = useState(null); // 상세 정보를 저장할 상태 변수
+  const [savedSearches, setSavedSearches] = useState([]);
 
   const infoWindow = useRef(); // Kakao 지도 인포윈도우 useRef 사용
   const timerRef = useRef(null); // 검색 디바운스 타이머 useRef 사용
@@ -260,6 +300,7 @@ function Map() {
 
     setSelectedItemIndex(-1); // Clear selected item index
 
+    setSavedSearches([...savedSearches, place]);
     setInputValue(place.place_name);
   };
 
@@ -567,7 +608,13 @@ const handleSearchClick = () => {
   }
 };
 
+  const openDetails = (url) => {
+    window.open(url, '_blank');
+  };
 
+  const openDetails2 = (url) => {
+    window.open(url, '_blank');
+  };
 
   return (
     <Container>
@@ -599,7 +646,7 @@ const handleSearchClick = () => {
             </ResultItem>
           ))}
         </SearchResults>
-      )}
+      )} 
 
       <CategoryList>
         <CategoryItem
@@ -645,7 +692,28 @@ const handleSearchClick = () => {
         </CategoryItem>
       </CategoryList>
       </MenuBar>
-        주변정보
+        {savedSearches.map((search, index) => (
+            <SavedSearchItem key={index}>
+              <PlaceName>{search.place_name}</PlaceName>
+              {search.road_address_name && (
+                <Address>주소: {search.road_address_name}</Address>
+              )}
+              {search.address_name && (
+                <Address>지번: {search.address_name}</Address>
+              )}
+              {search.phone && (
+                <Phone>전화번호: {search.phone}</Phone>
+              )}
+              <ButtonContainer>
+                <StyledButton 
+                  onClick={() => openDetails(search.place_url)}>
+                상세보기</StyledButton>
+                <StyledButton
+                  onClick={() => openDetails2(`https://map.kakao.com/link/to/${search.place_name},${search.y},${search.x}`)}
+                >길찾기</StyledButton>
+              </ButtonContainer>
+            </SavedSearchItem>
+          ))}
       </Sidebar>
       <MapContainer id="map" />
     </Container>

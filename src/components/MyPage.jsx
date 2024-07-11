@@ -196,7 +196,7 @@ function MyPage() {
   const [pw2, setPw2] = useState('');
 
   const dispatch = useDispatch();
-  const navigate = useNavigate():
+  const navigate = useNavigate();
 
 
   const toggleTheme = () => {
