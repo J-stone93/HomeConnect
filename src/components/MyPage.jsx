@@ -196,7 +196,7 @@ function MyPage() {
   const [pw2, setPw2] = useState('');
 
   const dispatch = useDispatch();
-  const navigate = useNavigate():
+  const navigate = useNavigate();
 
 
   const toggleTheme = () => {
@@ -255,8 +255,6 @@ function MyPage() {
   };
   
   const handleDelete = async () => {
-    if (!selectedPost) return;
-    
     try {
       const response = await axios.delete(`http://localhost:8080/login/remove?userId=${user.userId}`, {
         headers: {
