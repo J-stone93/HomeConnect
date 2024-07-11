@@ -197,6 +197,7 @@ function CalendarMain() {
           Authorization: localStorage.getItem('token'),
         },
       });
+      console.log(response.data);
       if (response.status === 200) {
         setNoticeList(response.data);
       } else {
@@ -214,15 +215,15 @@ function CalendarMain() {
     if (view === 'month' && date.getDay() === 0) {
       return 'react-calendar__tile--sunday';
     }
-    if (noticeList.some((notice) => moment(notice.date).isSame(date, 'day'))) {
+    if (noticeList.some((notice) => moment(notice.noticeDate).isSame(date, 'day'))) {
       return 'react-calendar__tile--marked';
     }
     return null;
   };
 
   const tileContent = ({ date }) => {
-    const notices = noticeList.filter((notice) => moment(notice.date).isSame(date, 'day'));
-    return notices.map((notice, index) => <div key={index}>{notice.content}</div>);
+    const notices = noticeList.filter((notice) => moment(notice.noticeDate).isSame(date, 'day'));
+    return notices.map((notice, index) => <div key={index}>{notice.title}</div>);
   };
 
   const handleDateClick = (date) => {
@@ -261,7 +262,7 @@ function CalendarMain() {
           <div className="text-gray-500">
 
             {noticeList.map((notice) => (
-              moment(notice.date).isSame(selectedDate, 'day') && (
+              moment(notice.noticeDate).isSame(selectedDate, 'day') && (
                 <div key={notice.id}>
                   <TitleInput type="text" value={notice.title} readOnly />
                   <ContentInput type="text" value={notice.content} readOnly />
