@@ -8,7 +8,7 @@ import { selectmyInfo } from "../../features/main/mainSlice";
 import { selectCommunityList } from "../../features/community/communitySlice";
 
 const Wrapper = styled.form`
-  margin: 0 auto;
+  margin: 100px auto;
   width: 70%;
   padding: 50px;
   background-color: #f8f9fa;
