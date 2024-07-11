@@ -46,33 +46,36 @@ const Wrapper = styled.div`
 function CommunityItem(props) {
   const { categoryName } = props;
   const { categoryId = '맛집' } = useParams();
-  const navigate = useNavigate()
-  const [communityList, setcommunityList] = useState();
+  const navigate = useNavigate();
+  const [communityList, setCommunityList] = useState([]);
 
   // 날짜 포맷하기
   const formatDate = (dateString) => {
-		const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-		return new Date(dateString).toLocaleDateString(undefined, options);
-	};
+    const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
 
   // DB에서 community 카테고리 별 목록 가져오기
   useEffect(() => {
-    const communitylist = async () => {
+    const fetchCommunityList = async () => {
       try {
         const response = await axios.get(`http://localhost:8080/community/category?category=${categoryName}`, {
-          headers : {
-            Authorization : localStorage.getItem('token'),
+          headers: {
+            Authorization: localStorage.getItem('token'),
           }
         });
-        setcommunityList(response.data);
         if (response.status !== 200) {
           throw new Error(`api error: ${response.status} ${response.statusText}`);
         }
+
+        // 데이터 정렬
+        const sortedList = response.data.sort((a, b) => new Date(b.regDate) - new Date(a.regDate));
+        setCommunityList(sortedList);
       } catch (error) {
         console.error(error);
       }
     };
-    communitylist();
+    fetchCommunityList();
   }, [categoryName]);
 
   return (
@@ -81,8 +84,6 @@ function CommunityItem(props) {
         {communityList && communityList.map((communityItem) => (
           <tbody key={communityItem.no} onClick={() => navigate(`/communityread/${communityItem.no}`)}>
             <tr>
-              <td><img src={`../../image/${communityItem.imgPath}`} alt="" /></td>
-
               <td><img src={`../../image/${communityItem.imgPath}`} alt="" /></td>
               <td>{communityItem.title}</td>
               <td>작성자: {communityItem.writer}</td>
