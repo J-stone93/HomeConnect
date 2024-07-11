@@ -5,6 +5,7 @@ import axios from 'axios';
 import { setFees } from '../features/fee/feeSlice';
 
 function FeeInputForm() {
+  const [no, setNo] = useState('');
   const [month, setMonth] = useState('');
   const [water, setWater] = useState('');
   const [electric, setElectric] = useState('');
@@ -18,15 +19,22 @@ function FeeInputForm() {
         const response = await axios.get('http://localhost:8080/fee/list',
         { headers: {
           Authorization: localStorage.getItem('token')
-        }}
-        );
-        if (response.status === 200) {
-          dispatch(setFees(response.data));
+        },
+        params: {
+          'userId': userInfo.userId
         }
-      } catch (error) {
-        console.error("Error fetching fee data:", error);
       }
+    );
+    console.log(userInfo.userId);
+    console.log(response);
+    if (response.status === 200) {
+      dispatch(setFees(response.data));
+      
     }
+  } catch (error) {
+    console.error("Error fetching fee data:", error);
+  }
+}
     if (userInfo && userInfo.userId) {
       fetchFeeInfo();
     }
@@ -41,8 +49,8 @@ function FeeInputForm() {
 
       const response = await axios.post('http://localhost:8080/fee/register', 
       {
-        "month": month,
         "userId": userInfo.userId,
+        "month": month,
         "water": water,
         "electric": electric,
         "maintenance": maintenance

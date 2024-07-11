@@ -175,17 +175,21 @@ function FeeChartDetail() {
     const fetchFeeInfo = async () => {
       try {
         const response = await axios.get('http://localhost:8080/fee/list',
-        { headers: {
-          Authorization: localStorage.getItem('token')
-        }}
-        );
-        if (response.status === 200) {
-          dispatch(setFees(response.data));
+          { headers: {
+            Authorization: localStorage.getItem('token')
+          },
+          params: {
+          'userId': userInfo.userId
         }
-      } catch (error) {
-        console.error("Error fetching fee data:", error);
       }
+    );
+    if (response.status === 200) {
+      dispatch(setFees(response.data));
     }
+  } catch (error) {
+    console.error("Error fetching fee data:", error);
+  }
+}
     if (userInfo && userInfo.userId) {
       fetchFeeInfo();
     }
