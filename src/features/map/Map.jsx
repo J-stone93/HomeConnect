@@ -4,7 +4,24 @@ import "./Mapstyle.css";
 
 const Container = styled.div`
   margin: 30px;
-  position: relative;
+  display: flex;
+`;
+
+const Sidebar = styled.div`
+  width: 330px;
+  /* background-color: #f1f1f1; */
+  /* padding: 20px; */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+`;
+
+const MenuBar = styled.div`
+  display: flex;
+  flex-direction: column;
+  /* background-color: #f1f1f1; */
+  padding: 10px;
+  /* border-radius: 5px; */
+  margin-bottom: 20px;
+  /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
 `;
 
 const SearchContainer = styled.div`
@@ -15,7 +32,7 @@ const SearchContainer = styled.div`
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 5px 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
 `;
 
 const Input = styled.input`
@@ -23,7 +40,7 @@ const Input = styled.input`
   padding: 10px;
   font-size: 16px;
   border: none;
-  border-radius: 25px;
+  border-radius: 9px;
   outline: none;
 
   &::placeholder {
@@ -52,7 +69,7 @@ const MapContainer = styled.div`
 
 const SearchResults = styled.div`
   position: absolute;
-  width: 100%; /* 왼쪽과 오른쪽 padding 고려하여 너비 조정 */
+  width: 297px; /* 왼쪽과 오른쪽 padding 고려하여 너비 조정 */
   background-color: #fff;
   border: 1px solid #ccc;
   border-top: none;
@@ -61,11 +78,11 @@ const SearchResults = styled.div`
   z-index: 9; /* 검색 결과 목록을 검색창 아래로 내리기 위해 z-index를 낮춤 */
   border-radius: 10px; /* 동그란 테두리 조정 */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
-  top: 6.3%; /* 검색창과의 간격 조정 */
+  top: 18.9%; /* 검색창과의 간격 조정 */
 `;
 
 const CategoryList = styled.ul`
-  margin-top: 20px;
+  /* margin-top: 20px; */
   list-style-type: none;
   padding: 0;
 `;
@@ -543,6 +560,8 @@ function Map() {
 
   return (
     <Container>
+      <Sidebar>
+      <MenuBar>
       <SearchContainer>
         <Input
           type="text"
@@ -614,11 +633,12 @@ function Map() {
           편의점
         </CategoryItem>
       </CategoryList>
+      </MenuBar>
+      </Sidebar>
 
-      <MapContainer id="map"></MapContainer>
+      <MapContainer id="map" />
     </Container>
   );
 }
 
 export default Map;
-
