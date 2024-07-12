@@ -3,12 +3,18 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setFees } from "../features/fee/feeSlice";
 import { selectmyInfo } from "../features/main/mainSlice";
+import styled from "styled-components";
 
 function FeeReadPage() {
   const dispatch = useDispatch();
   const userInfo = useSelector(selectmyInfo);
   const fees = useSelector((state) => state.fees.fees);
   const [editedFees, setEditedFees] = useState([]);
+
+  const StyledDiv = styled.div`
+    width: 80%;
+    
+  `
 
   useEffect(() => {
     const fetchFeeInfo = async () => {
@@ -88,7 +94,7 @@ function FeeReadPage() {
   return (
     <>
     <h1 style={{textAlign:'center', padding:'30px'}}>관리비 조회 및 수정</h1>
-    <div>
+    <StyledDiv>
       {editedFees.map((fee, index) => (
         <div key={index}>
           <label>
@@ -140,7 +146,7 @@ function FeeReadPage() {
           {/* <button type="button" onClick={() => deleteFee(fee)}>삭제</button> */}
         </div>
       ))}
-    </div>
+    </StyledDiv>
       </>
   );
 }
