@@ -8,8 +8,11 @@ const Container = styled.div`
 `;
 
 const Sidebar = styled.div`
-  width: 330px;
+  width: 560px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  overflow-y: auto; /* 세로 스크롤 활성화 */
+  overflow-x: hidden; /* 가로 스크롤 숨김 */
+  max-height: calc(108vh - 60px); /* 화면 높이에서 60px을 제외한 최대 높이 */
 `;
 
 const MenuBar = styled.div`
@@ -170,6 +173,8 @@ function Map() {
   const [searchResults, setSearchResults] = useState([]); // 검색 결과 상태
   const [selectedItemIndex, setSelectedItemIndex] = useState(-1); // 선택된 항목 인덱스 상태
   const [savedSearches, setSavedSearches] = useState([]);
+  const [categoryPlaces, setCategoryPlaces] = useState([]);
+
 
   const infoWindow = useRef(); // Kakao 지도 인포윈도우 useRef 사용
   const timerRef = useRef(null); // 검색 디바운스 타이머 useRef 사용
@@ -489,7 +494,17 @@ function Map() {
     if (!category || !map) return;
 
     const ps = new window.kakao.maps.services.Places(map);
-    ps.categorySearch(category, placesSearchCB, { useMapBounds: true });
+    ps.categorySearch(category, (data, status) => {
+      if (status === window.kakao.maps.services.Status.OK) {
+        setCategoryPlaces(data); // Update state with the found places
+        displayPlaces(data); // Display the places on the map
+      } else if (status === window.kakao.maps.services.Status.ZERO_RESULT) {
+        setCategoryPlaces([]); // Clear the state if no results
+        console.log("검색 결과가 없습니다.");
+      } else if (status === window.kakao.maps.services.Status.ERROR) {
+        console.error("검색 중 오류가 발생했습니다.");
+      }
+    }, { useMapBounds: true });
   };
 
   // 마커 제거 함수
@@ -692,28 +707,50 @@ const handleSearchClick = () => {
         </CategoryItem>
       </CategoryList>
       </MenuBar>
-        {savedSearches.map((search, index) => (
-            <SavedSearchItem key={index}>
-              <PlaceName>{search.place_name}</PlaceName>
-              {search.road_address_name && (
-                <Address>주소: {search.road_address_name}</Address>
-              )}
-              {search.address_name && (
-                <Address>지번: {search.address_name}</Address>
-              )}
-              {search.phone && (
-                <Phone>전화번호: {search.phone}</Phone>
-              )}
-              <ButtonContainer>
-                <StyledButton 
-                  onClick={() => openDetails(search.place_url)}>
-                상세보기</StyledButton>
-                <StyledButton
-                  onClick={() => openDetails2(`https://map.kakao.com/link/to/${search.place_name},${search.y},${search.x}`)}
-                >길찾기</StyledButton>
-              </ButtonContainer>
-            </SavedSearchItem>
-          ))}
+      {categoryPlaces.map((place, index) => (
+        <SavedSearchItem key={index}>
+          <PlaceName>{place.place_name}</PlaceName>
+          {place.road_address_name && (
+            <Address>주소: {place.road_address_name}</Address>
+          )}
+          {place.address_name && (
+            <Address>지번: {place.address_name}</Address>
+          )}
+          {place.phone && (
+            <Phone>전화번호: {place.phone}</Phone>
+          )}
+          <ButtonContainer>
+            <StyledButton 
+              onClick={() => openDetails(place.place_url)}>
+            상세보기</StyledButton>
+            <StyledButton
+              onClick={() => openDetails2(`https://map.kakao.com/link/to/${place.place_name},${place.y},${place.x}`)}
+            >길찾기</StyledButton>
+          </ButtonContainer>
+        </SavedSearchItem>
+      ))}
+      {savedSearches.map((search, index) => (
+          <SavedSearchItem key={index}>
+            <PlaceName>{search.place_name}</PlaceName>
+            {search.road_address_name && (
+              <Address>주소: {search.road_address_name}</Address>
+            )}
+            {search.address_name && (
+              <Address>지번: {search.address_name}</Address>
+            )}
+            {search.phone && (
+              <Phone>전화번호: {search.phone}</Phone>
+            )}
+            <ButtonContainer>
+              <StyledButton 
+                onClick={() => openDetails(search.place_url)}>
+              상세보기</StyledButton>
+              <StyledButton
+                onClick={() => openDetails2(`https://map.kakao.com/link/to/${search.place_name},${search.y},${search.x}`)}
+              >길찾기</StyledButton>
+            </ButtonContainer>
+          </SavedSearchItem>
+        ))}
       </Sidebar>
       <MapContainer id="map" />
     </Container>
