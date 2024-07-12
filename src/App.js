@@ -31,6 +31,7 @@ import { useEffect, useState } from 'react';
 import NoticeMain from './features/board/notice/NoticeMain.jsx';
 import NoticeListDetail from './features/board/notice/NoticeListDetail.jsx';
 import NoticeModify from './features/board/notice/NoticeModify.jsx';
+import FeeReadPage from './components/FeeReadPage.jsx';
 
 
 const GlobalStyle = createGlobalStyle`
@@ -78,6 +79,7 @@ function App() {
 
             <Route path='feeinput' element={<FeeInputPage />} />
             <Route path='feedetail' element={<FeeChartDetail />} />
+            <Route path='feeread' element={<FeeReadPage/>}/>
 
             <Route path='calendar' element={<CalendarMain />} />
 
