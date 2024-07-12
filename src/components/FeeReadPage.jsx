@@ -49,6 +49,7 @@ function FeeReadPage() {
       [field]: value
     };
     setEditedFees(newFees);
+    console.log(editedFees);
   };
 
   const modifyFee = async (fee) => {

@@ -354,23 +354,31 @@ function FeeChartDetail() {
     water: (totalFees.water / fees.length).toFixed(0),
     maintenance: (totalFees.maintenance / fees.length).toFixed(0),
   };
+// for문 사용해서 배열 12개로 만들기
+// 안에 if문 사용해서 월 별 데이터 매칭하기
+
+  const fixedFees = Array.from({ length: 12 }, (_, i) => {
+    const month = i + 1;
+    const fee = fees.find(f => f.month === month);
+    return fee || { month, electric: 0, water: 0, maintenance: 0 };
+  });
 
   const datasets = [
     {
       label: '전기세',
-      data: fees.map(fee => fee.electric),
+      data: fixedFees.map(fee => fee.electric),
       backgroundColor: 'rgba(224, 14, 60, 0.6)',
       hidden: !visibleDatasets.includes('electric'),
     },
     {
       label: '수도세',
-      data: fees.map(fee => fee.water),
+      data: fixedFees.map(fee => fee.water),
       backgroundColor: 'rgba(5, 138, 226, 0.6)',
       hidden: !visibleDatasets.includes('water'),
     },
     {
       label: '관리비',
-      data: fees.map(fee => fee.maintenance),
+      data: fixedFees.map(fee => fee.maintenance),
       backgroundColor: 'rgba(14, 199, 199, 0.6)',
       hidden: !visibleDatasets.includes('maintenance'),
     },
