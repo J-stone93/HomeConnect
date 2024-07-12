@@ -10,9 +10,18 @@ const Container = styled.div`
 const Sidebar = styled.div`
   width: 560px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  overflow-y: auto; /* 세로 스크롤 활성화 */
-  overflow-x: hidden; /* 가로 스크롤 숨김 */
   max-height: calc(108vh - 60px); /* 화면 높이에서 60px을 제외한 최대 높이 */
+`;
+
+const SidebarOverflow = styled.div`
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: 76.8vh;
+  max-height: calc(108vh - 170px); /* 화면 높이에서 60px을 제외한 최대 높이 */
+
+  &::-webkit-scrollbar {
+    background: none;
+  }
 `;
 
 const MenuBar = styled.div`
@@ -75,7 +84,7 @@ const SearchResults = styled.div`
   z-index: 9; /* 검색 결과 목록을 검색창 아래로 내리기 위해 z-index를 낮춤 */
   border-radius: 10px; /* 동그란 테두리 조정 */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
-  top: 18.9%; /* 검색창과의 간격 조정 */
+  top: 21.8%; /* 검색창과의 간격 조정 */
 `;
 
 const CategoryList = styled.ul`
@@ -174,10 +183,11 @@ function Map() {
   const [savedSearches, setSavedSearches] = useState([]);
   const [categoryPlaces, setCategoryPlaces] = useState([]);
 
-
   const infoWindow = useRef(); // Kakao 지도 인포윈도우 useRef 사용
   const timerRef = useRef(null); // 검색 디바운스 타이머 useRef 사용
   const searchResultsRef = useRef(null);
+  const customOverlayRef = useRef(null); // useRef를 사용하여 customOverlay의 참조 관리
+
 
   // Kakao 지도 초기화 및 설정
   useEffect(() => {
@@ -522,54 +532,73 @@ function Map() {
   // 카테고리 선택 상태 토글 함수
   const toggleCategory = (categoryId) => {
     setSelectedCategories((prevCategories) => {
-      const isSelected = prevCategories.includes(categoryId);
+      const index = prevCategories.indexOf(categoryId); // 선택된 카테고리의 인덱스 확인
   
-      if (isSelected) {
-        removeMarkers();
-        // 선택 해제 시
-        const filteredCategories = prevCategories.filter((cat) => cat !== categoryId);
-        setSelectedCategories(filteredCategories);
+      if (index !== -1) {
+        // 이미 선택된 경우 -> 선택 해제
+        const filteredCategories = prevCategories.filter((cat) => cat !== categoryId); // 선택된 카테고리 제거
+        toggleCategory(filteredCategories); // 선택된 카테고리 업데이트
   
-        // 해당 카테고리에 맞는 마커 제거
-        const filteredMarkers = markers.filter((marker) => marker.category !== categoryId);
-        filteredMarkers.forEach((marker) => marker.setMap(null));
-        setMarkers(filteredMarkers);
+        // 해당 카테고리에 해당하는 마커들을 필터링하여 제거
+        const filteredMarkers = markers.filter((marker) => {
+          if (marker.category === categoryId) {
+            marker.setMap(null); // 해당 카테고리의 마커를 지도에서 완전히 제거
+            return false; // 필터링 결과에서 제외하기 위해 false 반환
+          }
+          return true; // 다른 카테고리의 마커는 유지
+        });
+        setMarkers(filteredMarkers); // 마커 상태 업데이트
   
-        // 선택된 장소의 상세 정보가 열려 있다면 닫기
+        // 선택된 장소가 있고, 해당 카테고리의 장소가 선택된 상태라면 상세 정보 닫기
         if (selectedPlace && selectedPlace.category === categoryId) {
           if (infoWindow.current) {
-            infoWindow.current.close();
+            infoWindow.current.close(null); // 인포윈도우 닫기
           }
-          setSelectedPlace(null);
+          setSelectedPlace(null); // 선택된 장소 초기화
         }
-       
+  
+        // 선택 해제 시 커스텀 오버레이도 제거
+        if (customOverlayRef.current) {
+          customOverlayRef.current.setMap(null); // 현재 표시된 커스텀 오버레이를 지도에서 제거
+          customOverlayRef.current = null; // useRef를 통해 관리하므로 null로 초기화
+        }
       } else {
-        // 선택 시
-        setSelectedCategories([...prevCategories, categoryId]);
+        // 처음 클릭된 경우 -> 선택 추가
+        setSelectedCategories([categoryId]); // 새로운 카테고리 선택
   
-        // 검색 결과에서 해당 카테고리에 맞는 장소만 필터링하여 places 배열 생성
-        const filteredPlaces = searchResults.filter((place) => place.category === categoryId);
-  
-        // 새로운 마커 생성
-        const newMarkers = filteredPlaces.map((place) => {
-          const marker = new window.kakao.maps.Marker({
-            position: new window.kakao.maps.LatLng(place.y, place.x),
-            category: categoryId, // 마커에 카테고리 속성 추가
-          });
-  
-          // 마커 클릭 시 장소 정보 표시
-          window.kakao.maps.event.addListener(marker, "click", function () {
-            displayPlaceInfo(marker, place);
-          });
-          
-  
-          marker.setMap(map); // 지도에 마커 표시
-          return marker;
+        // 기존의 모든 마커들을 지도에서 완전히 제거
+        markers.forEach((marker) => {
+          marker.setMap(null);
         });
-
-        setMarkers((prevMarkers) => [...prevMarkers, ...newMarkers]);
+  
+        // 검색 결과에서 해당 카테고리에 맞는 장소들을 필터링하여 새로운 마커들 생성
+        const newMarkers = searchResults
+          .filter((place) => place.category === categoryId)
+          .map((place) => {
+            const marker = new window.kakao.maps.Marker({
+              position: new window.kakao.maps.LatLng(place.y, place.x),
+              category: categoryId, // 마커에 카테고리 속성 추가
+            });
+  
+            // 마커 클릭 시 장소 정보 표시
+            window.kakao.maps.event.addListener(marker, "click", function () {
+              displayPlaceInfo(marker, place);
+            });
+  
+            marker.setMap(map); // 지도에 마커 표시
+            return marker;
+          });
+  
+        setMarkers(newMarkers); // 새로운 마커 배열로 업데이트
+  
+        // 선택 시 커스텀 오버레이도 제거
+        if (customOverlayRef.current) {
+          customOverlayRef.current.setMap(null); // 현재 표시된 커스텀 오버레이를 지도에서 제거
+          customOverlayRef.current = null; // useRef를 통해 관리하므로 null로 초기화
+        }
       }
   
+      // 선택된 카테고리 상태 반환
       return prevCategories;
     });
   };
@@ -638,6 +667,40 @@ const handleSearchClick = () => {
   const openDetails2 = (url) => {
     window.open(url, '_blank');
   };
+
+  const handleClick = () => {
+    console.log(handleClick())
+    if (selectedPlace && map) {
+      // 선택된 장소의 위치로 지도 이동
+      map.panTo(new window.kakao.maps.LatLng(selectedPlace.y, selectedPlace.x));
+  
+      // 기존 마커 제거
+      removeMarkers();
+  
+      // 새로운 마커 생성
+      const marker = new window.kakao.maps.Marker({
+        position: new window.kakao.maps.LatLng(selectedPlace.y, selectedPlace.x),
+        image: new window.kakao.maps.MarkerImage(
+          'http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png',
+          new window.kakao.maps.Size(64, 69),
+          { offset: new window.kakao.maps.Point(27, 69) }
+        )
+      });
+  
+      // 마커 클릭 시 장소 정보 표시
+      window.kakao.maps.event.addListener(marker, 'click', function() {
+        displayPlaceInfo(marker, selectedPlace);
+      });
+  
+      marker.setMap(map); // 지도에 마커 표시
+  
+      // 커스텀 오버레이 표시
+      displayPlaceInfo(marker, selectedPlace);
+    } else {
+      console.log('이동할 장소를 선택하세요.');
+    }
+  };
+  
 
   return (
     <Container>
@@ -715,34 +778,11 @@ const handleSearchClick = () => {
         </CategoryItem>
       </CategoryList>
       </MenuBar>
-      {categoryPlaces.map((place, index) => (
-        <SavedSearchItem 
-          key={index} 
-          ref={searchResultsRef}
-          >
-          <PlaceName>{place.place_name}</PlaceName>
-          {place.road_address_name && (
-            <Address>주소: {place.road_address_name}</Address>
-          )}
-          {place.address_name && (
-            <Address>지번: {place.address_name}</Address>
-          )}
-          {place.phone && (
-            <Phone>전화번호: {place.phone}</Phone>
-          )}
-          <ButtonContainer>
-            <StyledButton 
-              onClick={() => openDetails(place.place_url)}>
-            상세보기</StyledButton>
-            <StyledButton
-              onClick={() => openDetails2(`https://map.kakao.com/link/to/${place.place_name},${place.y},${place.x}`)}
-            >길찾기</StyledButton>
-          </ButtonContainer>
-        </SavedSearchItem>
-      ))}
+      <SidebarOverflow>
       {savedSearches.map((search, index) => (
           <SavedSearchItem 
             key={index} 
+            onClick = {() => handleClick()}
             >
             <PlaceName>{search.place_name}</PlaceName>
             {search.road_address_name && (
@@ -764,6 +804,33 @@ const handleSearchClick = () => {
             </ButtonContainer>
           </SavedSearchItem>
         ))}
+
+      {categoryPlaces.map((place, index) => (
+        <SavedSearchItem 
+          key={index} 
+          onClick= {() => handleClick()}
+          >
+          <PlaceName>{place.place_name}</PlaceName>
+          {place.road_address_name && (
+            <Address>주소: {place.road_address_name}</Address>
+          )}
+          {place.address_name && (
+            <Address>지번: {place.address_name}</Address>
+          )}
+          {place.phone && (
+            <Phone>전화번호: {place.phone}</Phone>
+          )}
+          <ButtonContainer>
+            <StyledButton 
+              onClick={() => openDetails(place.place_url)}>
+            상세보기</StyledButton>
+            <StyledButton
+              onClick={() => openDetails2(`https://map.kakao.com/link/to/${place.place_name},${place.y},${place.x}`)}
+            >길찾기</StyledButton>
+          </ButtonContainer>
+        </SavedSearchItem>
+      ))}
+        </SidebarOverflow>
       </Sidebar>
       <MapContainer id="map" />
     </Container>
