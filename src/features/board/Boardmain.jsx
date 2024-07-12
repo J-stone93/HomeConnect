@@ -17,6 +17,10 @@ const Container = styled.div`
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 `;
 
+const Ex = styled.div`
+  height: 100vh;
+`;
+
 const Form = styled.form`
   display: flex;
   flex-direction: column;
@@ -151,6 +155,7 @@ function Boardmain() {
 
   return (
     <>
+    <Ex>
       <Container>
         <Form onSubmit={handleSubmit}>
           <InputField
@@ -187,6 +192,7 @@ function Boardmain() {
           <CancelButton onClick={handleModalClose}>취소</CancelButton>
         </Modal.Footer>
       </Modal>
+      </Ex>
     </>
   );
 }
