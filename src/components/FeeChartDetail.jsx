@@ -452,7 +452,7 @@ function FeeChartDetail() {
             ))}
           </StyledSelect >
       </HeaderDiv>
-      <Bar data={data} options={options}/>
+      <Bar data={data} options={options} style={{maxHeight:'768px'}}/>
     </StyledDiv2>
 
     <StyledDiv3></StyledDiv3>

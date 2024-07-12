@@ -20,7 +20,7 @@
       // const weatherIconAdrs = `http://openweathermap.org/img/wn/${weatherIcon}@2x.png`;
       // // 소수점 버리기
       // const temp = Math.round(res.data.main.temp);
- 
+
       // setWeather({
       //   description: weatherKo,
       //   name: cityName,
