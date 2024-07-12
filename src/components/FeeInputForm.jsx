@@ -17,7 +17,7 @@ function FeeInputForm() {
   useEffect(() => {
     const fetchFeeInfo = async () => {
       try {
-        const response = await axios.get(`${addressKey}/fee/list`,
+        const response = await axios.get(`http://localhost:8080/fee/list`,
         { headers: {
           Authorization: localStorage.getItem('token')
         },
@@ -48,7 +48,7 @@ function FeeInputForm() {
         throw new Error("No token found. Please log in.");
       }
 
-      const response = await axios.post(`${addressKey}/fee/register`, 
+      const response = await axios.post(`http://localhost:8080/fee/register`, 
       {
         "userId": userInfo.userId,
         "month": month,
@@ -101,7 +101,7 @@ function FeeInputForm() {
       <div>
         <label>
           관리비:
-          <input type="number" name="maintenance" value={maintenance} onChange={(e) => setMaintenance(e.target.value)} required />
+          <input type="number" name="maintenance" value={maintenance} onChange={(e) => setMaintenance(e.target.value)} requird />
         </label>
       </div>
 
