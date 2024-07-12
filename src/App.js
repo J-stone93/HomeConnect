@@ -33,6 +33,7 @@ import NoticeListDetail from './features/board/notice/NoticeListDetail.jsx';
 import NoticeModify from './features/board/notice/NoticeModify.jsx';
 import { MdManageAccounts } from 'react-icons/md';
 import AdminPage from './pages/AdminPage.jsx';
+import FeeReadPage from './components/FeeReadPage.jsx';
 
 
 const GlobalStyle = createGlobalStyle`
@@ -80,6 +81,7 @@ function App() {
 
             <Route path='feeinput' element={<FeeInputPage />} />
             <Route path='feedetail' element={<FeeChartDetail />} />
+            <Route path='feeread' element={<FeeReadPage/>}/>
 
             <Route path='calendar' element={<CalendarMain />} />
 
