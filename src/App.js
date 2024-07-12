@@ -2,7 +2,7 @@ import './App.css';
 import Main from './pages/Main';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Login from './pages/login/Login';
-import { createGlobalStyle } from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 import 'bootstrap/dist/css/bootstrap.css';
 import Layout from './components/Layout';
 import MyPage from './components/MyPage';
@@ -31,6 +31,8 @@ import { useEffect, useState } from 'react';
 import NoticeMain from './features/board/notice/NoticeMain.jsx';
 import NoticeListDetail from './features/board/notice/NoticeListDetail.jsx';
 import NoticeModify from './features/board/notice/NoticeModify.jsx';
+import { MdManageAccounts } from 'react-icons/md';
+import AdminPage from './pages/AdminPage.jsx';
 
 
 const GlobalStyle = createGlobalStyle`
@@ -47,8 +49,6 @@ const GlobalStyle = createGlobalStyle`
   .cursor-pointer{
     cursor: pointer;
   }
-
-
 `;
 
 function App() {
@@ -73,6 +73,8 @@ function App() {
             isLoading ? (<Loading />) : <> <Layout /> </>
           } > */}
           <Route path='/' element={<Layout/>}>
+            <Route path='/adminPage' element={<AdminPage/>}/>
+
             <Route index element={<Main />} />
             <Route path='mypage' element={<MyPage />} />
 

@@ -1,4 +1,4 @@
-import { Container, Nav, Navbar } from "react-bootstrap";
+import { Button, Container, Nav, Navbar } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Outlet } from "react-router-dom";
@@ -6,6 +6,7 @@ import { IoIosHome } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { getmyInfo, selectmyInfo } from "../features/main/mainSlice";
 import WeatherMain from "./weather/WeatherMain";
+import { MdManageAccounts } from "react-icons/md";
 
 const FixedHeader = styled.header`
   position: fixed;
@@ -19,15 +20,15 @@ const FixedHeader = styled.header`
   justify-content: center;
   
   .widthAdjust{
-    width: 80%;
+    width: 90%;
   } //추가
 `;
 
 const SpaceBetweenContainer = styled(Container)`
-  width: 100%;
+  /* width: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-between; */
 `;
 
 const StyledNavbar = styled(Navbar.Brand)`
@@ -62,7 +63,7 @@ const Content = styled.div`
 `;
 
 const StyledFooter = styled.footer`
-  width: 100%; //추가
+  /* width: 100%; //추가 */
   height: 60px;
   position: relative;
   transform: translateY(110%);
@@ -70,8 +71,8 @@ const StyledFooter = styled.footer`
   color: white;
   text-align: center;
   padding: 25px 0;
-  position: absolute; //추가
-  bottom: 0; //추가
+  /* position: absolute; //추가 */
+  /* bottom: 0; //추가 */
 `;
 
 const ProfileButton = styled.button`
@@ -114,6 +115,13 @@ const StyledWeather = styled.div`
   align-items: center;
 `;
 
+const ADMINCOMMAND = styled(MdManageAccounts)`
+  position: fixed;
+  top: 5rem;
+  right: 3rem;
+  z-index: 999;
+`;
+
 const Layout = () => {
   const navigate = useNavigate();
   const userInfo = useSelector(selectmyInfo);
@@ -128,6 +136,7 @@ const Layout = () => {
 
   return (
     <>
+      <ADMINCOMMAND className='cursor-pointer' size={70} onClick={()=>navigate('/adminPage')}/>
       <FixedHeader>
         <Navbar className="widthAdjust"  expand="lg">
           <SpaceBetweenContainer>
@@ -166,9 +175,9 @@ const Layout = () => {
         <Outlet />
       </Content>
 
-      {/* <StyledFooter>
+      <StyledFooter>
         &copy; 코딩하는오합지졸. All Rights Reserved.
-      </StyledFooter> */}
+      </StyledFooter>
     </>
   );
 };

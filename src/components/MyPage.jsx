@@ -255,8 +255,9 @@ function MyPage() {
   };
   
   const handleDelete = async () => {
-    // if (!selectedPost) return;
+    if (!selectedPost) return;
     
+
     try {
       const response = await axios.delete(`http://localhost:8080/login/remove?userId=${user.userId}`, {
         headers: {
