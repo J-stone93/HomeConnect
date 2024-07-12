@@ -66,7 +66,7 @@ const MapContainer = styled.div`
 
 const SearchResults = styled.div`
   position: absolute;
-  width: 46vh; /* 왼쪽과 오른쪽 padding 고려하여 너비 조정 */
+  width: 36vh; /* 왼쪽과 오른쪽 padding 고려하여 너비 조정 */
   background-color: #fff;
   border: 1px solid #ccc;
   border-top: none;
@@ -79,7 +79,6 @@ const SearchResults = styled.div`
 `;
 
 const CategoryList = styled.ul`
-  /* margin-top: 20px; */
   list-style-type: none;
   padding: 0;
 `;
@@ -185,9 +184,10 @@ function Map() {
     const initMap = () => {
       const container = document.getElementById("map");
       const options = {
-        center: new window.kakao.maps.LatLng(37.452381, 126.699562),
+        center: new window.kakao.maps.LatLng(37.5345613066561, 126.99580922812),
         level: 5,
       };
+      // console.log(options); //위도 경도 값 확인 가능
 
       const kakaoMap = new window.kakao.maps.Map(container, options);
       setMap(kakaoMap); // 지도 객체 설정
@@ -249,7 +249,6 @@ function Map() {
 
       // 검색 결과 초기화 및 입력값 초기화
       setSearchResults([]);
-      // setInputValue("");
     }
   }, [selectedPlace, map]);
 
@@ -257,7 +256,8 @@ function Map() {
   const handleInputChange = (event) => {
     const value = event.target.value;
     setInputValue(value);
-
+    // console.log(setInputValue); 검색어 가능 칸
+    
     // 타이머 클리어 및 디바운스 처리
     if (timerRef.current) {
       clearTimeout(timerRef.current);
@@ -289,6 +289,8 @@ function Map() {
     const marker = new window.kakao.maps.Marker({
       position: new window.kakao.maps.LatLng(place.y, place.x),
     });
+    // console.log(marker); // 선택된 장소에 위도 경도 확인 가능
+
   
     // 마커 클릭 시 장소 정보 표시
     window.kakao.maps.event.addListener(marker, "click", function () {
@@ -303,8 +305,7 @@ function Map() {
     // 지도를 선택된 장소의 위치로 이동
     map.panTo(new window.kakao.maps.LatLng(place.y, place.x));
 
-    setSelectedItemIndex(-1); // Clear selected item index
-
+    setSelectedItemIndex(-1);
     setSavedSearches([...savedSearches, place]);
     setInputValue(place.place_name);
   };
@@ -423,6 +424,7 @@ function Map() {
         scrollToItem(selectedItemIndex + 1);
          // 선택된 항목의 텍스트를 실시간으로 검색창에 반영
         setInputValue(searchResults[selectedItemIndex + 1].place_name);
+        // console.log(setInputValue); 
       }
     } else if (event.key === "ArrowUp") {
       event.preventDefault();
@@ -431,17 +433,20 @@ function Map() {
         scrollToItem(selectedItemIndex - 1);
         // 선택된 항목의 텍스트를 실시간으로 검색창에 반영
         setInputValue(searchResults[selectedItemIndex - 1].place_name);
+        // console.log(setInputValue);
       }
     } else if (event.key === "Enter") {
       if (selectedItemIndex !== -1) {
         // 검색창에 선택된 항목의 텍스트를 입력
         setInputValue(searchResults[selectedItemIndex].place_name);
+        // console.log(setInputValue()); 
         // 선택된 항목 처리
         handleSelectPlace(searchResults[selectedItemIndex]);
         setSelectedItemIndex(-1);
       } else if (inputValue.trim() !== "") {
         // 검색어가 입력된 경우 검색 실행
         handleSearchClick();
+        // console.log(handleSearchClick);
       } else {
         // 검색어가 없는 경우 처리
         console.log("검색어를 입력하세요");
@@ -464,6 +469,7 @@ function Map() {
       const marker = new window.kakao.maps.Marker({
         position: new window.kakao.maps.LatLng(place.y, place.x),
       });
+      console.log(marker); // 만약 검색창에 입력을 한 후 위도, 경도 표시가 나옴
 
       // 마커 클릭 시 장소 정보 표시
       window.kakao.maps.event.addListener(marker, 'click', function () {
@@ -496,10 +502,10 @@ function Map() {
     const ps = new window.kakao.maps.services.Places(map);
     ps.categorySearch(category, (data, status) => {
       if (status === window.kakao.maps.services.Status.OK) {
-        setCategoryPlaces(data); // Update state with the found places
-        displayPlaces(data); // Display the places on the map
+        setCategoryPlaces(data); 
+        displayPlaces(data); 
       } else if (status === window.kakao.maps.services.Status.ZERO_RESULT) {
-        setCategoryPlaces([]); // Clear the state if no results
+        setCategoryPlaces([]);
         console.log("검색 결과가 없습니다.");
       } else if (status === window.kakao.maps.services.Status.ERROR) {
         console.error("검색 중 오류가 발생했습니다.");
@@ -553,6 +559,7 @@ function Map() {
           window.kakao.maps.event.addListener(marker, "click", function () {
             displayPlaceInfo(marker, place);
           });
+          
   
           marker.setMap(map); // 지도에 마커 표시
           return marker;
@@ -590,10 +597,9 @@ const handleSearchClick = () => {
         if (data.length > 0) {
           const firstPlace = data[0];
           const newCenter = new window.kakao.maps.LatLng(firstPlace.y, firstPlace.x);
-          
           // 지도 이동
           map.panTo(newCenter);
-          
+
           const marker = new window.kakao.maps.Marker({
             position: newCenter,
           });
@@ -708,7 +714,10 @@ const handleSearchClick = () => {
       </CategoryList>
       </MenuBar>
       {categoryPlaces.map((place, index) => (
-        <SavedSearchItem key={index}>
+        <SavedSearchItem 
+          key={index} 
+          ref={searchResultsRef}
+          >
           <PlaceName>{place.place_name}</PlaceName>
           {place.road_address_name && (
             <Address>주소: {place.road_address_name}</Address>
@@ -730,7 +739,9 @@ const handleSearchClick = () => {
         </SavedSearchItem>
       ))}
       {savedSearches.map((search, index) => (
-          <SavedSearchItem key={index}>
+          <SavedSearchItem 
+            key={index} 
+            >
             <PlaceName>{search.place_name}</PlaceName>
             {search.road_address_name && (
               <Address>주소: {search.road_address_name}</Address>
