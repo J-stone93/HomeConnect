@@ -255,7 +255,6 @@ function MyPage() {
   };
   
   const handleDelete = async () => {
-    if (!selectedPost) return;
     
 
     try {
