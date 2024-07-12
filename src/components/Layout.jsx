@@ -57,22 +57,22 @@ const Mypage = styled.div`
 
 const Content = styled.div`
 /* padding-top: 82px; */ // <-- 문제임
-  padding-top: 67px;  
+  margin-top: 8rem;  
   /* padding-top: 1%;  */
   /* margin-top: 4%; */
 `;
 
 const StyledFooter = styled.footer`
-  /* width: 100%; //추가 */
+  width: 100%; //추가
   height: 60px;
-  position: relative;
+  position: absolute;
   transform: translateY(110%);
   background-color: #343a40;
   color: white;
   text-align: center;
   padding: 25px 0;
   /* position: absolute; //추가 */
-  /* bottom: 0; //추가 */
+  bottom: 0; //추가
 `;
 
 const ProfileButton = styled.button`
@@ -136,6 +136,8 @@ const Layout = () => {
 
   return (
     <>
+      <div>
+
       <ADMINCOMMAND className='cursor-pointer' size={70} onClick={()=>navigate('/adminPage')}/>
       <FixedHeader>
         <Navbar className="widthAdjust"  expand="lg">
@@ -174,6 +176,8 @@ const Layout = () => {
       <Content>
         <Outlet />
       </Content>
+
+      </div>
 
       <StyledFooter>
         &copy; 코딩하는오합지졸. All Rights Reserved.
