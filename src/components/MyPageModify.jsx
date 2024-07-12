@@ -7,7 +7,7 @@ import { getmyInfo, selectmyInfo } from "../features/main/mainSlice";
 
 
 function MyPageModify(props) {
-
+  const addressKey = process.env.REACT_APP_HOST_ADDRESS;
   const {value , setShowModify} = props;
   const [state, setState] = useState(value);
   const user = useSelector(selectmyInfo);
@@ -16,7 +16,7 @@ function MyPageModify(props) {
   const handleNameModify = () => {
     const modifyName = async () => {
       try {
-        const response = await axios.put(`http://homeconnectserver.shop:8080/login/nameModify`, {
+        const response = await axios.put(`${addressKey}/login/nameModify`, {
           "userId": user.userId,
           "name": state
         }, {
@@ -43,7 +43,7 @@ function MyPageModify(props) {
   const handleAddressModify = () => {
     const modifyAddress = async () => {
       try {
-        const response = await axios.put(`http://homeconnectserver.shop:8080/login/addressModify`, {
+        const response = await axios.put(`${addressKey}/login/addressModify`, {
           "userId": user.userId,
           "address": state
         }, {

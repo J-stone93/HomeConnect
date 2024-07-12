@@ -15,6 +15,7 @@ import styled from 'styled-components';
 import { cancelPayment, setFees } from '../features/fee/feeSlice';
 import axios from 'axios';
 import { selectmyInfo } from '../features/main/mainSlice';
+import { addressKey } from '..';
 
 // Chart.js에 필요한 구성 요소 등록
 ChartJS.register(
@@ -174,7 +175,7 @@ function FeeChartDetail() {
   useEffect(() => {
     const fetchFeeInfo = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/fee/list',
+        const response = await axios.get(`${addressKey}/fee/list`,
           { headers: {
             Authorization: localStorage.getItem('token')
           },
@@ -213,7 +214,7 @@ function FeeChartDetail() {
 
   // 결제취소
   // useEffect(() => {
-  //   axios.get('http://localhost:8080/pay/list')
+  //   axios.get(`${addressKey}/pay/list`)
   //     .then(response => {
   //       setData2(response.data);
   //     })
@@ -248,7 +249,7 @@ function FeeChartDetail() {
       buyer_postalcode: '12345'
     }, async function (rsp) { // 콜백
       if (rsp.success) {
-        await axios.post('http://localhost:8080/pay/register', {
+        await axios.post(`${addressKey}/pay/register`, {
           merchant_uid: rsp.merchant_uid,
           imp_uid: rsp.imp_uid,
           amount: amount, // 결제 예정금액
@@ -284,7 +285,7 @@ function FeeChartDetail() {
   // const pointCheck = async (imp_uid, merchant_uid) => {
   //   try {
   //     console.log('백엔드 검증 실행');
-  //     const response = await axios.post('http://localhost:8080/verify/' + imp_uid);
+  //     const response = await axios.post(`${addressKey}/verify/` + imp_uid);
 
   //     console.log('결제 검증 완료', response.data);
   //     //db에 저장
@@ -298,7 +299,7 @@ function FeeChartDetail() {
   // const pointSubmit = async (merchant_uid) => {
   //   try {
   //     console.log('넘어가는 결제 번호:' + merchant_uid);
-  //     const response = await axios.post('http://localhost:8080/user/myPage/point/pay', {
+  //     const response = await axios.post(`${addressKey}/user/myPage/point/pay`, {
   //       pointCertify: merchant_uid.toString(),
   //       userEmail: 'por0632@naver.com',
   //     });

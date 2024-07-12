@@ -6,6 +6,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { selectmyInfo } from "../../features/main/mainSlice";
 import { selectCommunityList } from "../../features/community/communitySlice";
+import { addressKey } from "../..";
 
 const Wrapper = styled.form`
   margin: 100px auto;
@@ -124,7 +125,7 @@ function CommunityRegister() {
 
     
     try {
-      const response = await axios.post(`http://homeconnectserver.shop:8080/community/register`, formData, {
+      const response = await axios.post(`${addressKey}/community/register`, formData, {
         headers: { 'Authorization': `${token}` },
       });
       console.log(response);

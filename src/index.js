@@ -19,6 +19,7 @@ import { getmyInfo } from './features/main/mainSlice';
   store.dispatch(getmyInfo(user));
 })();
 
+export const addressKey = process.env.REACT_APP_HOST_ADDRESS;
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

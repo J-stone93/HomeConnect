@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { selectMyFee, setFees } from "../features/fee/feeSlice";
 import { useEffect } from "react";
 import axios from "axios";
+import { addressKey } from "..";
 
 const StyledCard = styled.div`
   display: flex;
@@ -191,7 +192,7 @@ function Main() {
   useEffect(() => {
     const fetchFeeInfo = async () => {
       try {
-        const response = await axios.get('http://homeconnectserver.shop:8080/fee/list',
+        const response = await axios.get(`${addressKey}/fee/list`,
         { headers: {
           Authorization: localStorage.getItem('token')
         },

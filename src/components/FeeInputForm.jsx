@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectmyInfo } from '../features/main/mainSlice';
 import axios from 'axios';
 import { setFees } from '../features/fee/feeSlice';
+import { addressKey } from '..';
 
 function FeeInputForm() {
   const [no, setNo] = useState('');
@@ -16,7 +17,7 @@ function FeeInputForm() {
   useEffect(() => {
     const fetchFeeInfo = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/fee/list',
+        const response = await axios.get(`${addressKey}/fee/list`,
         { headers: {
           Authorization: localStorage.getItem('token')
         },
@@ -47,7 +48,7 @@ function FeeInputForm() {
         throw new Error("No token found. Please log in.");
       }
 
-      const response = await axios.post('http://localhost:8080/fee/register', 
+      const response = await axios.post(`${addressKey}/fee/register`, 
       {
         "userId": userInfo.userId,
         "month": month,
