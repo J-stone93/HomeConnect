@@ -1,7 +1,11 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Container, Form } from 'react-bootstrap';
 import { FaTrashAlt } from 'react-icons/fa';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { selectmyInfo } from '../features/main/mainSlice';
 
 const Containers = styled(Form)`
   font-family: Arial, sans-serif;
@@ -68,6 +72,10 @@ h1 {
 
 function AdminPage() {
 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const user = useSelector(selectmyInfo());
+
   const [users, setUsers] = useState([
       { id: 1, name: 'John Doe', email: 'john@example.com' },
       { id: 2, name: 'Jane Doe', email: 'jane@example.com' },
@@ -78,30 +86,30 @@ function AdminPage() {
     setUsers(users.filter(user => user.id !== id));
   };
 
-  useEffect(() => {
-    const getUsersInfo = async () => {
-      try {
-        const response = await axios.get(`http://localhost:8080/login?userId=${IDvalue}&pw=${PWvalue}`);
-        if (!response.data) return alert("아이디나 비밀번호를 확인해주세요");
-        if (response.status === 200) {
-          localStorage.setItem('token', response.data.token);
-          localStorage.setItem('user', JSON.stringify(response.data.user));
-          const userInfo = JSON.parse((localStorage.getItem('user')));
-          console.log(userInfo);
-          dispatch(getmyInfo(userInfo));
-          alert("환영합니다!");
-          navigate('/');
-        } else {
-          alert("오류 발생");
-          throw new Error(`api error: ${response.status} ${response.statusText}`);
-        }
-      } catch (error) {
-        alert("오류 발생");
-        console.error(error);
-      }
-    };
-    getUsersInfo();
-  }, []);
+  // useEffect(() => {
+  //   const getUsersInfo = async () => {
+  //     try {
+  //       const response = await axios.get(`http://localhost:8080/login?userId=${IDvalue}&pw=${PWvalue}`);
+  //       if (!response.data) return alert("아이디나 비밀번호를 확인해주세요");
+  //       if (response.status === 200) {
+  //         localStorage.setItem('token', response.data.token);
+  //         localStorage.setItem('user', JSON.stringify(response.data.user));
+  //         const userInfo = JSON.parse((localStorage.getItem('user')));
+  //         console.log(userInfo);
+  //         dispatch(getmyInfo(userInfo));
+  //         alert("환영합니다!");
+  //         navigate('/');
+  //       } else {
+  //         alert("오류 발생");
+  //         throw new Error(`api error: ${response.status} ${response.statusText}`);
+  //       }
+  //     } catch (error) {
+  //       alert("오류 발생");
+  //       console.error(error);
+  //     }
+  //   };
+  //   getUsersInfo();
+  // }, []);
 
   return (
     <Containers>

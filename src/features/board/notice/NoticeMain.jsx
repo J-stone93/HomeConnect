@@ -130,7 +130,7 @@ function NoticeMain() {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.post(
-        'http://localhost:8080/notice/register',
+        'http://homeconnectserver.shop:8080/notice/register',
         {
           "no": 0,
           "title": title,

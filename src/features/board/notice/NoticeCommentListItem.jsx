@@ -64,7 +64,7 @@ function NoticeCommentListItem(props) {
 
   const fetchCommentList = useCallback(async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/noticeComment/list?noticeNo=${noticeId}`, {
+      const response = await axios.get(`http://homeconnectserver.shop:8080/noticeComment/list?noticeNo=${noticeId}`, {
         headers: {
           Authorization: localStorage.getItem('token'),
         }
@@ -102,7 +102,7 @@ function NoticeCommentListItem(props) {
 
       const modifyComment = async () => {
         try {
-          const response = await axios.put(`http://localhost:8080/noticeComment/modify`, {
+          const response = await axios.put(`http://homeconnectserver.shop:8080/noticeComment/modify`, {
             commentNo: commentNo,
             content: value,
           }, {
@@ -132,7 +132,7 @@ function NoticeCommentListItem(props) {
 
   const handleRemoveComment = async () => {
     try {
-      const response = await axios.delete(`http://localhost:8080/noticeComment/remove?commentNo=${commentNo}`, 
+      const response = await axios.delete(`http://homeconnectserver.shop:8080/noticeComment/remove?commentNo=${commentNo}`, 
         { 
           headers: {
           Authorization: localStorage.getItem('token')

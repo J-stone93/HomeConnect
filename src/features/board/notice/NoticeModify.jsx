@@ -123,7 +123,7 @@ function NoticeModify() {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.put(
-        'http://localhost:8080/notice/modify',
+        'http://homeconnectserver.shop:8080/notice/modify',
         { 
           "no": noticeId,
           "title": title,
@@ -152,7 +152,7 @@ function NoticeModify() {
       try {
         const token = localStorage.getItem('token');
         const response = await axios.get(
-          `http://localhost:8080/notice/read?no=${noticeId}`,
+          `http://homeconnectserver.shop:8080/notice/read?no=${noticeId}`,
           {
             headers : {
             Authorization : token

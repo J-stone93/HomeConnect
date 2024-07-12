@@ -86,12 +86,12 @@ function Register() {
     }
   };
 
-  // const addressKey = process.env.REACT_APP_HOST_ADDRESS;
+  const addressKey = process.env.REACT_APP_HOST_ADDRESS;
 
   const handleSubmitINFO = () => {
     const myInfo = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/login?userId=${IDvalue}&pw=${PWvalue}`);
+        const response = await axios.get(`${addressKey}/login?userId=${IDvalue}&pw=${PWvalue}`);
         if (!response.data) return alert("아이디나 비밀번호를 확인해주세요");
         if (response.status === 200) {
           localStorage.setItem('token', response.data.token);

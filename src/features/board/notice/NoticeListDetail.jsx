@@ -82,7 +82,7 @@ function NoticeListDetail() {
   useEffect(() => {
     const noticeDetail = async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/notice/read?no=${noticeId}`,{
+      const response = await axios.get(`http://homeconnectserver.shop:8080/notice/read?no=${noticeId}`,{
         headers : {
           Authorization : localStorage.getItem('token'),
         }
@@ -103,7 +103,7 @@ function NoticeListDetail() {
   useEffect(() => {
     const noticeCommentList = async() => {
       try{
-        const response = await axios.get(`http://localhost:8080/noticeComment/list?noticeNo=${noticeId}`, {
+        const response = await axios.get(`http://homeconnectserver.shop:8080/noticeComment/list?noticeNo=${noticeId}`, {
           headers : {
             Authorization :  localStorage.getItem('token'),
           }
@@ -129,7 +129,7 @@ function NoticeListDetail() {
     const exportContents = async() => {
       try{
         const token = localStorage.getItem('token');
-        const response = await axios.post(`http://localhost:8080/noticeComment/register`,
+        const response = await axios.post(`http://homeconnectserver.shop:8080/noticeComment/register`,
         {
           "noticeNo" : noticeId,
           "content" : comment,
@@ -142,7 +142,7 @@ function NoticeListDetail() {
         if (response.status === 200) { 
           const noticeDetail = async () => {
             try {
-              const response = await axios.get(`http://localhost:8080/notice/read?no=${noticeId}`,{
+              const response = await axios.get(`http://homeconnectserver.shop:8080/notice/read?no=${noticeId}`,{
                 headers : {
                   Authorization : localStorage.getItem('token'),
                 }
@@ -161,7 +161,7 @@ function NoticeListDetail() {
 
           const NoticeCommentList = async() => {
             try{
-              const response = await axios.get(`http://localhost:8080/noticeComment/list?noticeNo=${noticeId}`, {
+              const response = await axios.get(`http://homeconnectserver.shop:8080/noticeComment/list?noticeNo=${noticeId}`, {
                 headers : {
                   Authorization :  localStorage.getItem('token'),
                 }

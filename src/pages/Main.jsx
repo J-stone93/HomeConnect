@@ -191,7 +191,7 @@ function Main() {
   useEffect(() => {
     const fetchFeeInfo = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/fee/list',
+        const response = await axios.get('http://homeconnectserver.shop:8080/fee/list',
         { headers: {
           Authorization: localStorage.getItem('token')
         },

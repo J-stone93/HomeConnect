@@ -113,7 +113,7 @@ function SignUp() {
   const [pw6, setPw6] = useState('');
   const [iDCheck, setiDCheck] = useState(false);
   
-  // const addressKey = process.env.REACT_APP_HOST_ADDRESS;
+  const addressKey = process.env.REACT_APP_HOST_ADDRESS;
 
   const handleNameChange = (e) => {
     setName(e.target.value);
@@ -147,8 +147,8 @@ function SignUp() {
   const handleVerification = () => {
     const exportduplication = async () => {
       try {
-        // const response = await axios.get(`${addressKey}/login/idcheck?userId=${id}`);
-        const response = await axios.get(`http://localhost:8080/login/idcheck?userId=${id}`);
+        const response = await axios.get(`${addressKey}/login/idcheck?userId=${id}`);
+        // const response = await axios.get(`http://homeconnectserver.shop:8080/login/idcheck?userId=${id}`);
         if (response.status === 201) {
           if(response.data === "사용가능한 아이디입니다."){
             setiDCheck(true);
@@ -208,7 +208,7 @@ function SignUp() {
 
     const exportsignup = async () => {
       try {
-        const response = await axios.post(`http://localhost:8080/login/signup`, {
+        const response = await axios.post(`${addressKey}/login/signup`, {
           "name" : name,
           "birthdate" : birthday,
           "sex" : sex,

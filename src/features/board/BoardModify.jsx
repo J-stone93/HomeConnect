@@ -124,7 +124,7 @@ function BoardModify() {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.put(
-        'http://localhost:8080/board/modify',
+        'http://homeconnectserver.shop:8080/board/modify',
         { 
           "no": boardId,
           "title": title,
@@ -154,7 +154,7 @@ function BoardModify() {
       try {
         const token = localStorage.getItem('token');
         const response = await axios.get(
-          `http://localhost:8080/board/read?no=${boardId}`,
+          `http://homeconnectserver.shop:8080/board/read?no=${boardId}`,
           {
             headers : {
             Authorization : token

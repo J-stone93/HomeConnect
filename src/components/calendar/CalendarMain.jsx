@@ -190,7 +190,7 @@ function CalendarMain() {
 
   const fetchNoticeList = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/notice/list', {
+      const response = await axios.get('http://homeconnectserver.shop:8080/notice/list', {
         headers: {
           Authorization: localStorage.getItem('token'),
         },

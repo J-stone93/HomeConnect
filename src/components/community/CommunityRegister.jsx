@@ -124,7 +124,7 @@ function CommunityRegister() {
 
     
     try {
-      const response = await axios.post(`http://localhost:8080/community/register`, formData, {
+      const response = await axios.post(`http://homeconnectserver.shop:8080/community/register`, formData, {
         headers: { 'Authorization': `${token}` },
       });
       console.log(response);

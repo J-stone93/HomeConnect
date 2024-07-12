@@ -83,7 +83,7 @@ function BoardListDetail() {
   useEffect(() => {
     const boardlist = async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/board/read?no=${boardId}`,{
+      const response = await axios.get(`http://homeconnectserver.shop:8080/board/read?no=${boardId}`,{
         headers : {
           Authorization : localStorage.getItem('token'),
         }
@@ -104,7 +104,7 @@ function BoardListDetail() {
   useEffect(() => {
     const commentList = async() => {
       try{
-        const response = await axios.get(`http://localhost:8080/comment/list?boardNo=${boardId}`, {
+        const response = await axios.get(`http://homeconnectserver.shop:8080/comment/list?boardNo=${boardId}`, {
           headers : {
             Authorization :  localStorage.getItem('token'),
           }
@@ -131,7 +131,7 @@ function BoardListDetail() {
     const exportContents = async() => {
       try{
         const token = localStorage.getItem('token');
-        const response = await axios.post(`http://localhost:8080/comment/register`,
+        const response = await axios.post(`http://homeconnectserver.shop:8080/comment/register`,
         {
           "boardNo" : boardId,
           "content" : comment,
@@ -144,7 +144,7 @@ function BoardListDetail() {
         if (response.status === 200) { 
           const boardlist = async () => {
             try {
-              const response = await axios.get(`http://localhost:8080/board/read?no=${boardId}`,{
+              const response = await axios.get(`http://homeconnectserver.shop:8080/board/read?no=${boardId}`,{
                 headers : {
                   Authorization : localStorage.getItem('token'),
                 }
@@ -163,7 +163,7 @@ function BoardListDetail() {
 
       const commentList = async() => {
         try{
-          const response = await axios.get(`http://localhost:8080/comment/list?boardNo=${boardId}`, {
+          const response = await axios.get(`http://homeconnectserver.shop:8080/comment/list?boardNo=${boardId}`, {
             headers : {
               Authorization :  localStorage.getItem('token'),
             }

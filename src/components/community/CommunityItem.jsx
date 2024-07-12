@@ -59,7 +59,7 @@ function CommunityItem(props) {
   useEffect(() => {
     const fetchCommunityList = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/community/category?category=${categoryName}`, {
+        const response = await axios.get(`http://homeconnectserver.shop:8080/community/category?category=${categoryName}`, {
           headers: {
             Authorization: localStorage.getItem('token'),
           }

@@ -122,7 +122,7 @@ function Boardmain() {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.post(
-        'http://localhost:8080/board/register',
+        'http://homeconnectserver.shop:8080/board/register',
         { 
           "no": 0,
           "title": title,

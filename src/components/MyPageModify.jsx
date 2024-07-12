@@ -16,7 +16,7 @@ function MyPageModify(props) {
   const handleNameModify = () => {
     const modifyName = async () => {
       try {
-        const response = await axios.put(`http://localhost:8080/login/nameModify`, {
+        const response = await axios.put(`http://homeconnectserver.shop:8080/login/nameModify`, {
           "userId": user.userId,
           "name": state
         }, {
@@ -43,7 +43,7 @@ function MyPageModify(props) {
   const handleAddressModify = () => {
     const modifyAddress = async () => {
       try {
-        const response = await axios.put(`http://localhost:8080/login/addressModify`, {
+        const response = await axios.put(`http://homeconnectserver.shop:8080/login/addressModify`, {
           "userId": user.userId,
           "address": state
         }, {

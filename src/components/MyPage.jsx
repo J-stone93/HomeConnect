@@ -229,7 +229,7 @@ function MyPage() {
     } else {
       const modifyPw = async () => {
         try {
-          const response = await axios.put(`http://localhost:8080/login/pwModify`, {
+          const response = await axios.put(`http://homeconnectserver.shop:8080/login/pwModify`, {
             "userId": user.userId,
             "pw": pw2
           }, {
@@ -256,7 +256,7 @@ function MyPage() {
   
   const handleDelete = async () => {
     try {
-      const response = await axios.delete(`http://localhost:8080/login/remove?userId=${user.userId}`, {
+      const response = await axios.delete(`http://homeconnectserver.shop:8080/login/remove?userId=${user.userId}`, {
         headers: {
           Authorization: localStorage.getItem('token'),
         },
