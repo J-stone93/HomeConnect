@@ -1,3 +1,4 @@
+// BoardList.jsx
 import { json, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
@@ -9,11 +10,33 @@ import { useSelector } from "react-redux";
 import { selectmyInfo } from "../main/mainSlice";
 import { addressKey } from "../..";
 
+// 기존 Footer 스타일
+const StyledFooter = styled.footer`
+  width: 100%;
+  height: 60px;
+  position: absolute;
+  transform: translateY(110%);
+  background-color: #343a40;
+  color: white;
+  text-align: center;
+  padding: 25px 0;
+  position: absolute;
+`;
+
+// BoardList 컴포넌트에서만 사용할 새로운 Footer 스타일
+const BoardListFooter = styled(StyledFooter)`
+  position: absolute;
+  /* bottom: 0; */
+  background-color: #007bff;  // 새로운 배경색
+  color: #ffffff;            // 새로운 텍스트 색
+  transform: translateY(100%); // 필요에 따라 변경
+  // 추가적인 스타일 변경 가능
+`;
+
 const TableWrapper = styled(Table)`
   text-align: left;
   margin-top: 20px;
   width: 80%;
-  height: 100vh;
   font-size: 16px;
   margin: 0 auto;
   border-collapse: separate;
@@ -68,8 +91,8 @@ const TableWrapper = styled(Table)`
   }
 
   .notice td {
-    background-color: inherit !important; 
-    color: inherit !important; 
+    background-color: inherit !important;
+    color: inherit !important;
   }
 `;
 
@@ -119,14 +142,14 @@ function BoardList() {
   const [notices, setNotices] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [showNoticeModal, setShowNoticeModal] = useState(false);
-  const [selectedPost, setSelectedPost] = useState(null); 
+  const [selectedPost, setSelectedPost] = useState(null);
   const [selectedNotice, setSelectedNotice] = useState(null);
   const navigate = useNavigate();
   const userInfo = useSelector(selectmyInfo);
 
   const handleModalClose = () => {
     setShowModal(false);
-    setSelectedPost(null); 
+    setSelectedPost(null);
   };
 
   const handleModalOpen = (post) => {
@@ -136,7 +159,7 @@ function BoardList() {
 
   const handleNoticeModalClose = () => {
     setShowNoticeModal(false);
-    setSelectedNotice(null); 
+    setSelectedNotice(null);
   };
 
   const handleNoticeModalOpen = (notice) => {
@@ -151,7 +174,7 @@ function BoardList() {
 
   const handleDelete = async () => {
     if (!selectedPost) return;
-    
+
     try {
       const response = await axios.delete(`${addressKey}/board/remove?no=${selectedPost.no}`, {
         headers: {
@@ -159,7 +182,7 @@ function BoardList() {
         },
       });
       if (response.status === 200) {
-        setPosts(posts.filter(post => post.no !== selectedPost.no)); 
+        setPosts(posts.filter(post => post.no !== selectedPost.no));
         handleModalClose();
       } else {
         throw new Error(`API error: ${response.status} ${response.statusText}`);
@@ -171,7 +194,7 @@ function BoardList() {
 
   const handleNoticeDelete = async () => {
     if (!selectedNotice) return;
-    
+
     try {
       const response = await axios.delete(`${addressKey}/notice/remove?no=${selectedNotice.no}`, {
         headers: {
@@ -179,7 +202,7 @@ function BoardList() {
         },
       });
       if (response.status === 200) {
-        setNotices(notices.filter(notice => notice.no !== selectedNotice.no)); 
+        setNotices(notices.filter(notice => notice.no !== selectedNotice.no));
         handleNoticeModalClose();
       } else {
         throw new Error(`API error: ${response.status} ${response.statusText}`);
@@ -194,7 +217,7 @@ function BoardList() {
       try {
         const response = await axios.get(`${addressKey}/board/list`, {
           headers: {
-            Authorization: localStorage.getItem('token'), 
+            Authorization: localStorage.getItem('token'),
           },
         });
         if (response.status === 200) {
@@ -249,8 +272,8 @@ function BoardList() {
           </tr>
         </thead>
         <tbody>
-          
-          {notices.map((notice)=>(
+
+          {notices.map((notice) => (
             <tr key={notice.no} className="notice">
               <td onClick={() => navigate(`/noticeread/${notice.no}`)}>{notice.no}</td>
               <td onClick={() => navigate(`/noticeread/${notice.no}`)}>{notice.title}</td>
@@ -266,7 +289,7 @@ function BoardList() {
               </td>
             </tr>
           ))}
-          
+
           {posts.map((post) => (
             <tr key={post.no}>
               <td onClick={() => navigate(`/boardread/${post.no}`)}>{post.no}</td>
@@ -285,7 +308,7 @@ function BoardList() {
           ))}
         </tbody>
       </TableWrapper>
-      
+
       <Modal show={showModal} onHide={handleModalClose} centered>
         <Modal.Header closeButton>
           <Modal.Title>삭제 확인</Modal.Title>
@@ -311,6 +334,11 @@ function BoardList() {
           <CancelButton onClick={handleNoticeModalClose}>취소</CancelButton>
         </Modal.Footer>
       </Modal>
+
+      {/* 변경된 Footer */}
+      {/* <BoardListFooter>
+        &copy; 코딩하는오합지졸. All Rights Reserved.
+      </BoardListFooter> */}
     </>
   );
 }

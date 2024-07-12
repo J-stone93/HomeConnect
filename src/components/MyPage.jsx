@@ -186,6 +186,11 @@ const CancelButton = styled(Button)`
   }
 `;
 
+const TitleContainer = styled.div`
+  display: flex; 
+  align-items: center;
+`;
+
 function MyPage() {
   const addressKey = process.env.REACT_APP_HOST_ADDRESS;
   const user = useSelector(selectmyInfo);
@@ -280,16 +285,18 @@ function MyPage() {
       <GlobalStyle />
       <Root>
         <StyledPaper>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <TitleContainer>
             <StyledAvatar alt="User Name" src="https://via.placeholder.com/150" />
-            <UserName>{user.userId}</UserName>
-            {showModify 
-              ? <MyPageModify value={user.name} setShowModify={()=>setShowModify()}/>
-              : <UserEmail>{user.name}</UserEmail>
-            }
+            <div style={{ display: 'flex',flexDirection: 'column', alignItems: 'center' }}>
+              <UserName>{user.userId}</UserName>
+              {showModify 
+                ? <MyPageModify value={user.name} setShowModify={()=>setShowModify()}/>
+                : <UserEmail>{user.name}</UserEmail>
+              }
 
-            <StyledButton color="primary" onClick={handleProfileModify}>프로필 수정</StyledButton>
-          </div>
+              <StyledButton color="primary" onClick={handleProfileModify}>프로필 수정</StyledButton>
+            </div>
+          </TitleContainer>
           <Divider />
           <Section style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <SectionTitle>주소</SectionTitle>

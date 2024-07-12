@@ -1,3 +1,4 @@
+// Layout.jsx
 import { Button, Container, Nav, Navbar } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -10,6 +11,7 @@ import { MdManageAccounts } from "react-icons/md";
 
 const FixedHeader = styled.header`
   position: fixed;
+  height: 5.5rem;
   top: 0;
   width: 100%;
   z-index: 10;
@@ -18,17 +20,16 @@ const FixedHeader = styled.header`
   display: flex;
   align-items: center;
   justify-content: center;
-  
-  .widthAdjust{
+
+  .widthAdjust {
     width: 90%;
-  } //추가
+  }
 `;
 
 const SpaceBetweenContainer = styled(Container)`
-  /* width: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-between; */
+  justify-content: space-between;
 `;
 
 const StyledNavbar = styled(Navbar.Brand)`
@@ -54,25 +55,21 @@ const Mypage = styled.div`
   }
 `;
 
-
 const Content = styled.div`
-/* padding-top: 82px; */ // <-- 문제임
-  margin-top: 8rem;  
-  /* padding-top: 1%;  */
-  /* margin-top: 4%; */
+  margin-top: 8rem;
+  padding-bottom: 4.5rem; /* Footer height to avoid overlap */
 `;
 
 const StyledFooter = styled.footer`
-  width: 100%; //추가
-  height: 60px;
-  position: absolute;
-  transform: translateY(110%);
+  width: 100%;
+  height: 4.5rem;
+  position: fixed;
+  bottom: 0;
   background-color: #343a40;
   color: white;
   text-align: center;
   padding: 25px 0;
-  /* position: absolute; //추가 */
-  // bottom: 0; //추가
+  z-index: 10;
 `;
 
 const ProfileButton = styled.button`
@@ -136,13 +133,10 @@ const Layout = () => {
 
   return (
     <>
-      <div>
-
-      <ADMINCOMMAND className='cursor-pointer' size={70} onClick={()=>navigate('/adminPage')}/>
+      <ADMINCOMMAND className='cursor-pointer' size={70} onClick={() => navigate('/adminPage')} />
       <FixedHeader>
-        <Navbar className="widthAdjust"  expand="lg">
+        <Navbar className="widthAdjust" expand="lg">
           <SpaceBetweenContainer>
-
             <Navbar.Brand>
               <IoIosHome onClick={() => navigate('/')} className="cursor-pointer" size={32} />
             </Navbar.Brand>
@@ -167,7 +161,6 @@ const Layout = () => {
                 <ProfileButton onClick={() => navigate('/feeinput')}>관리비 입력</ProfileButton>
                 <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
               </Mypage>
-
             </Navbar.Collapse>
           </SpaceBetweenContainer>
         </Navbar>
@@ -176,8 +169,6 @@ const Layout = () => {
       <Content>
         <Outlet />
       </Content>
-
-      </div>
 
       <StyledFooter>
         &copy; 코딩하는오합지졸. All Rights Reserved.

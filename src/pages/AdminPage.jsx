@@ -74,7 +74,7 @@ function AdminPage() {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user = useSelector(selectmyInfo());
+  const user = useSelector(selectmyInfo);
 
   const [users, setUsers] = useState([
       { id: 1, name: 'John Doe', email: 'john@example.com' },
@@ -140,6 +140,17 @@ function AdminPage() {
               </tbody>
           </table>
       </div>
+    <section id="full">
+      <div class="bubble-group">
+        <div class="bubble b1"></div>
+        <div class="bubble b2"></div>
+        <div class="bubble b3"></div>
+        <div class="bubble b4"></div>
+        <div class="bubble b5"></div>
+        <div class="bubble b6"></div>
+        <div class="bubble b7"></div>
+      </div>
+    </section>
     </Containers>
   );
 };
