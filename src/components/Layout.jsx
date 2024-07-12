@@ -72,7 +72,7 @@ const StyledFooter = styled.footer`
   text-align: center;
   padding: 25px 0;
   /* position: absolute; //추가 */
-  bottom: 0; //추가
+  // bottom: 0; //추가
 `;
 
 const ProfileButton = styled.button`

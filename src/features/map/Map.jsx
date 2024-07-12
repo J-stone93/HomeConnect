@@ -525,6 +525,7 @@ function Map() {
       const isSelected = prevCategories.includes(categoryId);
   
       if (isSelected) {
+        removeMarkers();
         // 선택 해제 시
         const filteredCategories = prevCategories.filter((cat) => cat !== categoryId);
         setSelectedCategories(filteredCategories);
@@ -541,6 +542,7 @@ function Map() {
           }
           setSelectedPlace(null);
         }
+       
       } else {
         // 선택 시
         setSelectedCategories([...prevCategories, categoryId]);

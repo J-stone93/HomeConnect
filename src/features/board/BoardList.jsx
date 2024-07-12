@@ -13,6 +13,7 @@ const TableWrapper = styled(Table)`
   text-align: left;
   margin-top: 20px;
   width: 80%;
+  height: 100vh;
   font-size: 16px;
   margin: 0 auto;
   border-collapse: separate;
