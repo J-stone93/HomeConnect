@@ -187,10 +187,11 @@ function CalendarMain() {
   const [selectedDate, setSelectedDate] = useState(null);
   const [noticeList, setNoticeList] = useState([]);
   const navigate = useNavigate();
+  const addressKey = process.env.REACT_APP_HOST_ADDRESS;
 
   const fetchNoticeList = async () => {
     try {
-      const response = await axios.get('http://homeconnectserver.shop:8080/notice/list', {
+      const response = await axios.get(`${addressKey}/notice/list`, {
         headers: {
           Authorization: localStorage.getItem('token'),
         },

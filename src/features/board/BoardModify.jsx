@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { selectmyInfo } from "../main/mainSlice";
 import axios from "axios";
+import { addressKey } from "../..";
 
 const Container = styled.div`
 width: 80%;
@@ -124,7 +125,7 @@ function BoardModify() {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.put(
-        'http://homeconnectserver.shop:8080/board/modify',
+        `${addressKey}/board/modify`,
         { 
           "no": boardId,
           "title": title,
@@ -154,7 +155,7 @@ function BoardModify() {
       try {
         const token = localStorage.getItem('token');
         const response = await axios.get(
-          `http://homeconnectserver.shop:8080/board/read?no=${boardId}`,
+          `${addressKey}/board/read?no=${boardId}`,
           {
             headers : {
             Authorization : token

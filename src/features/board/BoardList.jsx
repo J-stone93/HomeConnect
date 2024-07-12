@@ -7,6 +7,7 @@ import { BsPencilSquare } from "react-icons/bs";
 import { CiSquareRemove } from "react-icons/ci";
 import { useSelector } from "react-redux";
 import { selectmyInfo } from "../main/mainSlice";
+import { addressKey } from "../..";
 
 const TableWrapper = styled(Table)`
   text-align: left;
@@ -151,7 +152,7 @@ function BoardList() {
     if (!selectedPost) return;
     
     try {
-      const response = await axios.delete(`http://homeconnectserver.shop:8080/board/remove?no=${selectedPost.no}`, {
+      const response = await axios.delete(`${addressKey}/board/remove?no=${selectedPost.no}`, {
         headers: {
           Authorization: localStorage.getItem('token'),
         },
@@ -171,7 +172,7 @@ function BoardList() {
     if (!selectedNotice) return;
     
     try {
-      const response = await axios.delete(`http://homeconnectserver.shop:8080/notice/remove?no=${selectedNotice.no}`, {
+      const response = await axios.delete(`${addressKey}/notice/remove?no=${selectedNotice.no}`, {
         headers: {
           Authorization: localStorage.getItem('token'),
         },
@@ -190,7 +191,7 @@ function BoardList() {
   useEffect(() => {
     const fetchBoardList = async () => {
       try {
-        const response = await axios.get('http://homeconnectserver.shop:8080/board/list', {
+        const response = await axios.get(`${addressKey}/board/list`, {
           headers: {
             Authorization: localStorage.getItem('token'), 
           },
@@ -210,7 +211,7 @@ function BoardList() {
   useEffect(() => {
     const fetchNoticeList = async () => {
       try {
-        const response = await axios.get('http://homeconnectserver.shop:8080/notice/list', {
+        const response = await axios.get(`${addressKey}/notice/list`, {
           headers: {
             Authorization: localStorage.getItem('token'),
           },

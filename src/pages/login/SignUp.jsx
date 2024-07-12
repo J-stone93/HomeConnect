@@ -2,8 +2,6 @@ import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getNameInfo } from "../../features/main/mainSlice";
-import { addProduct } from "../../api/productAPI";
 import styled from "styled-components";
 import axios from "axios";
 
@@ -148,7 +146,6 @@ function SignUp() {
     const exportduplication = async () => {
       try {
         const response = await axios.get(`${addressKey}/login/idcheck?userId=${id}`);
-        // const response = await axios.get(`http://homeconnectserver.shop:8080/login/idcheck?userId=${id}`);
         if (response.status === 201) {
           if(response.data === "사용가능한 아이디입니다."){
             setiDCheck(true);

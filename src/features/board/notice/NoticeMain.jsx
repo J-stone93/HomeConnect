@@ -6,6 +6,7 @@ import styled from "styled-components";
 import { selectmyInfo } from "../../main/mainSlice";
 import axios from "axios";
 import BasicCalendar from "../../../components/calendar/BasicCalendar";
+import { addressKey } from "../../..";
 
 const Wrapper = styled.div`
   display: flex;
@@ -130,7 +131,7 @@ function NoticeMain() {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.post(
-        'http://homeconnectserver.shop:8080/notice/register',
+        `${addressKey}/notice/register`,
         {
           "no": 0,
           "title": title,

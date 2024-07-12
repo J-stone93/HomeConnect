@@ -4,6 +4,7 @@ import { Modal, Nav } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import CommunityModal from "./CommunityModal";
+import { addressKey } from "../..";
 
 const Wrapper = styled.div`
   margin: 50px auto;
@@ -97,7 +98,7 @@ function CommunitySignUp() {
   useEffect(() => {
     const fetchCommunity = async () => {
       try {
-        const response = await axios.get(`http://homeconnectserver.shop:8080/community/read?no=${communityId}`, {
+        const response = await axios.get(`${addressKey}/community/read?no=${communityId}`, {
           headers: {
             Authorization: localStorage.getItem('token'),
           }
@@ -114,7 +115,7 @@ function CommunitySignUp() {
     try {
       const result = window.confirm('정말로 삭제하시겠습니까?');
       if (result) {
-        const response = await axios.delete(`http://homeconnectserver.shop:8080/community/remove?no=${communityId}`, {
+        const response = await axios.delete(`${addressKey}/community/remove?no=${communityId}`, {
           headers: {
             Authorization: localStorage.getItem('token')
           }

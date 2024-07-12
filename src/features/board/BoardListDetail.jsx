@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 
 import BoardCommentListItem from './BoardCommentListItem';
+import { addressKey } from '../..';
 
 const CommentContainer = styled.div`
   border: 1px solid #ccc;
@@ -83,7 +84,7 @@ function BoardListDetail() {
   useEffect(() => {
     const boardlist = async () => {
     try {
-      const response = await axios.get(`http://homeconnectserver.shop:8080/board/read?no=${boardId}`,{
+      const response = await axios.get(`${addressKey}/board/read?no=${boardId}`,{
         headers : {
           Authorization : localStorage.getItem('token'),
         }
@@ -104,7 +105,7 @@ function BoardListDetail() {
   useEffect(() => {
     const commentList = async() => {
       try{
-        const response = await axios.get(`http://homeconnectserver.shop:8080/comment/list?boardNo=${boardId}`, {
+        const response = await axios.get(`${addressKey}/comment/list?boardNo=${boardId}`, {
           headers : {
             Authorization :  localStorage.getItem('token'),
           }
@@ -131,7 +132,7 @@ function BoardListDetail() {
     const exportContents = async() => {
       try{
         const token = localStorage.getItem('token');
-        const response = await axios.post(`http://homeconnectserver.shop:8080/comment/register`,
+        const response = await axios.post(`${addressKey}/comment/register`,
         {
           "boardNo" : boardId,
           "content" : comment,
@@ -144,7 +145,7 @@ function BoardListDetail() {
         if (response.status === 200) { 
           const boardlist = async () => {
             try {
-              const response = await axios.get(`http://homeconnectserver.shop:8080/board/read?no=${boardId}`,{
+              const response = await axios.get(`${addressKey}/board/read?no=${boardId}`,{
                 headers : {
                   Authorization : localStorage.getItem('token'),
                 }
@@ -163,7 +164,7 @@ function BoardListDetail() {
 
       const commentList = async() => {
         try{
-          const response = await axios.get(`http://homeconnectserver.shop:8080/comment/list?boardNo=${boardId}`, {
+          const response = await axios.get(`${addressKey}/comment/list?boardNo=${boardId}`, {
             headers : {
               Authorization :  localStorage.getItem('token'),
             }

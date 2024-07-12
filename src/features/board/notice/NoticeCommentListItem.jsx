@@ -6,6 +6,7 @@ import { CiSquareRemove } from "react-icons/ci";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { selectmyInfo } from "../../main/mainSlice";
+import { addressKey } from "../../..";
 
 const DivContainer = styled.div`
   width: 100%;
@@ -64,7 +65,7 @@ function NoticeCommentListItem(props) {
 
   const fetchCommentList = useCallback(async () => {
     try {
-      const response = await axios.get(`http://homeconnectserver.shop:8080/noticeComment/list?noticeNo=${noticeId}`, {
+      const response = await axios.get(`${addressKey}/noticeComment/list?noticeNo=${noticeId}`, {
         headers: {
           Authorization: localStorage.getItem('token'),
         }
@@ -102,7 +103,7 @@ function NoticeCommentListItem(props) {
 
       const modifyComment = async () => {
         try {
-          const response = await axios.put(`http://homeconnectserver.shop:8080/noticeComment/modify`, {
+          const response = await axios.put(`${addressKey}/noticeComment/modify`, {
             commentNo: commentNo,
             content: value,
           }, {
@@ -132,7 +133,7 @@ function NoticeCommentListItem(props) {
 
   const handleRemoveComment = async () => {
     try {
-      const response = await axios.delete(`http://homeconnectserver.shop:8080/noticeComment/remove?commentNo=${commentNo}`, 
+      const response = await axios.delete(`${addressKey}/noticeComment/remove?commentNo=${commentNo}`, 
         { 
           headers: {
           Authorization: localStorage.getItem('token')

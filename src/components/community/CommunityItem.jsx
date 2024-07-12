@@ -48,6 +48,7 @@ function CommunityItem(props) {
   const { categoryId = '맛집' } = useParams();
   const navigate = useNavigate();
   const [communityList, setCommunityList] = useState([]);
+  const addressKey = process.env.REACT_APP_HOST_ADDRESS;
 
   // 날짜 포맷하기
   const formatDate = (dateString) => {
@@ -59,7 +60,7 @@ function CommunityItem(props) {
   useEffect(() => {
     const fetchCommunityList = async () => {
       try {
-        const response = await axios.get(`http://homeconnectserver.shop:8080/community/category?category=${categoryName}`, {
+        const response = await axios.get(`${addressKey}/community/category?category=${categoryName}`, {
           headers: {
             Authorization: localStorage.getItem('token'),
           }

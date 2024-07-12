@@ -6,6 +6,7 @@ import { CiSquareRemove } from "react-icons/ci";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { selectmyInfo } from "../main/mainSlice";
+import { addressKey } from "../..";
 
 const DivContainer = styled.div`
   width: 100%;
@@ -64,7 +65,7 @@ function BoardCommentListItem(props) {
 
   const fetchCommentList = useCallback(async () => {
     try {
-      const response = await axios.get(`http://homeconnectserver.shop:8080/comment/list?boardNo=${boardId}`, {
+      const response = await axios.get(`${addressKey}/comment/list?boardNo=${boardId}`, {
         headers: {
           Authorization: localStorage.getItem('token'),
         }
@@ -102,7 +103,7 @@ function BoardCommentListItem(props) {
 
       const modifyComment = async () => {
         try {
-          const response = await axios.put(`http://homeconnectserver.shop:8080/comment/modify`, {
+          const response = await axios.put(`${addressKey}/comment/modify`, {
             commentNo: commentNo,
             content: value,
           }, {
@@ -132,7 +133,7 @@ function BoardCommentListItem(props) {
 
   const handleRemoveComment = async () => {
     try {
-      const response = await axios.delete(`http://homeconnectserver.shop:8080/comment/remove?commentNo=${commentNo}`, 
+      const response = await axios.delete(`${addressKey}/comment/remove?commentNo=${commentNo}`, 
         { 
           headers: {
           Authorization: localStorage.getItem('token')

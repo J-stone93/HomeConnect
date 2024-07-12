@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { Modal, Button } from 'react-bootstrap';
 import axios from 'axios';
 import { selectmyInfo } from '../main/mainSlice';
+import { addressKey } from '../..';
 
 const Container = styled.div`
   width: 80%;
@@ -122,7 +123,7 @@ function Boardmain() {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.post(
-        'http://homeconnectserver.shop:8080/board/register',
+        `${addressKey}/board/register`,
         { 
           "no": 0,
           "title": title,

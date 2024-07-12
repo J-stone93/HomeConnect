@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { addressKey } from "../..";
 
 const Container = styled(Modal.Body)`
   width: 500px;
@@ -84,7 +85,7 @@ function CommunityModal(props) {
   
     try {
       const response = await axios.put(
-        `http://homeconnectserver.shop:8080/community/modify`,
+        `${addressKey}/community/modify`,
         {
           no: communityList.no,
           title: titleValue,
@@ -97,7 +98,7 @@ function CommunityModal(props) {
   
       if (response.status === 200) {
         const communityListGet = await axios.get(
-          `http://homeconnectserver.shop:8080/community/read?no=${communityId}`,
+          `${addressKey}/community/read?no=${communityId}`,
           {
             headers: { Authorization: token }
           }

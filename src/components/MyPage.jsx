@@ -187,6 +187,7 @@ const CancelButton = styled(Button)`
 `;
 
 function MyPage() {
+  const addressKey = process.env.REACT_APP_HOST_ADDRESS;
   const user = useSelector(selectmyInfo);
   const [theme, setTheme] = useState(lightTheme);
   const [showModify, setShowModify] = useState(false);
@@ -229,7 +230,7 @@ function MyPage() {
     } else {
       const modifyPw = async () => {
         try {
-          const response = await axios.put(`http://homeconnectserver.shop:8080/login/pwModify`, {
+          const response = await axios.put(`${addressKey}/login/pwModify`, {
             "userId": user.userId,
             "pw": pw2
           }, {
@@ -258,7 +259,7 @@ function MyPage() {
     
 
     try {
-      const response = await axios.delete(`http://homeconnectserver.shop:8080/login/remove?userId=${user.userId}`, {
+      const response = await axios.delete(`${addressKey}/login/remove?userId=${user.userId}`, {
         headers: {
           Authorization: localStorage.getItem('token'),
         },
