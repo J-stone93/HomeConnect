@@ -1,9 +1,55 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectmyInfo } from '../features/main/mainSlice';
 import axios from 'axios';
 import { setFees } from '../features/fee/feeSlice';
 import { addressKey } from '..';
+import { styled } from "styled-components";
+
+const FeeInputFormWrapper = styled.div`
+  width: 40%;
+  height: 33rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px;
+  border: solid 1px black;
+  border-radius: 5px;
+  margin: 0 auto;
+`;
+
+const InputGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+  width: 90%;
+`;
+
+const Label = styled.label`
+  margin-bottom: 5px;
+  font-weight: bold;
+`;
+
+const InputField = styled.input`
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  width: 100%;
+`;
+
+const SubmitButton = styled.button`
+  padding: 10px 30px;
+  margin-top: 20px;
+  border: none;
+  background-color: #28a745;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #218838;
+  }
+`;
 
 function FeeInputForm() {
   const [no, setNo] = useState('');
@@ -13,6 +59,11 @@ function FeeInputForm() {
   const [maintenance, setMaintenance] = useState('');
   const userInfo = useSelector(selectmyInfo);
   const dispatch = useDispatch();
+
+  const monthRef = useRef(null);
+  const waterRef = useRef(null);
+  const electricRef = useRef(null);
+  const maintenanceRef = useRef(null);
 
   useEffect(() => {
     const fetchFeeInfo = async () => {
@@ -30,7 +81,6 @@ function FeeInputForm() {
     console.log(response);
     if (response.status === 200) {
       dispatch(setFees(response.data));
-      
     }
   } catch (error) {
     console.error("Error fetching fee data:", error);
@@ -39,7 +89,7 @@ function FeeInputForm() {
     if (userInfo && userInfo.userId) {
       fetchFeeInfo();
     }
-  }, [userInfo]);
+  }, []);
 
   const handleFeeSubmit = async () => {
     try {
@@ -77,35 +127,66 @@ function FeeInputForm() {
 
   return (
     <>
-      <div>
-        <label>
-          월:
-          <input type="number" name="month" value={month} onChange={(e) => setMonth(e.target.value)} required />
-        </label>
-      </div>
+      <FeeInputFormWrapper>
+        <h2>관리비 입력</h2>
+      <InputGroup>
+        <Label>
+          월
+          <InputField 
+            type="number" 
+            name="month" 
+            value={month} 
+            onChange={(e) => setMonth(e.target.value)} 
+            ref={monthRef} 
+            required 
+          />
+        </Label>
+      </InputGroup>
 
-      <div>
-        <label>
-          수도:
-          <input type="number" name="water" value={water} onChange={(e) => setWater(e.target.value)} required />
-        </label>
-      </div>
+      <InputGroup>
+        <Label>
+          수도
+          <InputField 
+            type="number" 
+            name="water" 
+            value={water} 
+            onChange={(e) => setWater(e.target.value)} 
+            ref={waterRef} 
+            required 
+          />
+        </Label>
+      </InputGroup>
 
-      <div>
-        <label>
-          전기:
-          <input type="number" name="electric" value={electric} onChange={(e) => setElectric(e.target.value)} required />
-        </label>
-      </div>
+      <InputGroup>
+        <Label>
+          전기
+          <InputField 
+            type="number" 
+            name="electric" 
+            value={electric} 
+            onChange={(e) => setElectric(e.target.value)} 
+            ref={electricRef} 
+            required 
+          />
+        </Label>
+      </InputGroup>
 
-      <div>
-        <label>
-          관리비:
-          <input type="number" name="maintenance" value={maintenance} onChange={(e) => setMaintenance(e.target.value)} requird />
-        </label>
-      </div>
+      <InputGroup>
+        <Label>
+          관리비
+          <InputField 
+            type="number" 
+            name="maintenance" 
+            value={maintenance} 
+            onChange={(e) => setMaintenance(e.target.value)} 
+            ref={maintenanceRef} 
+            required 
+          />
+        </Label>
+      </InputGroup>
 
-      <button type="button" onClick={handleFeeSubmit}>Submit</button>
+      <SubmitButton type="button" onClick={handleFeeSubmit}>Submit</SubmitButton>
+    </FeeInputFormWrapper>
     </>
   );
 }
