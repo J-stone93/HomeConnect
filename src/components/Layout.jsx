@@ -11,7 +11,7 @@ import { MdManageAccounts } from "react-icons/md";
 
 const FixedHeader = styled.header`
   position: fixed;
-  height: 5.5rem;
+  /* height: 5.5rem; */
   top: 0;
   width: 100%;
   z-index: 10;
@@ -56,20 +56,23 @@ const Mypage = styled.div`
 `;
 
 const Content = styled.div`
-  margin-top: 8rem;
-  padding-bottom: 4.5rem; /* Footer height to avoid overlap */
+  padding-top: 66px; // <-- 문제임
+  /* margin-top: 8rem;   */
+  /* padding-top: 1%;  */
+  /* margin-top: 4%; */
 `;
 
 const StyledFooter = styled.footer`
-  width: 100%;
-  height: 4.5rem;
-  position: fixed;
-  bottom: 0;
+  width: 100%; //추가
+  height: 60px;
+  position: absolute;
+  transform: translateY(110%);
   background-color: #343a40;
   color: white;
   text-align: center;
-  padding: 25px 0;
-  z-index: 10;
+  padding: 20px 0;
+  /* position: absolute; //추가 */
+  // bottom: 0; //추가
 `;
 
 const ProfileButton = styled.button`
@@ -133,7 +136,10 @@ const Layout = () => {
 
   return (
     <>
-      <ADMINCOMMAND className='cursor-pointer' size={70} onClick={() => navigate('/adminPage')} />
+      {
+        userInfo.role === 'ROLE_ADMIN' &&
+        <ADMINCOMMAND className='cursor-pointer' size={70} onClick={() => navigate('/adminPage')} />
+      }
       <FixedHeader>
         <Navbar className="widthAdjust" expand="lg">
           <SpaceBetweenContainer>

@@ -132,8 +132,9 @@ function CommunityRegister() {
     
     try {
       const response = await axios.post(`${addressKey}/community/register`, formData, {
-        headers: { 'Authorization': `Bearer ${token}`,
-        'Content-Type': 'multipart/form-data'},
+        headers:{
+            Authorization: token
+          },
       });
       console.log(response);
       if (response.status === 200 || response.status === 304) {

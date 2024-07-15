@@ -130,16 +130,6 @@ const StyledSelect = styled.select`
   top: 0;
 `
 
-const ModalContent = styled.div`
-  width: 300px;
-  height: 300px;
-  margin: 0 auto;
-  padding: 20px;
-  select {
-    margin: 0 auto;
-  }
-`;
-
 const CloseButton = styled.button`
   background-color: #dc3545;
   color: white;
@@ -156,7 +146,6 @@ function FeeChartDetail() {
   const [selectedMonth, setSelectedMonth] = useState('');
   const dispatch = useDispatch();
   const payments = useSelector((state) => state.fees.payments);
-  const [data2, setData2] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const userInfo = useSelector(selectmyInfo);
 
@@ -483,29 +472,6 @@ function FeeChartDetail() {
       
       결제 완료되면 결제완료 페이지로 가기, 내역 페이지 라우팅 
       */}
-
-      {/* <Modal
-        isOpen={isModalOpen}
-        onRequestClose={closeModal}
-        contentLabel="결제할 월 선택"
-      >
-      <ModalContent>
-        <h2>결제할 월을 선택해주세요</h2>
-          <StyledSelect 
-            value={selectedMonth} 
-            onChange={(e) => setSelectedMonth(e.target.value)}
-            className='select'
-            >
-            <option value="">결제월</option>
-            {Array.from({ length: 12 }, (_, i) => (
-              <option key={i + 1} value={i + 1}>{`${i + 1}월`}</option>
-            ))}
-          </StyledSelect >
-        <CloseButton onClick={closeModal}>닫기</CloseButton>
-      </ModalContent>
-
-      <PaymentButton type='text' onClick={onClickPayment}>결제하기</PaymentButton>
-    </Modal> */}
     </>
   );
 };
