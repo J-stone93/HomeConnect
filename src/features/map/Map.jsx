@@ -75,7 +75,7 @@ const MapContainer = styled.div`
 
 const SearchResults = styled.div`
   position: absolute;
-  width: 36vh; /* 왼쪽과 오른쪽 padding 고려하여 너비 조정 */
+  width: 46vh; /* 왼쪽과 오른쪽 padding 고려하여 너비 조정 */
   background-color: #fff;
   border: 1px solid #ccc;
   border-top: none;
@@ -84,7 +84,7 @@ const SearchResults = styled.div`
   z-index: 9; /* 검색 결과 목록을 검색창 아래로 내리기 위해 z-index를 낮춤 */
   border-radius: 10px; /* 동그란 테두리 조정 */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
-  top: 21.8%; /* 검색창과의 간격 조정 */
+  top: 22.4%; /* 검색창과의 간격 조정 */
 `;
 
 const CategoryList = styled.ul`
@@ -194,7 +194,7 @@ function Map() {
     const initMap = () => {
       const container = document.getElementById("map");
       const options = {
-        center: new window.kakao.maps.LatLng(37.5345613066561, 126.99580922812),
+        center: new window.kakao.maps.LatLng(37.452268, 126.699650),
         level: 5,
       };
       // console.log(options); //위도 경도 값 확인 가능
@@ -669,24 +669,16 @@ const handleSearchClick = () => {
   };
 
   // handleClick 함수 정의
-  // const handleClick = (search) => {
-  //     // 입력 필드에 장소 이름 설정
-  //     setInputValue(search.place_name);
+  const handleClick = (search) => {
 
-  //     // 장소 검색 수행
-  //     searchPlaces(search.place_name);
+      const marker = new window.kakao.maps.Marker({
+        position: new window.kakao.maps.LatLng(search.y, search.x),
+      });
 
-  //     // 선택된 장소 설정
-  //     setSelectedPlace(search);
+      // 선택된 장소에 대한 정보를 표시하는 함수 호출
+      displayPlaceInfo(marker, search);
 
-  //     // const marker = new window.kakao.maps.Marker({
-  //     //   position: new window.kakao.maps.LatLng(search.y, search.x),
-  //     // });
-    
-  //     // 선택된 장소에 대한 정보를 표시하는 함수 호출
-  //     // displayPlaceInfo(marker, search);
-
-  // }
+  }
 
   const openDetails = (url) => {
     window.open(url, '_blank');
@@ -776,7 +768,7 @@ const handleSearchClick = () => {
       {savedSearches.map((search, index) => (
           <SavedSearchItem 
             key={index} 
-            // onClick={() => handleClick(search)}
+            onClick={() => handleClick(search)}
             >
             <PlaceName>{search.place_name}</PlaceName>
             {search.road_address_name && (
@@ -804,7 +796,7 @@ const handleSearchClick = () => {
       {categoryPlaces.map((place, index) => (
         <SavedSearchItem 
           key={index} 
-          // onClick={() => handleClick(place)}
+          onClick={() => handleClick(place)}
           >
           <PlaceName>{place.place_name}</PlaceName>
           {place.road_address_name && (
