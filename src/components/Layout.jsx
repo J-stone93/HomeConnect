@@ -56,8 +56,10 @@ const Mypage = styled.div`
 `;
 
 const Content = styled.div`
-  margin-top: 8rem;
-  padding-bottom: 4.5rem; /* Footer height to avoid overlap */
+  padding-top: 66px; // <-- 문제임
+  /* margin-top: 8rem;   */
+  /* padding-top: 1%;  */
+  /* margin-top: 4%; */
 `;
 
 const StyledFooter = styled.footer`
