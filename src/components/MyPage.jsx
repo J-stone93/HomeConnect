@@ -359,3 +359,250 @@ function MyPage() {
 }
 
 export default MyPage;
+
+// import React, { useState } from 'react';
+// import styled, { ThemeProvider, createGlobalStyle } from 'styled-components';
+// import { FaMoon, FaRegMoon } from 'react-icons/fa';
+
+// // 테마 설정
+// const lightTheme = {
+//   background: '#f0f2f5',
+//   paperBackground: '#ffffff',
+//   textPrimary: '#333',
+//   textSecondary: '#777',
+//   buttonPrimary: '#007bff',
+//   buttonPrimaryHover: '#0056b3',
+//   buttonSecondary: '#dc3545',
+//   buttonSecondaryHover: '#b21f2d',
+//   divider: '#e0e0e0',
+// };
+
+// const darkTheme = {
+//   background: '#161414c9',
+//   paperBackground: '#1e1e1ef0',
+//   textPrimary: '#e0e0e0',
+//   textSecondary: '#b0b0b0',
+//   buttonPrimary: '#1a73e8',
+//   buttonPrimaryHover: '#1358a5',
+//   buttonSecondary: '#d93025',
+//   buttonSecondaryHover: '#a31518',
+//   divider: '#303030',
+// };
+
+// // 전역 스타일 설정
+// const GlobalStyle = createGlobalStyle`
+//   body {
+//     background-color: ${(props) => props.theme.background};
+//     color: ${(props) => props.theme.textPrimary};
+//     margin: 0;
+//     font-family: Arial, sans-serif;
+//   }
+// `;
+
+// // 최상위 컨테이너
+// const Root = styled.div`
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   min-height: 100vh;
+//   width: 40%;
+//   position: relative;
+// `;
+
+// // 카드 스타일
+// const StyledPaper = styled.div`
+//   padding: 10% 10%;
+//   width: 100%;
+//   background-color: ${(props) => props.theme.paperBackground};
+//   border-radius: 16px;
+//   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+// `;
+
+// // 타이틀 컨테이너 (아바타 및 사용자 정보)
+// const TitleContainer = styled.div`
+//   display: flex;
+//   align-items: center;
+//   justify-content: space-between;
+// `;
+
+// // 상단 영역 스타일 (마이페이지 제목, 아바타, 사용자 정보, 다크모드 버튼)
+// const Header = styled.div`
+//   display: flex;
+//   align-items: center;
+//   justify-content: space-between;
+//   margin-bottom: 20px;
+// `;
+
+// // 아바타 스타일
+// const StyledAvatar = styled.div`
+//   width: 150px;
+//   height: 150px;
+//   border-radius: 50%;
+//   background-color: #ddd;
+//   display: inline-block;
+//   margin-right: 20px;
+// `;
+
+// // 사용자 이름 스타일
+// const UserName = styled.h2`
+//   font-size: 18px;
+//   font-weight: bold;
+//   color: ${(props) => props.theme.textPrimary};
+// `;
+
+// // 사용자 이메일 스타일
+// const UserEmail = styled.p`
+//   font-size: 14px;
+//   color: ${(props) => props.theme.textSecondary};
+// `;
+
+// // 섹션 스타일
+// const Section = styled.div`
+//   margin-bottom: 20px;
+//   text-align: left;
+// `;
+
+// // 섹션 타이틀 스타일
+// const SectionTitle = styled.h3`
+//   font-size: 16px;
+//   font-weight: bold;
+//   color: ${(props) => props.theme.textPrimary};
+//   margin-bottom: 8px;
+// `;
+
+// // 섹션 내용 스타일
+// const SectionContent = styled.p`
+//   font-size: 14px;
+//   color: ${(props) => props.theme.textSecondary};
+//   line-height: 1.5;
+// `;
+
+// // 버튼 스타일
+// const StyledButton = styled.button`
+//   flex: 1;
+//   padding: 8px 16px;
+//   font-size: 14px;
+//   font-weight: bold;
+//   color: white;
+//   background-color: ${(props) =>
+//     props.color === 'primary' ? props.theme.buttonPrimary : props.color === 'secondary' ? props.theme.buttonSecondary : '#6c757d'};
+//   border: none;
+//   border-radius: 8px;
+//   cursor: pointer;
+//   transition: background-color 0.3s ease;
+
+//   &:hover {
+//     background-color: ${(props) =>
+//       props.color === 'primary' ? props.theme.buttonPrimaryHover : props.color === 'secondary' ? props.theme.buttonSecondaryHover : '#5a6268'};
+//   }
+// `;
+
+// // 구분선 스타일
+// const Divider = styled.div`
+//   margin: 16px 0;
+//   height: 1px;
+//   background-color: ${(props) => props.theme.divider};
+// `;
+
+// // 다크모드 토글 버튼 스타일
+// const ToggleButton = styled.button`
+//   padding: 8px 16px;
+//   font-size: 14px;
+//   font-weight: bold;
+//   color: white;
+//   background-color: #6c757d;
+//   border: none;
+//   border-radius: 8px;
+//   cursor: pointer;
+//   transition: background-color 0.3s ease;
+
+//   &:hover {
+//     background-color: #5a6268;
+//   }
+// `;
+
+// // 하단 텍스트 스타일
+// const Footer = styled.div`
+//   margin-top: 20px;
+//   display: flex;
+//   justify-content: space-between;
+//   font-size: 12px;
+//   color: ${(props) => props.theme.textSecondary};
+
+//   a {
+//     color: ${(props) => props.theme.textSecondary};
+//     text-decoration: none;
+//     margin: 0 8px;
+//   }
+// `;
+
+// const MyPage = () => {
+//   const [theme, setTheme] = useState(lightTheme);
+
+//   // 테마 토글 함수
+//   const toggleTheme = () => {
+//     setTheme(theme === lightTheme ? darkTheme : lightTheme);
+//   };
+
+//   return (
+//     <ThemeProvider theme={theme}>
+//       <GlobalStyle />
+//       <Root>
+//         <StyledPaper>
+//           {/* 상단 영역 */}
+//           <Header>
+//             <h2>마이페이지</h2>
+//             <ToggleButton onClick={toggleTheme}>
+//               {theme === lightTheme ? <FaMoon /> : <FaRegMoon />}
+//             </ToggleButton>
+//           </Header>
+
+//           <Divider />
+
+//           {/* 사용자 정보 섹션 */}
+//           <TitleContainer>
+//             <StyledAvatar />
+//             <div style={{ flex: 1 }}>
+//               <UserName>admin</UserName>
+//               <UserEmail>🍪김쿠키🍪</UserEmail>
+//             </div>
+//           </TitleContainer>
+
+//           {/* 주소 섹션 */}
+//           <Section>
+//             <SectionTitle>주소지</SectionTitle>
+//             <SectionContent>
+//               인천 남동구 문화로 147<br />
+//               건설회관 2층 그린컴퓨터아트학원 구월점
+//             </SectionContent>
+//             <div style={{ textAlign: 'right' }}>
+//               <StyledButton color="primary">수정하기</StyledButton>
+//             </div>
+//           </Section>
+
+//           <Divider />
+
+//           {/* 계정 설정 섹션 */}
+//           <Section>
+//             <SectionTitle>계정 설정</SectionTitle>
+//             <div style={{ display: 'flex', gap: '16px' }}>
+//               <StyledButton color="primary">비밀번호 변경</StyledButton>
+//               <StyledButton color="secondary">계정 삭제</StyledButton>
+//             </div>
+//           </Section>
+
+//           {/* 하단 텍스트 */}
+//           <Footer>
+//             <div>version 13.1</div>
+//             <div>
+//               <a href="#">개인정보약관</a> | <a href="#">이용약관</a>
+//             </div>
+//           </Footer>
+//         </StyledPaper>
+//       </Root>
+//     </ThemeProvider>
+//   );
+// };
+
+// export default MyPage;
+
