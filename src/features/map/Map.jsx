@@ -834,3 +834,4 @@ const handleSearchClick = () => {
 }
 
 export default Map;
+// 수정
