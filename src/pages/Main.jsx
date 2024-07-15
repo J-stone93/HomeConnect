@@ -7,7 +7,7 @@ import { selectmyInfo } from "../features/main/mainSlice";
 import { SectionsContainer, Section, Footer } from "react-fullpage";
 import { useNavigate } from "react-router-dom";
 import { selectMyFee, setFees } from "../features/fee/feeSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { addressKey } from "..";
 
@@ -89,13 +89,13 @@ const StyledFooter = styled.footer`
 `;
 
 const daysOfWeek = [
-  "일요일입니다. 오늘은 휴식을 취하세요!",
-  "월요일입니다. 새로운 한 주를 시작해보세요!",
-  "화요일입니다. 활기차게 시작하세요!",
-  "수요일입니다. 주 중반을 잘 보내세요!",
-  "목요일입니다. 조금만 더 힘내세요!",
-  "금요일입니다. 주말이 다가왔어요!",
-  "토요일입니다. 즐거운 주말 보내세요!"
+  "오늘은 일요일: 생활쓰레기, 음식물쓰레기 배출요일 입니다.",
+  "오늘은 월요일: 생활쓰레기, 재활용품 배출요일 입니다.",
+  "오늘은 화요일: 생활쓰레기, 음식물쓰레기 배출요일 입니다.",
+  "오늘은 수요일: 생활쓰레기, 재활용품 배출요일 입니다.",
+  "오늘은 목요일: 생활쓰레기, 음식물쓰레기 배출요일 입니다.",
+  "오늘은 금요일: 생활쓰레기, 재활용품 배출요일 입니다.",
+  "오늘은 토요일: 쓰레기 배출일이 아닙니다."
 ];
 
 const ImageContainer = styled.div`
@@ -157,15 +157,45 @@ const TextOverlay = styled.div`
   }
 `;
 
+
 function Main() {
-  const NoticeInfo = useSelector(selectNoticeList);
+  const noticeList = useSelector((state) => state.board.noticeList);
+  console.log(noticeList);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [notice, setNotice] = useState(
+    // {
+    //   content: "공지",
+    //   modDate: "2024-07-15T14:10:33.81332",
+    //   no: 4,
+    //   noticeDate: "2024-07-16",
+    //   regDate: "2024-07-15T14:10:33.81332",
+    //   title: "공지",
+    //   writer: "por2360"
+    // },
+    // {
+    //   content: "공지",
+    //   modDate: "2024-07-15T14:10:33.81332",
+    //   no: 4,
+    //   noticeDate: "2024-07-16",
+    //   regDate: "2024-07-15T14:10:33.81332",
+    //   title: "공지",
+    //   writer: "por2360"
+    // },
+    // {
+    //   content: "공지",
+    //   modDate: "2024-07-15T14:10:33.81332",
+    //   no: 4,
+    //   noticeDate: "2024-07-16",
+    //   regDate: "2024-07-15T14:10:33.81332",
+    //   title: "공지",
+    //   writer: "por2360"
+    // },
+  );
   const userInfo = useSelector(selectmyInfo);
   const today = new Date();
   const currentMonth = today.getMonth() + 1;
   const fee = useSelector(state => selectMyFee(state, currentMonth)) || { electric: 0, water: 0, maintenance: 0 };
-
 
   let options = {
     activeClass: 'active', // the class that is appended to the sections links
@@ -213,6 +243,27 @@ function Main() {
     }
   }, [userInfo]);
 
+  useEffect(() => {
+    const fetchNoticeList = async () => {
+      try {
+        const response = await axios.get(`${addressKey}/notice/list`, {
+          headers: {
+            Authorization: localStorage.getItem('token'),
+          },
+        });
+        console.log(response);
+        if (response.status === 200) { 
+          setNotice(response.data);
+        } else {
+          throw new Error(`API error: ${response.status} ${response.statusText}`);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchNoticeList();
+  }, []);
+
   return (
     <>
       <SectionsContainer {...options}>
@@ -233,7 +284,7 @@ function Main() {
               <Card.Body style={{}}>
                 <blockquote className="blockquote m-0 auto text-center">
                   <p>
-                    {dayText}
+                    📢{dayText}
                   </p>
                 </blockquote>
               </Card.Body>
@@ -259,7 +310,7 @@ function Main() {
             </ContentRow>
 
             <StyledCard className="m-0 auto text-center">
-              {NoticeInfo.slice(-4).map((notice) => {
+              {notice && notice.slice(-3).map((noticeitem) => {
                 return (
                   <Card style={{ width: '18rem' }}>
                     {/* <Card.Img 
@@ -269,9 +320,9 @@ function Main() {
                       height="40px"/>  
                     */}
                     <Card.Body>
-                      <Card.Title>{notice.title}</Card.Title>
+                      <Card.Title>{noticeitem.title}</Card.Title>
                       <Card.Text>
-                        {notice.content}
+                        {noticeitem.content}
                       </Card.Text>
                       <p style={{ cursor: 'pointer' }} onClick={() => navigate('/noticelist')}>바로가기</p>
                     </Card.Body>
@@ -279,7 +330,6 @@ function Main() {
               })}
             </StyledCard>
           </Wrapper>
-
         </Section>
       </SectionsContainer>
     </>

@@ -92,12 +92,12 @@ const LogoutButton = styled.button`
   background: none;
   border: none;
   font-size: 1em;
-  color: #dc3545;
+  color: #000;
   margin-left: 10px;
   cursor: pointer;
 
   &:hover {
-    color: #c82333;
+    color: #3003077b;
   }
 `;
 
@@ -161,8 +161,8 @@ const Layout = () => {
               <Mypage>
                 <img src="/image/profile.png" alt="profile" />
                 <Nav.Link onClick={() => navigate('/mypage')} className="cursor-pointer">{userInfo?.name}님 환영합니다.</Nav.Link>
-                <ProfileButton onClick={() => navigate('/feeinput')}>관리비 입력</ProfileButton>
-                <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
+                <ProfileButton onClick={() => navigate('/feeinput')}>{userInfo.role === 'ROLE_ADMIN' && '관리비 입력'}</ProfileButton>
+                <LogoutButton onClick={handleLogout}>{userInfo.name ? '로그아웃' : '로그인'}</LogoutButton>
               </Mypage>
             </Navbar.Collapse>
           </SpaceBetweenContainer>

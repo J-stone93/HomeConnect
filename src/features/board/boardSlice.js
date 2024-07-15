@@ -2,14 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   boardList: [],
-  noticeList: [
-    {
-      id : 1,
-      title: '공지사항입니다.1',
-      content: '전기점검 날짜입니다.1',
-      date: '2024.07.05'
-    },
-  ],
+  noticeList: [],
 }
 
 const boardSlice = createSlice({
