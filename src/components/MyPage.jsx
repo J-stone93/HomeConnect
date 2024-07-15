@@ -261,7 +261,6 @@ function MyPage() {
   };
   
   const handleDelete = async () => {
-    
 
     try {
       const response = await axios.delete(`${addressKey}/login/remove?userId=${user.userId}`, {

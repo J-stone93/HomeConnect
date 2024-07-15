@@ -85,7 +85,7 @@ function CommunityItem(props) {
         {communityList && communityList.map((communityItem) => (
           <tbody key={communityItem.no} onClick={() => navigate(`/communityread/${communityItem.no}`)}>
             <tr>
-              <td><img src={`../../image/${communityItem.imgPath}`} alt="" /></td>
+              <td><img src={communityItem.imgPath} alt="" /></td>
               <td>{communityItem.title}</td>
               <td>작성자: {communityItem.writer}</td>
               <td>개설일: {formatDate(communityItem.regDate).slice(0, 12)}</td>
