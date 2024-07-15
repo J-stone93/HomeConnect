@@ -674,10 +674,10 @@ const handleSearchClick = () => {
       const marker = new window.kakao.maps.Marker({
         position: new window.kakao.maps.LatLng(search.y, search.x),
       });
-    
+
       // 선택된 장소에 대한 정보를 표시하는 함수 호출
       displayPlaceInfo(marker, search);
-      
+
   }
 
   const openDetails = (url) => {
