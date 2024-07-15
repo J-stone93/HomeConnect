@@ -110,7 +110,7 @@ function FeeReadPage() {
 
     // 입력값이 숫자가 아니거나 범위를 벗어난 경우
     if (isNaN(value) || value < minValue || value > maxValue) {
-      alert(`입력값은 ${minValue}에서 ${maxValue} 사이의 숫자여야 합니다.`);
+      alert(`입력값은 ${minValue+1}에서 ${maxValue} 사이의 숫자여야 합니다.`);
       return window.location.reload();
     }
     newFees[index] = {

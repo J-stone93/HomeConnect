@@ -84,7 +84,7 @@ const SearchResults = styled.div`
   z-index: 9; /* 검색 결과 목록을 검색창 아래로 내리기 위해 z-index를 낮춤 */
   border-radius: 10px; /* 동그란 테두리 조정 */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
-  top: 22.4%; /* 검색창과의 간격 조정 */
+  top: 18.8%; /* 검색창과의 간격 조정 */
 `;
 
 const CategoryList = styled.ul`
@@ -544,7 +544,7 @@ function Map() {
         // 이미 선택된 경우 -> 선택 해제
         const filteredCategories = prevCategories.filter((cat) => cat !== categoryId); // 선택된 카테고리 제거
         toggleCategory(filteredCategories); // 선택된 카테고리 업데이트
-  
+
         // 해당 카테고리에 해당하는 마커들을 필터링하여 제거
         const filteredMarkers = markers.filter((marker) => {
           if (marker.category === categoryId) {
@@ -554,7 +554,7 @@ function Map() {
           return true; // 다른 카테고리의 마커는 유지
         });
         setMarkers(filteredMarkers); // 마커 상태 업데이트
-  
+
         // 선택된 장소가 있고, 해당 카테고리의 장소가 선택된 상태라면 상세 정보 닫기
         if (selectedPlace && selectedPlace.category === categoryId) {
           if (infoWindow.current) {
@@ -562,17 +562,17 @@ function Map() {
           }
           setSelectedPlace(null); // 선택된 장소 초기화
         }
-  
+
         removeCustomOverlay();
       } else {
         // 처음 클릭된 경우 -> 선택 추가
         setSelectedCategories([categoryId]); // 새로운 카테고리 선택
-  
+
         // 기존의 모든 마커들을 지도에서 완전히 제거
         markers.forEach((marker) => {
           marker.setMap(null);
         });
-  
+
         // 검색 결과에서 해당 카테고리에 맞는 장소들을 필터링하여 새로운 마커들 생성
         const newMarkers = searchResults
           .filter((place) => place.category === categoryId)
@@ -659,19 +659,27 @@ const handleSearchClick = () => {
   // handleClick 함수 정의
   const handleClick = (search) => {
     // 선택된 장소에 대한 정보를 표시하는 함수 호출
+    const markerPosition = new window.kakao.maps.LatLng(search.y, search.x);
+  
+    // 마커를 생성합니다.
     const marker = new window.kakao.maps.Marker({
-      position: new window.kakao.maps.LatLng(search.y, search.x),
+      position: markerPosition,
     });
-
+  
+    // 마커가 클릭된 경우의 이벤트 리스너를 추가합니다.
+    window.kakao.maps.event.addListener(marker, 'click', function() {
+      displayPlaceInfo(marker, search);
+    });
+  
     // 마커를 지도에 추가합니다.
     marker.setMap(map);
-
+  
     // 선택된 장소에 대한 정보를 표시하는 함수 호출
     displayPlaceInfo(marker, search);
-
+  
     // 클릭한 위치로 지도를 이동합니다.
-    map.setCenter(new window.kakao.maps.LatLng(search.y, search.x));
-  }
+    map.setCenter(markerPosition);
+  }  
 
   const openDetails = (url) => {
     window.open(url, '_blank');

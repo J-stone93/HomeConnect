@@ -334,11 +334,6 @@ function BoardList() {
           <CancelButton onClick={handleNoticeModalClose}>취소</CancelButton>
         </Modal.Footer>
       </Modal>
-
-      {/* 변경된 Footer */}
-      {/* <BoardListFooter>
-        &copy; 코딩하는오합지졸. All Rights Reserved.
-      </BoardListFooter> */}
     </>
   );
 }
