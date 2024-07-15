@@ -11,7 +11,7 @@ import { MdManageAccounts } from "react-icons/md";
 
 const FixedHeader = styled.header`
   position: fixed;
-  height: 5.5rem;
+  /* height: 5.5rem; */
   top: 0;
   width: 100%;
   z-index: 10;
@@ -63,15 +63,16 @@ const Content = styled.div`
 `;
 
 const StyledFooter = styled.footer`
-  width: 100%;
-  height: 4.5rem;
-  position: fixed;
-  bottom: 0;
+  width: 100%; //추가
+  height: 60px;
+  position: absolute;
+  transform: translateY(110%);
   background-color: #343a40;
   color: white;
   text-align: center;
-  padding: 25px 0;
-  z-index: 10;
+  padding: 20px 0;
+  /* position: absolute; //추가 */
+  // bottom: 0; //추가
 `;
 
 const ProfileButton = styled.button`
