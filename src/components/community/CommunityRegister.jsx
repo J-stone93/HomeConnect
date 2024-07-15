@@ -196,5 +196,5 @@ function CommunityRegister() {
     </Wrapper>
   );
 };
-
+// ㅇㅇㅇㅇㅇ
 export default CommunityRegister;
