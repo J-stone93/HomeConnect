@@ -34,6 +34,7 @@ import NoticeModify from './features/board/notice/NoticeModify.jsx';
 import { MdManageAccounts } from 'react-icons/md';
 import AdminPage from './pages/AdminPage.jsx';
 import FeeReadPage from './components/FeeReadPage.jsx';
+import PayPage from './components/PayPage.jsx';
 
 
 const GlobalStyle = createGlobalStyle`
@@ -82,6 +83,7 @@ function App() {
             <Route path='feeinput' element={<FeeInputPage />} />
             <Route path='feedetail' element={<FeeChartDetail />} />
             <Route path='feeread' element={<FeeReadPage/>}/>
+            <Route path='paycomplete' element={<PayPage/>}/>
 
             <Route path='calendar' element={<CalendarMain />} />
 

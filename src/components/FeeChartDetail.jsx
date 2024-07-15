@@ -16,6 +16,7 @@ import { cancelPayment, setFees } from '../features/fee/feeSlice';
 import axios from 'axios';
 import { selectmyInfo } from '../features/main/mainSlice';
 import { addressKey } from '..';
+import { useNavigate } from 'react-router-dom';
 
 // Chart.js에 필요한 구성 요소 등록
 ChartJS.register(
@@ -148,6 +149,7 @@ function FeeChartDetail() {
   const payments = useSelector((state) => state.fees.payments);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const userInfo = useSelector(selectmyInfo);
+  const navigate = useNavigate();
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -160,6 +162,8 @@ function FeeChartDetail() {
   const today = new Date();
 
   const formattedYear = `${today.getFullYear()}`
+  const formattedDate = `${formattedYear}-${today.getMonth() + 1}-${today.getDate()} ${today.getHours()}:${today.getMinutes()}:${today.getSeconds()}`;
+
 
   useEffect(() => {
     const fetchFeeInfo = async () => {
@@ -221,7 +225,7 @@ function FeeChartDetail() {
     const monthIndex = parseInt(selectedMonth) - 1;
     const monthFees = fees[monthIndex];
     const amount = monthFees.electric + monthFees.water + monthFees.maintenance;
-
+    
     const { IMP } = window;
     IMP.init('imp86124615');
 
@@ -229,23 +233,27 @@ function FeeChartDetail() {
       pg: 'html5_inicis',
       pay_method: 'card',
       merchant_uid: `mid_${new Date().getTime()}`,
-      name: selectedMonth + '월 관리비',
+      month: `${selectedMonth}월 관리비`,
       amount: amount,
-      buyer_name: '이름',
+      buyer_name: userInfo.name,
       buyer_tel: '전화번호',
       buyer_email: 'por0632@naver.com',
-      buyer_addr: '주소',
+      buyer_addr: userInfo.address,
       buyer_postalcode: '12345'
     }, async function (rsp) { // 콜백
       if (rsp.success) {
         await axios.post(`${addressKey}/pay/register`, {
-          merchant_uid: rsp.merchant_uid,
-          imp_uid: rsp.imp_uid,
+          merchant_uid: rsp.merchant_uid, // 상품코드
+          imp_uid: rsp.imp_uid, // 결제코드
           amount: amount, // 결제 예정금액
-          // 1차 추가 항목
-          name: selectedMonth, // 결제월 추가 
+          month: rsp.month, // 결제월 
+          buyer_name: rsp.buyer_name, // 이름
+          email: rsp.buyer_email, // 이메일
+          card_name: rsp.card_name, // 카드이름
+          time: formattedDate// 결제시간
         });
         console.log(rsp);
+        alert('결제 성공');
       } else {
         alert(rsp.error_msg);
         console.log(rsp);
