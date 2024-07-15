@@ -22,7 +22,7 @@ const Wrapper = styled.form`
 `;
 
 const Title = styled.input`
-  width: 400px;
+  width: 40%;
   height: 50px;
   margin: 0 auto 10px;
   font-size: 16px;
@@ -32,7 +32,7 @@ const Title = styled.input`
 `;
 
 const Content = styled.textarea`
-  width: 1000px;
+  width: 100%;
   height: 300px;
   margin: 0 auto 10px;
   overflow: auto;
