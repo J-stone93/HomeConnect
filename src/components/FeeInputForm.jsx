@@ -8,6 +8,7 @@ import { styled } from "styled-components";
 
 const FeeInputFormWrapper = styled.div`
   width: 40%;
+  min-width: 400px;
   height: 39rem;
   display: flex;
   flex-direction: column;
