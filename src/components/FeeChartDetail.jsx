@@ -156,7 +156,6 @@ function FeeChartDetail() {
   const [selectedMonth, setSelectedMonth] = useState('');
   const dispatch = useDispatch();
   const payments = useSelector((state) => state.fees.payments);
-  const [data2, setData2] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const userInfo = useSelector(selectmyInfo);
 

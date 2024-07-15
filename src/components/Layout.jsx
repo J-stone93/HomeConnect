@@ -56,8 +56,8 @@ const Mypage = styled.div`
 
 
 const Content = styled.div`
-/* padding-top: 82px; */ // <-- 문제임
-  margin-top: 8rem;  
+  padding-top: 66px; // <-- 문제임
+  /* margin-top: 8rem;   */
   /* padding-top: 1%;  */
   /* margin-top: 4%; */
 `;
