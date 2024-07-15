@@ -8,7 +8,7 @@ import { styled } from "styled-components";
 
 const FeeInputFormWrapper = styled.div`
   width: 40%;
-  height: 33rem;
+  height: 39rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -16,6 +16,7 @@ const FeeInputFormWrapper = styled.div`
   border: solid 1px black;
   border-radius: 5px;
   margin: 0 auto;
+  padding-top: 5rem;
 `;
 
 const InputGroup = styled.div`
@@ -68,7 +69,7 @@ function FeeInputForm() {
   useEffect(() => {
     const fetchFeeInfo = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/fee/list`,
+        const response = await axios.get(`${addressKey}/fee/list`,
         { headers: {
           Authorization: localStorage.getItem('token')
         },
@@ -98,7 +99,7 @@ function FeeInputForm() {
         throw new Error("No token found. Please log in.");
       }
 
-      const response = await axios.post(`http://localhost:8080/fee/register`, 
+      const response = await axios.post(`${addressKey}/fee/register`, 
       {
         "userId": userInfo.userId,
         "month": month,
@@ -131,7 +132,7 @@ function FeeInputForm() {
         <h2>관리비 입력</h2>
       <InputGroup>
         <Label>
-          월
+          Month
           <InputField 
             type="number" 
             name="month" 
@@ -145,7 +146,7 @@ function FeeInputForm() {
 
       <InputGroup>
         <Label>
-          수도
+          Water
           <InputField 
             type="number" 
             name="water" 
@@ -159,7 +160,7 @@ function FeeInputForm() {
 
       <InputGroup>
         <Label>
-          전기
+          Electric
           <InputField 
             type="number" 
             name="electric" 
@@ -173,7 +174,7 @@ function FeeInputForm() {
 
       <InputGroup>
         <Label>
-          관리비
+          Maintenance
           <InputField 
             type="number" 
             name="maintenance" 

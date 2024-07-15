@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setFees } from "../features/fee/feeSlice";
 import { selectmyInfo } from "../features/main/mainSlice";
 import styled from 'styled-components';
+import { addressKey } from '..';
 
 const FeeReadPageWrapper = styled.div`
   display: flex;
@@ -69,6 +70,35 @@ const ModifyButton = styled.button`
   }
 `;
 
+const SortButton = styled.button`
+  position: absolute;
+  right: 200px;
+  top: 140px;
+  padding: 10px 20px;
+  margin: 10px 0;
+  border: none;
+  background-color: #28a745;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #218838;
+  }
+
+  @media (max-width: 768px) {
+    right: 10px;
+    top: 120px;
+    padding: 8px 16px;
+  }
+
+  @media (max-width: 480px) {
+    right: 5px;
+    top: 100px;
+    padding: 6px 12px;
+  }
+`;
+
 function FeeReadPage() {
   const dispatch = useDispatch();
   const userInfo = useSelector(selectmyInfo);
@@ -78,7 +108,7 @@ function FeeReadPage() {
   useEffect(() => {
     const fetchFeeInfo = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/fee/list', {
+        const response = await axios.get(`${addressKey}/fee/list`, {
           headers: {
             Authorization: localStorage.getItem('token')
           },
@@ -121,7 +151,7 @@ function FeeReadPage() {
 
   const modifyFee = async (fee) => {
     try {
-      const response = await axios.put('http://localhost:8080/fee/modify', fee, {
+      const response = await axios.put(`${addressKey}/fee/modify`, fee, {
         headers: {
           Authorization: localStorage.getItem('token')
         }
@@ -139,9 +169,15 @@ function FeeReadPage() {
     }
   };
 
+  const sortFeesByMonth = () => {
+    const sortedFees = [...editedFees].sort((a, b) => a.month - b.month);
+    setEditedFees(sortedFees);
+  };
+
   return (
     <FeeReadPageWrapper>
       <Header>관리비 조회 및 수정</Header>
+      <SortButton type="button" onClick={sortFeesByMonth}>월별 정렬</SortButton>
       <FeeList>
         {editedFees.map((fee, index) => (
           <FeeItem key={index}>
@@ -194,3 +230,4 @@ function FeeReadPage() {
 }
 
 export default FeeReadPage;
+
