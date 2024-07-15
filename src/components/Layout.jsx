@@ -22,7 +22,7 @@ const FixedHeader = styled.header`
   justify-content: center;
 
   .widthAdjust {
-    width: 90%;
+    width: 95%;
   }
 `;
 
@@ -39,7 +39,7 @@ const StyledNavbar = styled(Navbar.Brand)`
   margin: 0 10px;
 
   &:hover {
-    color: green;
+    color: #3003077b;
   }
 `;
 
@@ -56,7 +56,7 @@ const Mypage = styled.div`
 `;
 
 const Content = styled.div`
-  padding-top: 66px; // <-- 문제임
+  padding-top: 66px; // <-- 문제임 이제아님!!
   /* margin-top: 8rem;   */
   /* padding-top: 1%;  */
   /* margin-top: 4%; */
@@ -78,7 +78,7 @@ const StyledFooter = styled.footer`
 const ProfileButton = styled.button`
   background: none;
   border: none;
-  font-size: 1em;
+  font-size: 1rem;
   color: #007bff;
   margin-left: 10px;
   cursor: pointer;
@@ -142,7 +142,7 @@ const Layout = () => {
       }
       <FixedHeader>
         <Navbar className="widthAdjust" expand="lg">
-          <SpaceBetweenContainer>
+          <SpaceBetweenContainer style={{padding:'0 15px 0 15px'}}>
             <Navbar.Brand>
               <IoIosHome onClick={() => navigate('/')} className="cursor-pointer" size={32} />
             </Navbar.Brand>
@@ -164,7 +164,7 @@ const Layout = () => {
               <Mypage>
                 <img src="/image/profile.png" alt="profile" />
                 <Nav.Link onClick={() => navigate('/mypage')} className="cursor-pointer">{userInfo?.name}님 환영합니다.</Nav.Link>
-                <ProfileButton onClick={() => navigate('/feeinput')}>{userInfo.role === 'ROLE_ADMIN' && '관리비 입력'}</ProfileButton>
+                <ProfileButton onClick={() => navigate('/feeinput')}>관리비 입력</ProfileButton>
                 <LogoutButton onClick={handleLogout}>{userInfo.name ? '로그아웃' : '로그인'}</LogoutButton>
               </Mypage>
             </Navbar.Collapse>
