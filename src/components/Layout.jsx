@@ -136,7 +136,10 @@ const Layout = () => {
 
   return (
     <>
-      <ADMINCOMMAND className='cursor-pointer' size={70} onClick={() => navigate('/adminPage')} />
+      {
+        userInfo.role === 'ROLE_ADMIN' &&
+        <ADMINCOMMAND className='cursor-pointer' size={70} onClick={() => navigate('/adminPage')} />
+      }
       <FixedHeader>
         <Navbar className="widthAdjust" expand="lg">
           <SpaceBetweenContainer>

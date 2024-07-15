@@ -123,10 +123,18 @@ function CommunityRegister() {
     formData.append("category", category);
     formData.append("Authorization", token);
 
+    for (const pair of formData.entries()) {
+      console.log(`${pair[0]}: ${pair[1]}`);
+    }
+
+
+    console.log(addressKey);
     
     try {
       const response = await axios.post(`${addressKey}/community/register`, formData, {
-        headers: { 'Authorization': `${token}` },
+        headers:{
+            Authorization: token
+          },
       });
       console.log(response);
       if (response.status === 200 || response.status === 304) {
@@ -135,7 +143,10 @@ function CommunityRegister() {
         throw new Error(`API 에러: ${response.status} ${response.statusText}`);
       }
     } catch (error) {
-      console.error(error);
+      console.error("Error: ", error.response);
+    console.error("Error data: ", error.response.data);
+    console.error("Error status: ", error.response.status);
+    console.error("Error headers: ", error.response.headers);
     }
   };
 

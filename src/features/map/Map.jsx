@@ -84,7 +84,7 @@ const SearchResults = styled.div`
   z-index: 9; /* 검색 결과 목록을 검색창 아래로 내리기 위해 z-index를 낮춤 */
   border-radius: 10px; /* 동그란 테두리 조정 */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
-  top: 22.4%; /* 검색창과의 간격 조정 */
+  top: 18.8%; /* 검색창과의 간격 조정 */
 `;
 
 const CategoryList = styled.ul`
@@ -336,38 +336,32 @@ function Map() {
     if (infoWindow.current) {
       infoWindow.current.close();
     }
-  
-    // Create a new InfoWindow instance
+
     const newInfoWindow = new window.kakao.maps.InfoWindow({
       position: marker.getPosition(),
     });
   
-    // Create content for the InfoWindow
     const content = document.createElement('div');
     content.className = 'info-window';
-  
-    // Create and add a close button
+
     const closeButton = document.createElement('button');
     closeButton.className = 'close-button';
     closeButton.innerHTML = 'X';
     closeButton.onclick = () => newInfoWindow.close();
     content.appendChild(closeButton);
-  
-    // Create and add a title link
+
     const title = document.createElement('a');
     title.className = 'title';
     title.href = place.place_url;
     title.target = '_blank';
     title.innerText = place.place_name;
     content.appendChild(title);
-  
-    // Add latitude and longitude
+
     const coordinates = document.createElement('div');
     coordinates.className = 'coordinates';
     coordinates.innerText = `위도: ${place.y}, 경도: ${place.x}`;
     content.appendChild(coordinates);
-  
-    // Add address information
+
     if (place.road_address_name) {
       const addressDiv = document.createElement('div');
       addressDiv.className = 'address';
@@ -391,24 +385,21 @@ function Map() {
       addressDiv.appendChild(addressSpan);
       content.appendChild(addressDiv);
     }
-  
-    // Add phone number
+
     if (place.phone) {
       const telDiv = document.createElement('div');
       telDiv.className = 'tel';
       telDiv.innerText = place.phone;
       content.appendChild(telDiv);
     }
-  
-    // Add opening hours
+
     if (place.opening_hours) {
       const openingHoursDiv = document.createElement('div');
       openingHoursDiv.className = 'opening-hours';
       openingHoursDiv.innerText = place.opening_hours;
       content.appendChild(openingHoursDiv);
     }
-  
-    // Add reviews
+
     if (place.reviews && place.reviews.length > 0) {
       const reviewsDiv = document.createElement('div');
       reviewsDiv.className = 'reviews';
@@ -427,15 +418,12 @@ function Map() {
       });
       content.appendChild(reviewsDiv);
     }
-  
-    // Set the content of the InfoWindow
+
     newInfoWindow.setContent(content);
-  
-    // Open the InfoWindow on the map
+
     newInfoWindow.open(map, marker);
     infoWindow.current = newInfoWindow;
   };
-  
 
   const handleKeyDown = (event) => {
     if (event.key === "ArrowDown") {
@@ -556,7 +544,7 @@ function Map() {
         // 이미 선택된 경우 -> 선택 해제
         const filteredCategories = prevCategories.filter((cat) => cat !== categoryId); // 선택된 카테고리 제거
         toggleCategory(filteredCategories); // 선택된 카테고리 업데이트
-  
+
         // 해당 카테고리에 해당하는 마커들을 필터링하여 제거
         const filteredMarkers = markers.filter((marker) => {
           if (marker.category === categoryId) {
@@ -566,7 +554,7 @@ function Map() {
           return true; // 다른 카테고리의 마커는 유지
         });
         setMarkers(filteredMarkers); // 마커 상태 업데이트
-  
+
         // 선택된 장소가 있고, 해당 카테고리의 장소가 선택된 상태라면 상세 정보 닫기
         if (selectedPlace && selectedPlace.category === categoryId) {
           if (infoWindow.current) {
@@ -574,17 +562,17 @@ function Map() {
           }
           setSelectedPlace(null); // 선택된 장소 초기화
         }
-  
+
         removeCustomOverlay();
       } else {
         // 처음 클릭된 경우 -> 선택 추가
         setSelectedCategories([categoryId]); // 새로운 카테고리 선택
-  
+
         // 기존의 모든 마커들을 지도에서 완전히 제거
         markers.forEach((marker) => {
           marker.setMap(null);
         });
-  
+
         // 검색 결과에서 해당 카테고리에 맞는 장소들을 필터링하여 새로운 마커들 생성
         const newMarkers = searchResults
           .filter((place) => place.category === categoryId)
@@ -670,15 +658,28 @@ const handleSearchClick = () => {
 
   // handleClick 함수 정의
   const handleClick = (search) => {
-
-      const marker = new window.kakao.maps.Marker({
-        position: new window.kakao.maps.LatLng(search.y, search.x),
-      });
-
-      // 선택된 장소에 대한 정보를 표시하는 함수 호출
+    // 선택된 장소에 대한 정보를 표시하는 함수 호출
+    const markerPosition = new window.kakao.maps.LatLng(search.y, search.x);
+  
+    // 마커를 생성합니다.
+    const marker = new window.kakao.maps.Marker({
+      position: markerPosition,
+    });
+  
+    // 마커가 클릭된 경우의 이벤트 리스너를 추가합니다.
+    window.kakao.maps.event.addListener(marker, 'click', function() {
       displayPlaceInfo(marker, search);
-
-  }
+    });
+  
+    // 마커를 지도에 추가합니다.
+    marker.setMap(map);
+  
+    // 선택된 장소에 대한 정보를 표시하는 함수 호출
+    displayPlaceInfo(marker, search);
+  
+    // 클릭한 위치로 지도를 이동합니다.
+    map.setCenter(markerPosition);
+  }  
 
   const openDetails = (url) => {
     window.open(url, '_blank');
@@ -764,8 +765,14 @@ const handleSearchClick = () => {
         </CategoryItem>
       </CategoryList>
       </MenuBar>
-      <SidebarOverflow>
-      {savedSearches.map((search, index) => (
+        <SidebarOverflow>
+        {savedSearches
+        .filter((search, index, self) =>
+          index === self.findIndex((t) => (
+            t.place_name === search.place_name
+          ))
+        )
+        .map((search, index) => (
           <SavedSearchItem 
             key={index} 
             onClick={() => handleClick(search)}
@@ -793,31 +800,32 @@ const handleSearchClick = () => {
           </SavedSearchItem>
         ))}
 
-      {categoryPlaces.map((place, index) => (
-        <SavedSearchItem 
-          key={index} 
-          onClick={() => handleClick(place)}
-          >
-          <PlaceName>{place.place_name}</PlaceName>
-          {place.road_address_name && (
-            <Address>주소: {place.road_address_name}</Address>
-          )}
-          {place.address_name && (
-            <Address>지번: {place.address_name}</Address>
-          )}
-          {place.phone && (
-            <Phone>전화번호: {place.phone}</Phone>
-          )}
-          <ButtonContainer>
-            <StyledButton 
-              onClick={() => openDetails(place.place_url)}>
-            상세보기</StyledButton>
-            <StyledButton
-              onClick={() => openDetails2(`https://map.kakao.com/link/to/${place.place_name},${place.y},${place.x}`)}
-            >길찾기</StyledButton>
-          </ButtonContainer>
-        </SavedSearchItem>
-      ))}
+        {categoryPlaces.map((place, index) => (
+          <SavedSearchItem 
+            key={index} 
+            onClick={() => handleClick(place)}
+            >
+            <PlaceName>{place.place_name}</PlaceName>
+            {place.road_address_name && (
+              <Address>주소: {place.road_address_name}</Address>
+            )}
+            {place.address_name && (
+              <Address>지번: {place.address_name}</Address>
+            )}
+            {place.phone && (
+              <Phone>전화번호: {place.phone}</Phone>
+            )}
+            <ButtonContainer>
+              <StyledButton 
+                onClick={() => openDetails(place.place_url)}>
+              상세보기</StyledButton>
+              <StyledButton
+                onClick={() => openDetails2(`https://map.kakao.com/link/to/${place.place_name},${place.y},${place.x}`)}
+              >길찾기</StyledButton>
+            </ButtonContainer>
+          </SavedSearchItem>
+        ))}
+
         </SidebarOverflow>
       </Sidebar>
       <MapContainer id="map" />
