@@ -12,11 +12,11 @@ import axios from "axios";
 import { addressKey } from "..";
 
 const StyledCard = styled.div`
+  width: 80%;
   display: flex;
   justify-content: space-between;
   text-align: center;
-  margin: 10px 60px;
-  margin-bottom: 10px;
+  margin: 0 auto;
 `;
 
 const Wrapper = styled.div`
@@ -79,14 +79,6 @@ p {
   }
 }
 `
-
-const StyledFooter = styled.footer`
-  width: 100%;
-  background-color: #343a40;
-  color: white;
-  text-align: center;
-  padding: 15px 0;
-`;
 
 const daysOfWeek = [
   "오늘은 일요일: 생활쓰레기, 음식물쓰레기 배출요일 입니다.",
@@ -309,8 +301,8 @@ function Main() {
               </FeeContainer2>
             </ContentRow>
 
-            <StyledCard className="m-0 auto text-center">
-              {notice && notice.slice(-3).map((noticeitem) => {
+            <StyledCard>
+              {notice && notice.slice(-4).map((noticeitem) => {
                 return (
                   <Card style={{ width: '18rem' }}>
                     {/* <Card.Img 
@@ -324,7 +316,7 @@ function Main() {
                       <Card.Text>
                         {noticeitem.content}
                       </Card.Text>
-                      <p style={{ cursor: 'pointer' }} onClick={() => navigate('/noticelist')}>바로가기</p>
+                      <p style={{ cursor: 'pointer' }} onClick={() => navigate('/boardlist')}>바로가기</p>
                     </Card.Body>
                   </Card>);
               })}

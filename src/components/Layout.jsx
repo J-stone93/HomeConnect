@@ -162,9 +162,9 @@ const Layout = () => {
               </StyledWeather>
 
               <Mypage>
-                <img src="/image/profile.png" alt="profile" />
-                <Nav.Link onClick={() => navigate('/mypage')} className="cursor-pointer">{userInfo?.name}님 환영합니다.</Nav.Link>
-                <ProfileButton onClick={() => navigate('/feeinput')}>관리비 입력</ProfileButton>
+                {/* <img src="/image/profile.png" alt="profile" /> */}
+                <Nav.Link onClick={() => navigate('/mypage')} className="cursor-pointer">{userInfo.name && `${userInfo?.name}님 환영합니다.`}</Nav.Link>
+                <ProfileButton onClick={() => navigate('/feeinput')}>{userInfo.role && '관리비 입력'}</ProfileButton>
                 <LogoutButton onClick={handleLogout}>{userInfo.name ? '로그아웃' : '로그인'}</LogoutButton>
               </Mypage>
             </Navbar.Collapse>
