@@ -97,5 +97,5 @@ function CommunityItem(props) {
     </Wrapper>
   );
 };
-
+// ddddd
 export default CommunityItem;
