@@ -3,18 +3,77 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setFees } from "../features/fee/feeSlice";
 import { selectmyInfo } from "../features/main/mainSlice";
-import styled from "styled-components";
+import styled from 'styled-components';
+
+const FeeReadPageWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const Header = styled.h1`
+  text-align: center;
+  padding: 30px;
+  font-size: 2em;
+  color: #333;
+`;
+
+const FeeList = styled.div`
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+`;
+
+const FeeItem = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+`;
+
+const Label = styled.label`
+  flex: 1;
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+`;
+
+const InputField = styled.input`
+  margin-left: 5px;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  width: 100px;
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: flex-start;
+`;
+
+const ModifyButton = styled.button`
+  padding: 10px 20px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+`;
 
 function FeeReadPage() {
   const dispatch = useDispatch();
   const userInfo = useSelector(selectmyInfo);
   const fees = useSelector((state) => state.fees.fees);
   const [editedFees, setEditedFees] = useState([]);
-
-  const StyledDiv = styled.div`
-    width: 80%;
-    
-  `
 
   useEffect(() => {
     const fetchFeeInfo = async () => {
@@ -44,6 +103,14 @@ function FeeReadPage() {
 
   const handleInputChange = (index, field, value) => {
     const newFees = [...editedFees];
+    const minValue = 0;
+    const maxValue = 12;
+
+    // 입력값이 숫자가 아니거나 범위를 벗어난 경우
+    if (isNaN(value) || value < minValue || value > maxValue) {
+      alert(`입력값은 ${minValue}에서 ${maxValue} 사이의 숫자여야 합니다.`);
+      return window.location.reload();
+    }
     newFees[index] = {
       ...newFees[index],
       [field]: value
@@ -72,83 +139,57 @@ function FeeReadPage() {
     }
   };
 
-  // const deleteFee = async (fee) => {
-  //   try {
-  //     const response = await axios.delete('http://localhost:8080/fee/remove', fee, {
-  //       headers: {
-  //         Authorization: localStorage.getItem('token')
-  //       }
-  //     });
-  //     if (response.status === 204) {
-  //       alert("성공");
-  //     } else {
-  //       throw new Error(`API error: ${response.status} ${response.statusText}`);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error submitting data:", error);
-  //     if (error.response && error.response.status === 401) {
-  //       alert('Unauthorized. Please check your token or login again.');
-  //     }
-  //   }
-  // };
-
   return (
-    <>
-    <h1 style={{textAlign:'center', padding:'30px'}}>관리비 조회 및 수정</h1>
-    <StyledDiv>
-      {editedFees.map((fee, index) => (
-        <div key={index}>
-          <label>
-            no:
-            <input
-              type="number"
-              name="no"
-              value={fee.no}
-              onChange={(e) => handleInputChange(index, 'no', e.target.value)}
+    <FeeReadPageWrapper>
+      <Header>관리비 조회 및 수정</Header>
+      <FeeList>
+        {editedFees.map((fee, index) => (
+          <FeeItem key={index}>
+            <Label>
+              월
+              <InputField
+                type="number"
+                name="month"
+                min="1"
+                max="12"
+                value={fee.month}
+                onChange={(e) => handleInputChange(index, 'month', e.target.value)}
               />
-          </label>
-          <label>
-            월:
-            <input
-              type="number"
-              name="month"
-              value={fee.month}
-              onChange={(e) => handleInputChange(index, 'month', e.target.value)}
+            </Label>
+            <Label>
+              수도세
+              <InputField
+                type="number"
+                name="water"
+                value={fee.water}
+                onChange={(e) => handleInputChange(index, 'water', e.target.value)}
               />
-          </label>
-          <label>
-            수도세:
-            <input
-              type="number"
-              name="water"
-              value={fee.water}
-              onChange={(e) => handleInputChange(index, 'water', e.target.value)}
+            </Label>
+            <Label>
+              전기
+              <InputField
+                type="number"
+                name="electric"
+                value={fee.electric}
+                onChange={(e) => handleInputChange(index, 'electric', e.target.value)}
               />
-          </label>
-          <label>
-            전기:
-            <input
-              type="number"
-              name="electric"
-              value={fee.electric}
-              onChange={(e) => handleInputChange(index, 'electric', e.target.value)}
+            </Label>
+            <Label>
+              관리비
+              <InputField
+                type="number"
+                name="maintenance"
+                value={fee.maintenance}
+                onChange={(e) => handleInputChange(index, 'maintenance', e.target.value)}
               />
-          </label>
-          <label>
-            관리비:
-            <input
-              type="number"
-              name="maintenance"
-              value={fee.maintenance}
-              onChange={(e) => handleInputChange(index, 'maintenance', e.target.value)}
-              />
-          </label>
-          <button type="button" onClick={() => modifyFee(fee)}>수정</button>
-          {/* <button type="button" onClick={() => deleteFee(fee)}>삭제</button> */}
-        </div>
-      ))}
-    </StyledDiv>
-      </>
+            </Label>
+            <ButtonWrapper>
+              <ModifyButton type="button" onClick={() => modifyFee(fee)}>수정</ModifyButton>
+            </ButtonWrapper>
+          </FeeItem>
+        ))}
+      </FeeList>
+    </FeeReadPageWrapper>
   );
 }
 
